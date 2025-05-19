@@ -1,36 +1,29 @@
 
-# 🌐 Willie Conway's Portfolio Website
+# 🌟 Willie Conway's Portfolio Website
 
-👋 Hi there! I'm **Willie Conway**, a Data Analyst & Software Engineer.  
-This is my personal portfolio — a simple, clean, and responsive website built with just **HTML**, **CSS**, and a bit of **JavaScript**.
-
----
-
-## 📄 About the Project
-
-This website showcases:
-- 🧠 Who I am and what I do
-- 💼 My professional experience & resume
-- 🛠️ My technical skills
-- 🚀 Featured projects with links to live demos and source code
-- 📬 Contact information
-
-It’s designed to be lightweight, fast, and mobile-friendly — perfect for personal branding and sharing with potential employers or clients.
+Hey there! 👋  
+I'm **Willie Conway**, a Data Analyst & Software Engineer. This is my personal portfolio — built with just **HTML**, **Tailwind CSS**, and a touch of custom styling — to showcase who I am, what I’ve done, and how I can help solve real-world problems with data and code.
 
 ---
 
 ## 🛠️ Built With
 
-- 🧾 `index.html` – The heart of the site
-- 🎨 `styles.css` – Custom CSS for layout and design
-- ✨ `scripts.js` – Optional JS for interactivity (if used)
-- 📁 Assets – Project screenshots, icons, resume PDF, etc.
+- ⚡ **HTML5** – Simple, semantic structure
+- 🎨 **Tailwind CSS** – Utility-first styling for responsive design
+- 💡 **Font Awesome** – Icons for clean UI elements
+- 🌙 **Dark Mode Support** – Toggle between light/dark themes
+- 🎯 **Custom CSS** – Gold gradient, skill bars, hover effects
 
 ---
 
-## 📸 Live Demo
+## ✨ Features
 
-🔗 [**View My Live Portfolio**](https://your-portfolio-link.com)
+✅ Modern responsive design  
+✅ Dark mode toggle  
+✅ Animated skill bars  
+✅ Project cards with hover effects  
+✅ Contact section with working hours and links  
+✅ Uses only `index.html` (no frameworks!)
 
 ---
 
@@ -38,28 +31,36 @@ It’s designed to be lightweight, fast, and mobile-friendly — perfect for per
 
 ```
 
-/portfolio/
-│
-├── index.html         # Main HTML file
-├── styles.css         # Custom styles
-├── scripts.js         # JavaScript (optional)
-├── /assets            # Images, resume, icons, etc.
-└── README.md          # This file
+/portfolio-website/
+├── index.html          # Main HTML file
+├── assets/             # Images, icons, resume (optional)
+└── README.md           # Project description (this file)
 
 ```
 
 ---
 
-## 🧪 How to View Locally
+## 📸 Live Preview
 
-1. Clone the repo:
+🔗 [**View My Live Site**](https://your-live-link.com)
+
+---
+
+## 💻 How to Use Locally
+
+You don't need any frameworks or build tools! Just:
+
+1. Clone or download the repo:
 ```bash
-   git clone https://github.com/your-username/portfolio.git
+   git clone https://github.com/your-username/portfolio-website.git
 ```
 
-2. Open the folder and double-click `index.html` to open it in your browser.
+2. Open `index.html` in your browser:
 
-Or right-click and open with Live Server if using VS Code.
+   * Double-click it, or
+   * Right-click and choose **"Open with Live Server"** (VS Code)
+
+That’s it! ✅
 
 ---
 
@@ -68,18 +69,16 @@ Or right-click and open with Live Server if using VS Code.
 📍 **Location:** Beaufort, SC
 📧 **Email:** [hire.willie.conway@gmail.com](mailto:hire.willie.conway@gmail.com)
 📞 **Phone:** (843) 592-1746
-🕘 **Working Hours:** Mon–Fri: 9AM – 5PM
+🕘 **Hours:** Mon–Fri, 9AM–5PM
 
 ---
 
-## 🔗 Let's Connect
+## 🔗 Connect with Me
 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/your-link)
 [![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat\&logo=github\&logoColor=white)](https://github.com/your-github-handle)
+
 ---
 
-> 🎯 *Designed, developed, and deployed with care by Willie Conway.*
-
-
-
+> 🎯 *Designed and coded with passion by Willie Conway – combining the power of data and clean web design.*
 
