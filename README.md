@@ -46,16 +46,16 @@ It’s designed to be lightweight, fast, and mobile-friendly — perfect for per
 ├── /assets            # Images, resume, icons, etc.
 └── README.md          # This file
 
-````
+```
 
 ---
 
 ## 🧪 How to View Locally
 
 1. Clone the repo:
-   ```bash
+```bash
    git clone https://github.com/your-username/portfolio.git
-````
+```
 
 2. Open the folder and double-click `index.html` to open it in your browser.
 
@@ -76,7 +76,6 @@ Or right-click and open with Live Server if using VS Code.
 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/your-link)
 [![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat\&logo=github\&logoColor=white)](https://github.com/your-github-handle)
-
 ---
 
 > 🎯 *Designed, developed, and deployed with care by Willie Conway.*
