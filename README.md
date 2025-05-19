@@ -81,8 +81,6 @@ Or right-click and open with Live Server if using VS Code.
 
 > 🎯 *Designed, developed, and deployed with care by Willie Conway.*
 
-```
 
----
 
 
