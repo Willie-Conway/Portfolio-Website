@@ -1,91 +1,88 @@
 
-# 👋 Hi, I'm Willie Conway
+# 🌐 Willie Conway's Portfolio Website
 
-🎯 **Data Analyst & Software Engineer**  
-Transforming data into actionable insights and building robust software solutions to solve complex problems.
-
----
-
-## 🧠 About Me
-
-I'm a passionate data professional with over **5 years of experience** in:
-- 📊 Data Analysis
-- 🤖 Machine Learning
-- 🧱 Full-Stack Software Development
-
-With a strong foundation in **Python, SQL, and JavaScript**, I love solving real-world problems with smart, scalable solutions. Whether it's building a real-time dashboard or optimizing a backend API, I bring analytical thinking and creativity to every project.
+👋 Hi there! I'm **Willie Conway**, a Data Analyst & Software Engineer.  
+This is my personal portfolio — a simple, clean, and responsive website built with just **HTML**, **CSS**, and a bit of **JavaScript**.
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 📄 About the Project
 
-**Languages & Frameworks:**
-- 🐍 Python (Pandas, NumPy, FastAPI)
-- 💻 JavaScript / TypeScript (React, Node.js)
-- 🐘 SQL / PostgreSQL / MongoDB
-- 📦 Redis, TensorFlow, D3.js
+This website showcases:
+- 🧠 Who I am and what I do
+- 💼 My professional experience & resume
+- 🛠️ My technical skills
+- 🚀 Featured projects with links to live demos and source code
+- 📬 Contact information
 
-**Other Skills:**
-- 📈 Data Visualization
-- 🧠 Predictive Modeling
-- ⚙️ CI/CD & DevOps
-- 🗃️ Database Design
+It’s designed to be lightweight, fast, and mobile-friendly — perfect for personal branding and sharing with potential employers or clients.
 
 ---
 
-## 🚀 Projects
+## 🛠️ Built With
 
-### 📊 [Data Visualization Dashboard](#)
-**Tech:** Python, SQL, D3.js  
-🔍 Interactive dashboard for real-time analytics and exploring complex datasets.
-
-### 🛒 [E-commerce Analytics Platform](#)
-**Tech:** React, Node.js, MongoDB, TensorFlow  
-📦 Full-stack solution with predictive modeling for e-commerce insights.
-
-### 💹 [Financial Data API](#)
-**Tech:** Python, FastAPI, PostgreSQL, Redis  
-⚡ RESTful API for real-time and historical stock market data.
-
-👉 [View All Projects on GitHub](https://github.com/your-github-handle)
+- 🧾 `index.html` – The heart of the site
+- 🎨 `styles.css` – Custom CSS for layout and design
+- ✨ `scripts.js` – Optional JS for interactivity (if used)
+- 📁 Assets – Project screenshots, icons, resume PDF, etc.
 
 ---
 
-## 💼 Experience
+## 📸 Live Demo
 
-- 🧠 **Senior Data Analyst**, Tech Solutions Inc. (2020 - Present)  
-  Improved customer retention by 25% through predictive modeling.  
-  Designed pipelines processing 10M+ records/day.
-
-- 🧑‍💻 **Software Engineer**, Digital Innovations LLC (2018 - 2020)  
-  Reduced API response times by 40%.  
-  Led CI/CD implementation for rapid deployments.
-
-- 📊 **Data Analyst**, Analytics Corp (2016 - 2018)  
-  Boosted operational efficiency by 15% via interactive dashboards.  
-  Saved 20+ hours/week by automating reports.
+🔗 [**View My Live Portfolio**](https://your-portfolio-link.com)
 
 ---
 
-## 📫 Contact Me
+## 📁 File Structure
 
-📍 Beaufort, SC  
-📧 [hire.willie.conway@gmail.com](mailto:hire.willie.conway@gmail.com)  
-📞 (843) 592-1746  
-🕘 Mon–Fri: 9AM – 5PM
+```
 
-📂 [Download My Resume](#)  
-🔗 [Visit My Portfolio](#)
+/portfolio/
+│
+├── index.html         # Main HTML file
+├── styles.css         # Custom styles
+├── scripts.js         # JavaScript (optional)
+├── /assets            # Images, resume, icons, etc.
+└── README.md          # This file
 
----
-
-## 🌐 Let's Connect
-
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/your-link)  
-[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat&logo=github&logoColor=white)](https://github.com/your-github-handle)
+````
 
 ---
 
-> 🚀 *"Turning raw data into smart decisions and building tech that matters."*
+## 🧪 How to View Locally
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/your-username/portfolio.git
+````
+
+2. Open the folder and double-click `index.html` to open it in your browser.
+
+Or right-click and open with Live Server if using VS Code.
+
+---
+
+## 📬 Contact Me
+
+📍 **Location:** Beaufort, SC
+📧 **Email:** [hire.willie.conway@gmail.com](mailto:hire.willie.conway@gmail.com)
+📞 **Phone:** (843) 592-1746
+🕘 **Working Hours:** Mon–Fri: 9AM – 5PM
+
+---
+
+## 🔗 Let's Connect
+
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/your-link)
+[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat\&logo=github\&logoColor=white)](https://github.com/your-github-handle)
+
+---
+
+> 🎯 *Designed, developed, and deployed with care by Willie Conway.*
+
+```
+
+---
 
 
