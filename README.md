@@ -66,21 +66,5 @@ That’s it! ✅
 
 ---
 
-## 📬 Contact Me
-
-📍 **Location:** Beaufort, SC
-📧 **Email:** [hire.willie.conway@gmail.com](mailto:hire.willie.conway@gmail.com)
-📞 **Phone:** (843) 592-1746
-🕘 **Hours:** Mon–Fri, 9AM–5PM
-
----
-
-## 🔗 Connect with Me
-
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/your-link)
-[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat\&logo=github\&logoColor=white)](https://github.com/your-github-handle)
-
----
-
 > 🎯 *Designed and coded with passion by Willie Conway – combining the power of data and clean web design.*
 
