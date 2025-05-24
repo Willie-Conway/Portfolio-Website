@@ -4,7 +4,7 @@
 Hey there! 👋  
 I'm **Willie Conway**, a Data Analyst & Software Engineer. This is my personal portfolio — built with just **HTML**, **Tailwind CSS**, and a touch of custom styling — to showcase who I am, what I’ve done, and how I can help solve real-world problems with data and code.
 
-![Porfolio Website](https://github.com/Willie-Conway/Portfolio-Website/blob/87d4fc3581cf8406ff5633bfb8067b2c24926686/assets/Portfolio%20Website.png)
+![Porfolio Website](https://github.com/Willie-Conway/Portfolio-Website/blob/f2f93534f0e29377a920bd67cde7f660ef24f229/assets/Portfolio_Website.png)
 
 ---
 
