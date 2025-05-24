@@ -313,7 +313,7 @@
             'rgba(23, 17, 0, 0.8)'        // Black gold
         ];
 
-        // Create the pie chart
+        // Create the pie chart with animation configuration
         const pieCtx = document.getElementById('skillsPieChart').getContext('2d');
         let skillsPieChart = new Chart(pieCtx, {
             type: 'pie',
@@ -351,14 +351,16 @@
                     }
                 },
                 animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart',
                     animateScale: true,
                     animateRotate: true
                 }
             }
         });
 
-        // Function to update chart based on selected category
-        function updateChart(category) {
+        // Function to update chart with animation
+        function updateChart(category, animate = true) {
             const data = skillData[category];
             const labels = data.map(item => item.skill);
             const percentages = data.map(item => item.percentage);
@@ -371,45 +373,379 @@
             // Adjust legend position based on number of items
             skillsPieChart.options.plugins.legend.position = data.length > 8 ? 'bottom' : 'right';
             
-            skillsPieChart.update();
+            // Reset animation before update if we want to animate
+            if (animate) {
+                skillsPieChart.options.animation.duration = 2000;
+                skillsPieChart.update();
+            } else {
+                // Update without animation
+                skillsPieChart.options.animation.duration = 0;
+                skillsPieChart.update();
+                skillsPieChart.options.animation.duration = 2000;
+            }
         }
 
-        // Initial chart load
-        updateChart('dataAnalysis');
+        // Initial chart load without animation
+        updateChart('dataAnalysis', false);
 
-        // Dropdown change event
+        // Dropdown change event with animation
         document.getElementById('skillCategory').addEventListener('change', function() {
             updateChart(this.value);
         });
 
-        // Animate button
+        // Animate button - now working properly
         document.getElementById('animateChart').addEventListener('click', function() {
+            // Get current category
+            const currentCategory = document.getElementById('skillCategory').value;
+            
+            // First reset the chart data to trigger animation
+            const tempData = [...skillsPieChart.data.datasets[0].data];
+            skillsPieChart.data.datasets[0].data = [];
             skillsPieChart.update();
+            
+            // Then restore the data with animation
+            setTimeout(() => {
+                skillsPieChart.data.datasets[0].data = tempData;
+                skillsPieChart.update();
+            }, 50);
         });
 
         // Dark mode toggle handling
-        toggle.addEventListener('change', function() {
-            if (this.checked) {
-                skillsPieChart.options.plugins.legend.labels.color = '#e2e8f0';
-            } else {
-                skillsPieChart.options.plugins.legend.labels.color = '#333';
-            }
-            skillsPieChart.update();
-        });
+        const toggle = document.getElementById('toggle');
+        if (toggle) {
+            toggle.addEventListener('change', function() {
+                if (this.checked) {
+                    skillsPieChart.options.plugins.legend.labels.color = '#e2e8f0';
+                } else {
+                    skillsPieChart.options.plugins.legend.labels.color = '#333';
+                }
+                skillsPieChart.update();
+            });
+        }
 
         // Animate chart when it comes into view
         const chartObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    skillsPieChart.update();
+                    const currentCategory = document.getElementById('skillCategory').value;
+                    updateChart(currentCategory);
                     chartObserver.unobserve(entry.target);
                 }
             });
         }, {threshold: 0.1});
         
-        document.querySelector('.chart-container').addEventListener('load', function() {
-            chartObserver.observe(this);
+        chartObserver.observe(document.querySelector('.chart-container'));
+    });
+</script>
+
+<!-- Interactive Dashboard -->
+
+<!-- Replace your existing Interactive Dashboard section with this -->
+<div class="mt-20">
+    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+        <i class="fas fa-chart-pie gold-text mr-3"></i>
+        Skills & Projects Dashboard
+    </h3>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <!-- Dashboard Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div>
+                <label for="chartType" class="block text-sm font-medium mb-2">Chart Type:</label>
+                <select id="chartType" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="line">Line Chart (Skills Growth)</option>
+                    <option value="bar">Bar Chart (Skill Comparison)</option>
+                    <option value="scatter">Scatter Plot (Skill vs Usage)</option>
+                    <option value="bubble">Bubble Chart (Skill Mastery)</option>
+                </select>
+            </div>
+            <div>
+                <label for="skillCategory" class="block text-sm font-medium mb-2">Skill Category:</label>
+                <select id="skillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="all">All Categories</option>
+                    <option value="dataAnalysis">Data Analysis</option>
+                    <option value="software">Software Dev</option>
+                    <option value="cloud">Cloud</option>
+                    <option value="devops">DevOps</option>
+                </select>
+            </div>
+            <div class="flex items-end">
+                <button id="animateBtn" class="w-full px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
+                    <i class="fas fa-play mr-2"></i> Animate Dashboard
+                </button>
+            </div>
+        </div>
+        
+        <!-- Dashboard Canvas -->
+        <div class="chart-container" style="height: 500px;">
+            <canvas id="dashboardChart"></canvas>
+        </div>
+        
+        <!-- Project Completion Metrics -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-lg gold-text">Project Completion Rate</h4>
+                <div class="text-3xl font-bold mt-2">92%</div>
+                <div class="h-2 mt-2 bg-gray-200 dark:bg-gray-600 rounded-full">
+                    <div class="h-2 rounded-full gold-gradient" style="width: 92%"></div>
+                </div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-lg gold-text">Avg. Project Duration</h4>
+                <div class="text-3xl font-bold mt-2">18 <span class="text-sm">days</span></div>
+                <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Down from 22 last quarter</div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-lg gold-text">Skill Utilization</h4>
+                <div class="text-3xl font-bold mt-2">87%</div>
+                <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Of skills used in projects</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make sure Chart.js is loaded
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js is not loaded');
+            return;
+        }
+
+        // Dashboard Data
+        const dashboardData = {
+            // Skills data by category
+            skills: {
+                dataAnalysis: [
+                    {skill: "Python", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
+                    {skill: "SQL", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
+                    {skill: "Data Viz", level: 88, projects: 8, growth: [50, 60, 72, 80, 85, 88]}
+                ],
+                software: [
+                    {skill: "JavaScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
+                    {skill: "React", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
+                    {skill: "Node.js", level: 88, projects: 9, growth: [50, 60, 72, 80, 85, 88]}
+                ],
+                cloud: [
+                    {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
+                    {skill: "AWS", level: 85, projects: 5, growth: [60, 68, 75, 80, 82, 85]},
+                    {skill: "Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]}
+                ],
+                devops: [
+                    {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
+                    {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
+                    {skill: "CI/CD", level: 85, projects: 9, growth: [55, 65, 75, 80, 83, 85]}
+                ]
+            },
+            // Timeline data
+            timeline: ["2018", "2019", "2020", "2021", "2022", "2023"],
+            // Project completion rates
+            completionRates: [75, 80, 85, 88, 90, 92]
+        };
+
+        // Get chart canvas
+        const ctx = document.getElementById('dashboardChart');
+        if (!ctx) {
+            console.error('Chart canvas not found');
+            return;
+        }
+
+        // Create chart with default data
+        let dashboardChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dashboardData.timeline,
+                datasets: [{
+                    label: 'Loading...',
+                    data: [],
+                    borderColor: 'rgba(245, 208, 98, 1)',
+                    backgroundColor: 'rgba(245, 208, 98, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#333',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.parsed.y}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Proficiency Level (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                }
+            }
         });
+
+        // Function to generate random gold colors
+        function getRandomGoldColor(opacity = 1) {
+            const golds = [
+                `rgba(245, 208, 98, ${opacity})`,
+                `rgba(232, 197, 71, ${opacity})`,
+                `rgba(212, 160, 23, ${opacity})`,
+                `rgba(194, 143, 15, ${opacity})`
+            ];
+            return golds[Math.floor(Math.random() * golds.length)];
+        }
+
+        // Function to update chart based on selections
+        function updateDashboard() {
+            const chartType = document.getElementById('chartType').value;
+            const category = document.getElementById('skillCategory').value;
+            
+            let filteredData = [];
+            let labels = [];
+            let datasets = [];
+            
+            // Filter data based on category
+            if (category === 'all') {
+                for (const cat in dashboardData.skills) {
+                    filteredData = filteredData.concat(dashboardData.skills[cat]);
+                }
+            } else {
+                filteredData = dashboardData.skills[category] || [];
+            }
+            
+            // Prepare data based on chart type
+            switch(chartType) {
+                case 'line':
+                    labels = dashboardData.timeline;
+                    datasets = filteredData.map(item => ({
+                        label: item.skill,
+                        data: item.growth,
+                        borderColor: getRandomGoldColor(),
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: false
+                    }));
+                    break;
+                    
+                case 'bar':
+                    labels = filteredData.map(item => item.skill);
+                    datasets = [{
+                        label: 'Skill Level',
+                        data: filteredData.map(item => item.level),
+                        backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }];
+                    break;
+                    
+                case 'scatter':
+                    datasets = [{
+                        label: 'Skill vs Usage',
+                        data: filteredData.map(item => ({
+                            x: item.projects,
+                            y: item.level
+                        })),
+                        backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        pointRadius: 8
+                    }];
+                    break;
+                    
+                case 'bubble':
+                    datasets = filteredData.map(item => ({
+                        label: item.skill,
+                        data: [{
+                            x: item.projects,
+                            y: item.level,
+                            r: item.level / 3 // Bubble size based on skill level
+                        }],
+                        backgroundColor: getRandomGoldColor(0.7),
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        borderWidth: 1
+                    }));
+                    break;
+            }
+            
+            // Update chart configuration
+            dashboardChart.data.labels = labels;
+            dashboardChart.data.datasets = datasets;
+            dashboardChart.type = chartType;
+            
+            // Update scale titles based on chart type
+            const xTitle = chartType === 'line' ? 'Year' : 
+                          (chartType === 'bar' ? 'Skill' : 'Projects Using Skill');
+            
+            dashboardChart.options.scales.x.title.text = xTitle;
+            dashboardChart.options.scales.y.title.text = 'Proficiency Level (%)';
+            
+            // Update chart
+            dashboardChart.update();
+        }
+
+        // Event listeners
+        document.getElementById('chartType').addEventListener('change', updateDashboard);
+        document.getElementById('skillCategory').addEventListener('change', updateDashboard);
+        
+        // Animate button - now working properly
+        document.getElementById('animateBtn').addEventListener('click', function() {
+            // Reset animation by briefly changing duration to 0
+            const originalDuration = dashboardChart.options.animation.duration;
+            dashboardChart.options.animation.duration = 0;
+            dashboardChart.update();
+            
+            // Restore animation and update
+            setTimeout(() => {
+                dashboardChart.options.animation.duration = originalDuration;
+                dashboardChart.update();
+            }, 10);
+        });
+
+        // Dark mode support
+        const toggle = document.getElementById('toggle');
+        if (toggle) {
+            toggle.addEventListener('change', function() {
+                const isDark = this.checked;
+                dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
+                dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                dashboardChart.update();
+            });
+        }
+
+        // Initialize with default view
+        updateDashboard();
     });
 </script>
 
@@ -573,39 +909,12 @@
                     updateCarousel(); // Initialize
                 });
             </script>
-                        
-            <!-- Interactive Dashboard -->
-            <div class="mt-20">
-                <h3 class="text-2xl font-semibold mb-6 flex items-center">
-                    <i class="fas fa-chart-pie gold-text mr-3"></i>
-                    Skills Dashboard
-                </h3>
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="chart-container">
-                            <canvas id="skillsChart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="experienceChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="mt-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="text-xl font-semibold">Project Completion Rate</h4>
-                            <div class="flex items-center">
-                                <span class="text-sm mr-2">Last 12 Months</span>
-                                <i class="fas fa-calendar-alt gold-text"></i>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="timelineChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+            
+            <br>
+            <br>
+            <br>
+            <br>            
+            
     <!-- Projects Section -->
     <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="container mx-auto px-6">
