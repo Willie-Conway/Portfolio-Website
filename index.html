@@ -1331,32 +1331,13 @@
                         {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
                         {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
                         {skill: "SIEM Tools", level: 80, projects: 4, growth: [55, 64, 72, 77, 79, 80]},
-                        {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]},
-                        {skill: "Encryption Technologies", level: 85, projects: 4, growth: [65, 72, 78, 82, 84, 85]},
-                        {skill: "Compliance & Governance", level: 80, projects: 3, growth: [55, 64, 72, 77, 79, 80]},
-                        {skill: "Threat Intelligence", level: 82, projects: 4, growth: [58, 67, 75, 79, 81, 82]},
-                        {skill: "Identity & Access Management", level: 83, projects: 5, growth: [60, 69, 76, 80, 82, 83]},
-                        {skill: "Vulnerability Assessment", level: 85, projects: 6, growth: [62, 70, 78, 82, 84, 85]},
-                        {skill: "Penetration Testing", level: 87, projects: 7, growth: [65, 73, 80, 84, 86, 87]}
+                        {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]}
                     ],
                     dataEngineering: [
                         {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
                         {skill: "Apache Hadoop", level: 80, projects: 4, growth: [50, 60, 70, 75, 78, 80]},
                         {skill: "Apache Airflow", level: 82, projects: 5, growth: [55, 65, 72, 78, 80, 82]},
-                        {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
-                        {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]},
-                        {skill: "MySQL", level: 92, projects: 10, growth: [70, 78, 85, 88, 90, 92]},
-                        {skill: "PostgreSQL", level: 91, projects: 9, growth: [68, 76, 84, 87, 89, 91]},
-                        {skill: "MongoDB", level: 88, projects: 7, growth: [60, 70, 80, 85, 87, 88]},
-                        {skill: "Cassandra", level: 80, projects: 3, growth: [50, 60, 70, 75, 78, 80]},
-                        {skill: "MariaDB", level: 85, projects: 5, growth: [60, 70, 78, 82, 84, 85]},
-                        {skill: "Amazon DynamoDB", level: 83, projects: 4, growth: [58, 67, 75, 80, 82, 83]},
-                        {skill: "Data Warehousing", level: 85, projects: 7, growth: [60, 70, 78, 82, 84, 85]},
-                        {skill: "ETL/ELT Pipelines", level: 88, projects: 8, growth: [65, 72, 80, 85, 87, 88]},
-                        {skill: "Big Data Technologies", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
-                        {skill: "Data Lake Architecture", level: 80, projects: 4, growth: [55, 64, 72, 77, 79, 80]},
-                        {skill: "Stream Processing", level: 82, projects: 3, growth: [60, 68, 75, 79, 81, 82]},
-                        {skill: "Cloud Data Services", level: 85, projects: 6, growth: [65, 72, 78, 82, 84, 85]}
+                        {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]}
                     ]
                 },
                 timeline: ["2020", "2021", "2022", "2023", "2024", "2025"],
@@ -1440,59 +1421,63 @@
                 // Adjust legend position based on number of items
                 skillsPieChart.options.plugins.legend.position = data.length > 8 ? 'bottom' : 'right';
                 
-                // Reset animation before update if we want to animate
                 if (animate) {
                     skillsPieChart.options.animation.duration = 2000;
                     skillsPieChart.update();
                 } else {
-                    // Update without animation
                     skillsPieChart.options.animation.duration = 0;
                     skillsPieChart.update();
                     skillsPieChart.options.animation.duration = 2000;
                 }
             }
 
-            // Initial pie chart load without animation
+            // Initial pie chart load
             updatePieChart('dataAnalysis', false);
 
-            // Pie chart dropdown change event with animation
+            // Pie chart dropdown change event
             document.getElementById('skillCategory').addEventListener('change', function() {
                 updatePieChart(this.value);
             });
 
             // Pie chart Animate button
             document.getElementById('animateChart').addEventListener('click', function() {
-                // Get current category
                 const currentCategory = document.getElementById('skillCategory').value;
-                
-                // First reset the chart data to trigger animation
                 const tempData = [...skillsPieChart.data.datasets[0].data];
                 skillsPieChart.data.datasets[0].data = [];
                 skillsPieChart.update();
                 
-                // Then restore the data with animation
                 setTimeout(() => {
                     skillsPieChart.data.datasets[0].data = tempData;
                     skillsPieChart.update();
                 }, 50);
             });
 
-            // Create dashboard chart
-            const ctx = document.getElementById('dashboardChart').getContext('2d');
-            let dashboardChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dashboardData.timeline,
-                    datasets: [{
-                        label: 'Loading...',
-                        data: [],
-                        borderColor: 'rgba(245, 208, 98, 1)',
-                        backgroundColor: 'rgba(245, 208, 98, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.1
-                    }]
-                },
-                options: {
+            // Function to generate random gold colors
+            function getRandomGoldColor(opacity = 1) {
+                const golds = [
+                    `rgba(245, 208, 98, ${opacity})`,
+                    `rgba(232, 197, 71, ${opacity})`,
+                    `rgba(212, 160, 23, ${opacity})`,
+                    `rgba(194, 143, 15, ${opacity})`,
+                    `rgba(175, 129, 13, ${opacity})`
+                ];
+                return golds[Math.floor(Math.random() * golds.length)];
+            }
+
+            // Global dashboard chart variable
+            let dashboardChart = null;
+
+            // Function to create or recreate dashboard chart
+            function createDashboardChart(chartType, labels, datasets) {
+                const ctx = document.getElementById('dashboardChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (dashboardChart) {
+                    dashboardChart.destroy();
+                }
+                
+                // Common chart options
+                const commonOptions = {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -1508,52 +1493,158 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
+                                    if (chartType === 'scatter' || chartType === 'bubble') {
+                                        return `${context.dataset.label}: Level ${context.parsed.y}%, Projects: ${context.parsed.x}`;
+                                    }
                                     return `${context.dataset.label}: ${context.parsed.y}%`;
                                 }
                             }
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Proficiency Level (%)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Year'
-                            }
-                        }
-                    },
                     animation: {
                         duration: 1000,
-                        easing: 'easeOutQuart',
-                        onComplete: function() {
-                            console.log('Animation completed');
-                        }
+                        easing: 'easeOutQuart'
                     }
+                };
+                
+                // Create new chart based on type
+                if (chartType === 'bar') {
+                    dashboardChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
+                        },
+                        options: {
+                            ...commonOptions,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Proficiency Level (%)'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Skill'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } else if (chartType === 'line') {
+                    dashboardChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dashboardData.timeline,
+                            datasets: datasets
+                        },
+                        options: {
+                            ...commonOptions,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Proficiency Level (%)'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Year'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } else if (chartType === 'scatter') {
+                    dashboardChart = new Chart(ctx, {
+                        type: 'scatter',
+                        data: {
+                            datasets: datasets
+                        },
+                        options: {
+                            ...commonOptions,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Proficiency Level (%)'
+                                    }
+                                },
+                                x: {
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Projects'
+                                    },
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } else if (chartType === 'bubble') {
+                    dashboardChart = new Chart(ctx, {
+                        type: 'bubble',
+                        data: {
+                            datasets: datasets
+                        },
+                        options: {
+                            ...commonOptions,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Proficiency Level (%)'
+                                    }
+                                },
+                                x: {
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Projects'
+                                    },
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
-            });
-
-            // Function to generate random gold colors
-            function getRandomGoldColor(opacity = 1) {
-                const golds = [
-                    `rgba(245, 208, 98, ${opacity})`,
-                    `rgba(232, 197, 71, ${opacity})`,
-                    `rgba(212, 160, 23, ${opacity})`,
-                    `rgba(194, 143, 15, ${opacity})`,
-                    `rgba(175, 129, 13, ${opacity})`
-                ];
-                return golds[Math.floor(Math.random() * golds.length)];
             }
 
             // Function to update dashboard based on selections
@@ -1562,8 +1653,6 @@
                 const category = document.getElementById('dashboardSkillCategory').value;
                 
                 let filteredData = [];
-                let labels = [];
-                let datasets = [];
                 
                 // Filter data based on category
                 if (category === 'all') {
@@ -1573,6 +1662,12 @@
                 } else {
                     filteredData = dashboardData.skills[category] || [];
                 }
+                
+                // Limit to top 5 skills for better visualization
+                filteredData = filteredData.slice(0, 5);
+                
+                let labels = [];
+                let datasets = [];
                 
                 // Prepare data based on chart type
                 switch(chartType) {
@@ -1621,7 +1716,7 @@
                             data: [{
                                 x: item.projects,
                                 y: item.level,
-                                r: item.level / 3 // Bubble size based on skill level
+                                r: item.level / 3
                             }],
                             backgroundColor: getRandomGoldColor(0.7),
                             borderColor: 'rgba(255, 255, 255, 0.3)',
@@ -1630,20 +1725,8 @@
                         break;
                 }
                 
-                // Update chart configuration
-                dashboardChart.data.labels = labels;
-                dashboardChart.data.datasets = datasets;
-                dashboardChart.type = chartType;
-                
-                // Update scale titles based on chart type
-                const xTitle = chartType === 'line' ? 'Year' : 
-                            (chartType === 'bar' ? 'Skill' : 'Projects Using Skill');
-                
-                dashboardChart.options.scales.x.title.text = xTitle;
-                dashboardChart.options.scales.y.title.text = 'Proficiency Level (%)';
-                
-                // Update chart with animation
-                dashboardChart.update();
+                // Create or recreate the chart
+                createDashboardChart(chartType, labels, datasets);
             }
 
             // Event listeners for dashboard
@@ -1652,81 +1735,17 @@
             
             // Dashboard Animate button
             document.getElementById('animateBtn').addEventListener('click', function() {
-                // Force animation by resetting the chart data
-                const currentData = dashboardChart.data;
-                dashboardChart.data = { labels: [], datasets: [] };
-                dashboardChart.update();
-                
-                // Restore data with animation
-                setTimeout(() => {
-                    dashboardChart.data = currentData;
+                if (dashboardChart) {
+                    const currentData = dashboardChart.data;
+                    dashboardChart.data = { labels: [], datasets: [] };
                     dashboardChart.update();
-                }, 50);
-            });
-
-            // Synchronize category selections between charts
-            document.getElementById('skillCategory').addEventListener('change', function() {
-                const category = this.value;
-                const dashboardSelect = document.getElementById('dashboardSkillCategory');
-                
-                // Map pie chart categories to dashboard categories
-                const categoryMap = {
-                    'dataAnalysis': 'dataAnalysis',
-                    'cicd': 'devops',
-                    'devTools': 'devops',
-                    'cloud': 'cloud',
-                    'mobile': 'mobile',
-                    'cybersecurity': 'cybersecurity',
-                    'soft': 'all',
-                    'software': 'software',
-                    'dataEngineering': 'dataEngineering'
-                };
-                
-                if (categoryMap[category]) {
-                    dashboardSelect.value = categoryMap[category];
-                    updateDashboard();
+                    
+                    setTimeout(() => {
+                        dashboardChart.data = currentData;
+                        dashboardChart.update();
+                    }, 50);
                 }
             });
-
-            document.getElementById('dashboardSkillCategory').addEventListener('change', function() {
-                const category = this.value;
-                const pieSelect = document.getElementById('skillCategory');
-                
-                // Map dashboard categories to pie chart categories
-                const reverseCategoryMap = {
-                    'dataAnalysis': 'dataAnalysis',
-                    'devops': 'cicd',
-                    'cloud': 'cloud',
-                    'mobile': 'mobile',
-                    'cybersecurity': 'cybersecurity',
-                    'software': 'software',
-                    'dataEngineering': 'dataEngineering'
-                };
-                
-                if (reverseCategoryMap[category] && category !== 'all') {
-                    pieSelect.value = reverseCategoryMap[category];
-                    updatePieChart(reverseCategoryMap[category]);
-                }
-            });
-
-            // Dark mode support for both charts
-            const toggle = document.getElementById('toggle');
-            if (toggle) {
-                toggle.addEventListener('change', function() {
-                    const isDark = this.checked;
-                    
-                    // Update pie chart
-                    skillsPieChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                    
-                    // Update dashboard chart
-                    dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                    dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    
-                    skillsPieChart.update();
-                    dashboardChart.update();
-                });
-            }
 
             // Initialize with default view
             updateDashboard();
@@ -1754,10 +1773,10 @@
             });
             
             // Dark mode toggle
+            const toggle = document.getElementById('toggle');
             if (toggle) {
                 const html = document.documentElement;
                 
-                // Check for saved user preference or use system preference
                 if (localStorage.getItem('darkMode') === 'true' || 
                     (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     html.classList.add('dark');
@@ -1772,6 +1791,19 @@
                         html.classList.remove('dark');
                         localStorage.setItem('darkMode', 'false');
                     }
+                    
+                    // Update chart colors for dark mode
+                    const isDark = toggle.checked;
+                    skillsPieChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
+                    
+                    if (dashboardChart) {
+                        dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
+                        dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                        dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                        dashboardChart.update();
+                    }
+                    
+                    skillsPieChart.update();
                 });
             }
 
@@ -1812,7 +1844,6 @@
                             behavior: 'smooth'
                         });
                         
-                        // Close mobile menu if open
                         if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                             mobileMenu.classList.add('hidden');
                         }
@@ -1843,7 +1874,6 @@
                 const translateX = -badgeCurrentIndex * (100 / visibleBadges);
                 badgeCarousel.style.transform = `translateX(${translateX}%)`;
                 
-                // Disable/enable buttons based on position
                 prevBadgeBtn.disabled = badgeCurrentIndex === 0;
                 nextBadgeBtn.disabled = badgeCurrentIndex >= maxIndex;
             }
@@ -1859,7 +1889,7 @@
             });
             
             window.addEventListener('resize', updateBadgeCarousel);
-            updateBadgeCarousel(); // Initialize
+            updateBadgeCarousel();
 
             // Project Carousel Functionality
             const projectCarousel = document.getElementById('projectCarousel');
@@ -1884,7 +1914,6 @@
                 const translateX = -projectCurrentIndex * (100 / visibleProjects);
                 projectCarousel.style.transform = `translateX(${translateX}%)`;
                 
-                // Disable/enable buttons based on position
                 prevProjectBtn.disabled = projectCurrentIndex === 0;
                 nextProjectBtn.disabled = projectCurrentIndex >= maxIndex;
             }
@@ -1900,7 +1929,7 @@
             });
             
             window.addEventListener('resize', updateProjectCarousel);
-            updateProjectCarousel(); // Initialize
+            updateProjectCarousel();
 
             // ========== SEARCH FILTER FUNCTIONALITY ==========
             
@@ -1918,7 +1947,6 @@
                     const title = item.querySelector('h3').textContent.toLowerCase();
                     const description = item.querySelector('p').textContent.toLowerCase();
                     
-                    // Check if search term matches keywords, title, or description
                     const matches = keywords.includes(searchTerm) || 
                                    title.includes(searchTerm) || 
                                    description.includes(searchTerm);
@@ -1931,14 +1959,12 @@
                     }
                 });
                 
-                // Update results info
                 if (searchTerm === '') {
                     certificationsResultsInfo.textContent = `Showing all ${certificationsItems.length} certifications`;
                 } else {
                     certificationsResultsInfo.textContent = `Found ${visibleCount} certification${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
                 }
                 
-                // Reset carousel position
                 badgeCurrentIndex = 0;
                 updateBadgeCarousel();
             });
@@ -1960,7 +1986,6 @@
                                      .map(tag => tag.textContent.toLowerCase())
                                      .join(' ');
                     
-                    // Check if search term matches keywords, title, description, or tags
                     const matches = keywords.includes(searchTerm) || 
                                    title.includes(searchTerm) || 
                                    description.includes(searchTerm) ||
@@ -1974,14 +1999,12 @@
                     }
                 });
                 
-                // Update results info
                 if (searchTerm === '') {
                     projectsResultsInfo.textContent = `Showing all ${projectItems.length} projects`;
                 } else {
                     projectsResultsInfo.textContent = `Found ${visibleCount} project${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
                 }
                 
-                // Reset carousel position
                 projectCurrentIndex = 0;
                 updateProjectCarousel();
             });
