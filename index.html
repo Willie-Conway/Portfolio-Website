@@ -23,6 +23,75 @@
             background-clip: text;
             color: transparent;
         }
+        /* New styles for navigation hover effects */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+            color: #4a5568;
+        }
+        .dark .nav-link {
+            color: #e2e8f0;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(90deg, #f5d062 0%, #e8c547 50%, #d4a017 100%);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            color: #d4a017;
+        }
+        /* WC button styling - UPDATED */
+        .wc-button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(90deg, #f5d062 0%, #e8c547 50%, #d4a017 100%);
+            color: white;
+            font-weight: bold;
+        }
+        .wc-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Search filter styles */
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        .search-input {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 2px solid #e2e8f0;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .dark .search-input {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: white;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #f5d062;
+            box-shadow: 0 0 0 3px rgba(245, 208, 98, 0.1);
+        }
+        .search-results-info {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        .dark .search-results-info {
+            color: #a0aec0;
+        }
         .chart-container {
             position: relative;
             height: 300px;
@@ -66,19 +135,20 @@
     </style>
 </head>
 <body class="bg-white text-gray-800 transition-colors duration-300">
-    <!-- Header/Navigation -->
+        <!-- Header/Navigation -->
     <header class="fixed w-full bg-white bg-opacity-90 dark:bg-opacity-90 shadow-sm z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold gold-text">Willie Conway</div>
+                <!-- Updated: WC button with just gold text (no background) -->
+                <a href="#home" class="text-2xl font-bold gold-text">WC</a>
                 <div class="flex items-center space-x-8">
                     <nav class="hidden md:flex space-x-8">
-                        <a href="#home" class="hover:gold-text transition-colors">Home</a>
-                        <a href="#about" class="hover:gold-text transition-colors">About</a>
-                        <a href="#skills" class="hover:gold-text transition-colors">Skills</a>
-                        <a href="#certifications" class="hover:gold-text transition-colors">Certifications</a>
-                        <a href="#projects" class="hover:gold-text transition-colors">Projects</a>
-                        <a href="#contact" class="hover:gold-text transition-colors">Contact</a>
+                        <a href="#home" class="nav-link transition-colors">Home</a>
+                        <a href="#about" class="nav-link transition-colors">About</a>
+                        <a href="#skills" class="nav-link transition-colors">Skills</a>
+                        <a href="#certifications" class="nav-link transition-colors">Certifications</a>
+                        <a href="#projects" class="nav-link transition-colors">Projects</a>
+                        <a href="#contact" class="nav-link transition-colors">Contact</a>
                     </nav>
                     <div class="flex items-center space-x-4">
                         <div class="relative inline-block w-12 mr-2 align-middle select-none">
@@ -96,12 +166,12 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 shadow-lg">
             <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                <a href="#home" class="hover:gold-text transition-colors">Home</a>
-                <a href="#about" class="hover:gold-text transition-colors">About</a>
-                <a href="#skills" class="hover:gold-text transition-colors">Skills</a>
-                <a href="#certifications" class="hover:gold-text transition-colors">Certifications</a>
-                <a href="#projects" class="hover:gold-text transition-colors">Projects</a>
-                <a href="#contact" class="hover:gold-text transition-colors">Contact</a>
+                <a href="#home" class="nav-link transition-colors">Home</a>
+                <a href="#about" class="nav-link transition-colors">About</a>
+                <a href="#skills" class="nav-link transition-colors">Skills</a>
+                <a href="#certifications" class="nav-link transition-colors">Certifications</a>
+                <a href="#projects" class="nav-link transition-colors">Projects</a>
+                <a href="#contact" class="nav-link transition-colors">Contact</a>
             </div>
         </div>
     </header>
@@ -301,13 +371,27 @@
                 </p>
             </div>
 
+            <!-- Search Filter for Certifications -->
+            <div class="search-container text-center">
+                <div class="relative inline-block">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input 
+                        type="text" 
+                        id="certificationsSearch" 
+                        class="search-input pl-10 pr-4" 
+                        placeholder="Search certifications by keyword (e.g., IBM, Google, Cloud, Data, Security...)"
+                    >
+                </div>
+                <div id="certificationsResultsInfo" class="search-results-info"></div>
+            </div>
+
             <!-- Credly Badge Carousel -->
             <div class="relative max-w-4xl mx-auto">
                 <!-- Carousel Container -->
                 <div class="overflow-hidden">
                     <div id="badgeCarousel" class="flex transition-transform duration-300 ease-in-out">
                         <!-- Badge 1 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Data Analyst,Data Analysis,Data Visualization,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -331,7 +415,7 @@
                         </div>
                         
                         <!-- Badge 2 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Data Science,Machine Learning,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -355,7 +439,7 @@
                         </div>
 
                         <!-- Badge 3 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Full Stack,Software Developer,Web Development,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -378,8 +462,8 @@
                             </div>
                         </div>
 
-                         <!-- Badge 4 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <!-- Badge 4 -->
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,DevOps,Software Engineering,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -403,7 +487,7 @@
                         </div>
 
                         <!-- Badge 5 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Business Intelligence,BI Analyst,Data Analysis,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -427,7 +511,7 @@
                         </div>
 
                         <!-- Badge 6 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Data Engineering,Data Management,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -451,7 +535,7 @@
                         </div>
 
                         <!-- Badge 7 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Data Management,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -475,7 +559,7 @@
                         </div>
 
                         <!-- Badge 8 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="IBM,Cybersecurity,Security Analyst,Information Security,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -499,7 +583,7 @@
                         </div>
 
                         <!-- Badge 9 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Meta,Data Analyst,Data Analysis,Data Visualization,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -523,7 +607,7 @@
                         </div>
 
                         <!-- Badge 10 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Meta,Software Engineer,Generalist,Full Stack,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -547,7 +631,7 @@
                         </div>
 
                         <!-- Badge 11 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Meta,Full Stack,Engineer,Front-end,Back-end,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -571,7 +655,7 @@
                         </div>
 
                         <!-- Badge 12 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Google,Cloud,Data Analytics,Cloud Computing,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -595,7 +679,7 @@
                         </div>
 
                         <!-- Badge 13 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Google,Cloud,Cybersecurity,Security,Cloud Security,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -619,7 +703,7 @@
                         </div>
 
                         <!-- Badge 14 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Google,Cloud,Computing,Foundations,GCP,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -641,8 +725,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Badge 15 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Microsoft,Azure,Security,Engineer,Cloud Security,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -664,8 +749,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Badge 16 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Microsoft,Power BI,Data Analyst,Data Visualization,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -687,8 +773,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Badge 17 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 certification-item" data-keywords="Microsoft,Cybersecurity,Security Analyst,Network Defense,Professional Certificate">
                             <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full">
                                 <div class="p-6">
                                     <div class="flex justify-center mb-4">
@@ -744,13 +831,27 @@
                 </p>
             </div>
 
+            <!-- Search Filter for Projects -->
+            <div class="search-container text-center">
+                <div class="relative inline-block">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input 
+                        type="text" 
+                        id="projectsSearch" 
+                        class="search-input pl-10 pr-4" 
+                        placeholder="Search projects by keyword (e.g., Dashboard, Analytics, API, Data, Full Stack...)"
+                    >
+                </div>
+                <div id="projectsResultsInfo" class="search-results-info"></div>
+            </div>
+
             <!-- Project Carousel -->
             <div class="relative max-w-4xl mx-auto">
                 <!-- Carousel Container -->
                 <div class="overflow-hidden">
                     <div id="projectCarousel" class="flex transition-transform duration-300 ease-in-out">
                         <!-- Project 1 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 project-item" data-keywords="Dashboard,Data Analysis,Tableau,Excel,SQL,Global Super Store">
                             <div class="project-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full transition-all duration-300">
                                 <div class="h-48 overflow-hidden">
                                     <img src="https://raw.githubusercontent.com/Willie-Conway/Global-Superstore-Data-Modeling-Analysis/refs/heads/main/Data%20Modeling%20Project/Data%20Modeling%20Project/Screenshots/Screenshot%202024-09-22%20223015.png" alt="Global Super Store Dashboard" class="w-full h-full object-cover">
@@ -779,7 +880,7 @@
                         </div>
                         
                         <!-- Project 2 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 project-item" data-keywords="E-commerce,Analytics,Platform,Full Stack,React,Node.js,MongoDB,TensorFlow,Predictive Modeling">
                             <div class="project-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full transition-all duration-300">
                                 <div class="h-48 overflow-hidden">
                                     <img src="https://raw.githubusercontent.com/Willie-Conway/TensorFlow-E-commerce-Analytics-Platform/refs/heads/main/Analytics%20Dashboard.png" alt="E-commerce Analytics Platform" class="w-full h-full object-cover">
@@ -809,7 +910,7 @@
                         </div>
                         
                         <!-- Project 3 -->
-                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4 project-item" data-keywords="Financial,Data,API,Backend,Python,FastAPI,PostgreSQL,Redis,Stock Market">
                             <div class="project-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full transition-all duration-300">
                                 <div class="h-48 overflow-hidden">
                                     <img src="https://raw.githubusercontent.com/Willie-Conway/Financial-Data-API-Project/refs/heads/main/Pics/Financial%20Data%20Dashboard.png" alt="Financial Data API" class="w-full h-full object-cover">
@@ -1800,6 +1901,90 @@
             
             window.addEventListener('resize', updateProjectCarousel);
             updateProjectCarousel(); // Initialize
+
+            // ========== SEARCH FILTER FUNCTIONALITY ==========
+            
+            // Certifications Search
+            const certificationsSearch = document.getElementById('certificationsSearch');
+            const certificationsItems = document.querySelectorAll('.certification-item');
+            const certificationsResultsInfo = document.getElementById('certificationsResultsInfo');
+            
+            certificationsSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                let visibleCount = 0;
+                
+                certificationsItems.forEach(item => {
+                    const keywords = item.getAttribute('data-keywords').toLowerCase();
+                    const title = item.querySelector('h3').textContent.toLowerCase();
+                    const description = item.querySelector('p').textContent.toLowerCase();
+                    
+                    // Check if search term matches keywords, title, or description
+                    const matches = keywords.includes(searchTerm) || 
+                                   title.includes(searchTerm) || 
+                                   description.includes(searchTerm);
+                    
+                    if (matches || searchTerm === '') {
+                        item.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Update results info
+                if (searchTerm === '') {
+                    certificationsResultsInfo.textContent = `Showing all ${certificationsItems.length} certifications`;
+                } else {
+                    certificationsResultsInfo.textContent = `Found ${visibleCount} certification${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+                }
+                
+                // Reset carousel position
+                badgeCurrentIndex = 0;
+                updateBadgeCarousel();
+            });
+
+            // Projects Search
+            const projectsSearch = document.getElementById('projectsSearch');
+            const projectItems = document.querySelectorAll('.project-item');
+            const projectsResultsInfo = document.getElementById('projectsResultsInfo');
+            
+            projectsSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                let visibleCount = 0;
+                
+                projectItems.forEach(item => {
+                    const keywords = item.getAttribute('data-keywords').toLowerCase();
+                    const title = item.querySelector('h3').textContent.toLowerCase();
+                    const description = item.querySelector('p').textContent.toLowerCase();
+                    const tags = Array.from(item.querySelectorAll('.px-2.py-1.text-xs.rounded-full'))
+                                     .map(tag => tag.textContent.toLowerCase())
+                                     .join(' ');
+                    
+                    // Check if search term matches keywords, title, description, or tags
+                    const matches = keywords.includes(searchTerm) || 
+                                   title.includes(searchTerm) || 
+                                   description.includes(searchTerm) ||
+                                   tags.includes(searchTerm);
+                    
+                    if (matches || searchTerm === '') {
+                        item.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Update results info
+                if (searchTerm === '') {
+                    projectsResultsInfo.textContent = `Showing all ${projectItems.length} projects`;
+                } else {
+                    projectsResultsInfo.textContent = `Found ${visibleCount} project${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+                }
+                
+                // Reset carousel position
+                projectCurrentIndex = 0;
+                updateProjectCarousel();
+            });
         });
     </script>
 </body>
