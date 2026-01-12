@@ -270,6 +270,7 @@
                         <div class="w-full md:w-auto mb-4 md:mb-0">
                             <label for="skillCategory" class="block text-sm font-medium mb-2">Select Skill Category:</label>
                             <select id="skillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                <option value="all">All Categories</option>
                                 <option value="dataAnalysis">Data Analysis & BI</option>
                                 <option value="cicd">CI/CD & Automation</option>
                                 <option value="devTools">Dev & Tools</option>
@@ -1196,673 +1197,742 @@
     <!-- JavaScript for Charts, Dashboard, and Interactions -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Comprehensive skill data for both charts
-            const skillData = {
+            console.log("DOM loaded - initializing charts...");
+        
+        // Comprehensive skill data for both charts
+        const skillData = {
+            dataAnalysis: [
+                {skill: "Python (Pandas, NumPy, SciPy)", percentage: 95},
+                {skill: "Data Warehousing & ETL", percentage: 90},
+                {skill: "Data Governance & Quality", percentage: 85},
+                {skill: "Data Modeling", percentage: 90},
+                {skill: "R", percentage: 84},
+                {skill: "Storytelling", percentage: 88},
+                {skill: "Database Querying", percentage: 95},
+                {skill: "Business Acumen & KPI", percentage: 80},
+                {skill: "SQL", percentage: 90},
+                {skill: "Data Visualization", percentage: 88},
+                {skill: "Machine Learning", percentage: 85}
+            ],
+            cicd: [
+                {skill: "Tekton", percentage: 95},
+                {skill: "Chef & Puppet", percentage: 90},
+                {skill: "Travis CI", percentage: 90},
+                {skill: "Terraform", percentage: 88},
+                {skill: "Github Actions", percentage: 85}
+            ],
+            devTools: [
+                {skill: "Git & GitHub", percentage: 95},
+                {skill: "Docker", percentage: 90},
+                {skill: "Postman", percentage: 88},
+                {skill: "Kubernetes", percentage: 87},
+                {skill: "OpenShift", percentage: 85},
+                {skill: "Insomnia", percentage: 85}
+            ],
+            cloud: [
+                {skill: "Google Cloud", percentage: 95},
+                {skill: "AWS", percentage: 75},
+                {skill: "Microsoft Azure", percentage: 88},
+                {skill: "IBM Cloud", percentage: 85}
+            ],
+            mobile: [
+                {skill: "Dart", percentage: 95},
+                {skill: "Flutter", percentage: 90},
+                {skill: "Kotlin", percentage: 88},
+                {skill: "Swift", percentage: 85}
+            ],
+            cybersecurity: [
+                {skill: "Network Security", percentage: 85},
+                {skill: "Cloud Security", percentage: 83},
+                {skill: "SIEM Tools", percentage: 80},
+                {skill: "Incident Response", percentage: 82},
+                {skill: "Encryption Technologies", percentage: 85},
+                {skill: "Compliance & Governance", percentage: 80},
+                {skill: "Threat Intelligence", percentage: 82},
+                {skill: "Identity & Access Management", percentage: 83},
+                {skill: "Vulnerability Assessment", percentage: 85},
+                {skill: "Penetration Testing", percentage: 87}
+            ],
+            soft: [
+                {skill: "Leadership & Discipline", percentage: 90},
+                {skill: "Communication", percentage: 90},
+                {skill: "Teamwork", percentage: 90},
+                {skill: "Problem Solving", percentage: 88},
+                {skill: "Adaptability", percentage: 85}
+            ],
+            software: [
+                {skill: "JavaScript/TypeScript", percentage: 92},
+                {skill: "Java", percentage: 75},
+                {skill: "UX/UI", percentage: 88},
+                {skill: "HTML", percentage: 90},
+                {skill: "CSS", percentage: 90},
+                {skill: "React.js", percentage: 90},
+                {skill: "Express.js", percentage: 90},
+                {skill: "REST APIs", percentage: 90},
+                {skill: "Django", percentage: 85},
+                {skill: "Flask", percentage: 80},
+                {skill: "Node.js", percentage: 88},
+                {skill: "C++", percentage: 75},
+                {skill: "Database Design", percentage: 87}
+            ],
+            dataEngineering: [
+                {skill: "Apache Spark", percentage: 85},
+                {skill: "Apache Hadoop", percentage: 80},
+                {skill: "Apache Airflow", percentage: 82},
+                {skill: "Apache Kafka", percentage: 83},
+                {skill: "SQLite", percentage: 90},
+                {skill: "MySQL", percentage: 92},
+                {skill: "PostgreSQL", percentage: 91},
+                {skill: "MongoDB", percentage: 88},
+                {skill: "Cassandra", percentage: 80},
+                {skill: "MariaDB", percentage: 85},
+                {skill: "Amazon DynamoDB", percentage: 83},
+                {skill: "Data Warehousing", percentage: 85},
+                {skill: "ETL/ELT Pipelines", percentage: 88},
+                {skill: "Big Data Technologies", percentage: 83},
+                {skill: "Data Lake Architecture", percentage: 80},
+                {skill: "Stream Processing", percentage: 82},
+                {skill: "Cloud Data Services", percentage: 85}
+            ]
+        };
+
+        // Dashboard Data with growth timelines
+        const dashboardData = {
+            skills: {
                 dataAnalysis: [
-                    {skill: "Python (Pandas, NumPy, SciPy)", percentage: 95},
-                    {skill: "Data Warehousing & ETL", percentage: 90},
-                    {skill: "Data Governance & Quality", percentage: 85},
-                    {skill: "Data Modeling", percentage: 90},
-                    {skill: "R", percentage: 84},
-                    {skill: "Storytelling", percentage: 88},
-                    {skill: "Database Querying", percentage: 95},
-                    {skill: "Business Acumen & KPI", percentage: 80},
-                    {skill: "SQL", percentage: 90},
-                    {skill: "Data Visualization", percentage: 88},
-                    {skill: "Machine Learning", percentage: 85}
-                ],
-                cicd: [
-                    {skill: "Tekton", percentage: 95},
-                    {skill: "Chef & Puppet", percentage: 90},
-                    {skill: "Travis CI", percentage: 90},
-                    {skill: "Terraform", percentage: 88},
-                    {skill: "Github Actions", percentage: 85}
-                ],
-                devTools: [
-                    {skill: "Git & GitHub", percentage: 95},
-                    {skill: "Docker", percentage: 90},
-                    {skill: "Postman", percentage: 88},
-                    {skill: "Kubernetes", percentage: 87},
-                    {skill: "OpenShift", percentage: 85},
-                    {skill: "Insomnia", percentage: 85}
-                ],
-                cloud: [
-                    {skill: "Google Cloud", percentage: 95},
-                    {skill: "AWS", percentage: 75},
-                    {skill: "Microsoft Azure", percentage: 88},
-                    {skill: "IBM Cloud", percentage: 85}
-                ],
-                mobile: [
-                    {skill: "Dart", percentage: 95},
-                    {skill: "Flutter", percentage: 90},
-                    {skill: "Kotlin", percentage: 88},
-                    {skill: "Swift", percentage: 85}
-                ],
-                cybersecurity: [
-                    {skill: "Network Security", percentage: 85},
-                    {skill: "Cloud Security", percentage: 83},
-                    {skill: "SIEM Tools", percentage: 80},
-                    {skill: "Incident Response", percentage: 82},
-                    {skill: "Encryption Technologies", percentage: 85},
-                    {skill: "Compliance & Governance", percentage: 80},
-                    {skill: "Threat Intelligence", percentage: 82},
-                    {skill: "Identity & Access Management", percentage: 83},
-                    {skill: "Vulnerability Assessment", percentage: 85},
-                    {skill: "Penetration Testing", percentage: 87}
-                ],
-                soft: [
-                    {skill: "Leadership & Discipline", percentage: 90},
-                    {skill: "Communication", percentage: 90},
-                    {skill: "Teamwork", percentage: 90},
-                    {skill: "Problem Solving", percentage: 88},
-                    {skill: "Adaptability", percentage: 85}
+                    {skill: "Python (Pandas, NumPy)", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
+                    {skill: "SQL (PostgreSQL, MySQL)", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
+                    {skill: "Data Visualization", level: 88, projects: 8, growth: [50, 60, 72, 80, 85, 88]},
+                    {skill: "Machine Learning", level: 85, projects: 6, growth: [50, 60, 70, 78, 82, 85]},
+                    {skill: "Data Modeling", level: 90, projects: 9, growth: [60, 70, 80, 85, 88, 90]}
                 ],
                 software: [
-                    {skill: "JavaScript/TypeScript", percentage: 92},
-                    {skill: "Java", percentage: 75},
-                    {skill: "UX/UI", percentage: 88},
-                    {skill: "HTML", percentage: 90},
-                    {skill: "CSS", percentage: 90},
-                    {skill: "React.js", percentage: 90},
-                    {skill: "Express.js", percentage: 90},
-                    {skill: "REST APIs", percentage: 90},
-                    {skill: "Django", percentage: 85},
-                    {skill: "Flask", percentage: 80},
-                    {skill: "Node.js", percentage: 88},
-                    {skill: "C++", percentage: 75},
-                    {skill: "Database Design", percentage: 87}
+                    {skill: "JavaScript/TypeScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
+                    {skill: "React.js", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
+                    {skill: "Node.js", level: 88, projects: 9, growth: [50, 60, 72, 80, 85, 88]},
+                    {skill: "Express.js", level: 90, projects: 8, growth: [60, 70, 80, 85, 88, 90]},
+                    {skill: "Django", level: 85, projects: 7, growth: [55, 65, 75, 80, 83, 85]}
+                ],
+                cloud: [
+                    {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
+                    {skill: "AWS", level: 85, projects: 5, growth: [60, 68, 75, 80, 82, 85]},
+                    {skill: "Microsoft Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]},
+                    {skill: "IBM Cloud", level: 85, projects: 4, growth: [60, 70, 78, 82, 84, 85]}
+                ],
+                devops: [
+                    {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
+                    {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
+                    {skill: "CI/CD", level: 85, projects: 9, growth: [55, 65, 75, 80, 83, 85]},
+                    {skill: "Terraform", level: 88, projects: 7, growth: [60, 70, 78, 82, 85, 88]}
+                ],
+                mobile: [
+                    {skill: "Flutter", level: 90, projects: 5, growth: [60, 70, 80, 85, 88, 90]},
+                    {skill: "Kotlin", level: 88, projects: 4, growth: [55, 65, 75, 80, 85, 88]},
+                    {skill: "Swift", level: 85, projects: 3, growth: [50, 60, 70, 78, 82, 85]}
+                ],
+                cybersecurity: [
+                    {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                    {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
+                    {skill: "SIEM Tools", level: 80, projects: 4, growth: [55, 64, 72, 77, 79, 80]},
+                    {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]},
+                    {skill: "Encryption Technologies", level: 85, projects: 4, growth: [65, 72, 78, 82, 84, 85]}
                 ],
                 dataEngineering: [
-                    {skill: "Apache Spark", percentage: 85},
-                    {skill: "Apache Hadoop", percentage: 80},
-                    {skill: "Apache Airflow", percentage: 82},
-                    {skill: "Apache Kafka", percentage: 83},
-                    {skill: "SQLite", percentage: 90},
-                    {skill: "MySQL", percentage: 92},
-                    {skill: "PostgreSQL", percentage: 91},
-                    {skill: "MongoDB", percentage: 88},
-                    {skill: "Cassandra", percentage: 80},
-                    {skill: "MariaDB", percentage: 85},
-                    {skill: "Amazon DynamoDB", percentage: 83},
-                    {skill: "Data Warehousing", percentage: 85},
-                    {skill: "ETL/ELT Pipelines", percentage: 88},
-                    {skill: "Big Data Technologies", percentage: 83},
-                    {skill: "Data Lake Architecture", percentage: 80},
-                    {skill: "Stream Processing", percentage: 82},
-                    {skill: "Cloud Data Services", percentage: 85}
-                ]
-            };
-
-            // Dashboard Data with growth timelines
-            const dashboardData = {
-                skills: {
-                    dataAnalysis: [
-                        {skill: "Python (Pandas, NumPy)", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
-                        {skill: "SQL (PostgreSQL, MySQL)", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
-                        {skill: "Data Visualization", level: 88, projects: 8, growth: [50, 60, 72, 80, 85, 88]},
-                        {skill: "Machine Learning", level: 85, projects: 6, growth: [50, 60, 70, 78, 82, 85]},
-                        {skill: "Data Modeling", level: 90, projects: 9, growth: [60, 70, 80, 85, 88, 90]}
-                    ],
-                    software: [
-                        {skill: "JavaScript/TypeScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
-                        {skill: "React.js", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
-                        {skill: "Node.js", level: 88, projects: 9, growth: [50, 60, 72, 80, 85, 88]},
-                        {skill: "Express.js", level: 90, projects: 8, growth: [60, 70, 80, 85, 88, 90]},
-                        {skill: "Django", level: 85, projects: 7, growth: [55, 65, 75, 80, 83, 85]}
-                    ],
-                    cloud: [
-                        {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
-                        {skill: "AWS", level: 85, projects: 5, growth: [60, 68, 75, 80, 82, 85]},
-                        {skill: "Microsoft Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]},
-                        {skill: "IBM Cloud", level: 85, projects: 4, growth: [60, 70, 78, 82, 84, 85]}
-                    ],
-                    devops: [
-                        {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
-                        {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
-                        {skill: "CI/CD", level: 85, projects: 9, growth: [55, 65, 75, 80, 83, 85]},
-                        {skill: "Terraform", level: 88, projects: 7, growth: [60, 70, 78, 82, 85, 88]}
-                    ],
-                    mobile: [
-                        {skill: "Flutter", level: 90, projects: 5, growth: [60, 70, 80, 85, 88, 90]},
-                        {skill: "Kotlin", level: 88, projects: 4, growth: [55, 65, 75, 80, 85, 88]},
-                        {skill: "Swift", level: 85, projects: 3, growth: [50, 60, 70, 78, 82, 85]}
-                    ],
-                    cybersecurity: [
-                        {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
-                        {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
-                        {skill: "SIEM Tools", level: 80, projects: 4, growth: [55, 64, 72, 77, 79, 80]},
-                        {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]},
-                        {skill: "Encryption Technologies", level: 85, projects: 4, growth: [65, 72, 78, 82, 84, 85]}
-                    ],
-                    dataEngineering: [
-                        {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
-                        {skill: "Apache Hadoop", level: 80, projects: 4, growth: [50, 60, 70, 75, 78, 80]},
-                        {skill: "Apache Airflow", level: 82, projects: 5, growth: [55, 65, 72, 78, 80, 82]},
-                        {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
-                        {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
-                    ],
-                    // Create "all" category by combining top skills from each category
-                    all: [
-                        // Top from dataAnalysis
-                        {skill: "Python (Pandas, NumPy)", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
-                        {skill: "SQL (PostgreSQL, MySQL)", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
-                        
-                        // Top from software
-                        {skill: "JavaScript/TypeScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
-                        {skill: "React.js", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
-                        
-                        // Top from cloud
-                        {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
-                        {skill: "Microsoft Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]},
-                        
-                        // Top from devops
-                        {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
-                        {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
-                        
-                        // Top from cybersecurity
-                        {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
-                        {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
-                        
-                        // Top from dataEngineering
-                        {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
-                        {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
-                    ]
-                },
-                timeline: ["2020", "2021", "2022", "2023", "2024", "2025"],
-                completionRates: [75, 80, 85, 88, 90, 92]
-            };
-
-            // Color palette for the pie chart
-            const colorPalette = [
-                'rgba(245, 208, 98, 0.8)',   // Gold
-                'rgba(232, 197, 71, 0.8)',   // Darker gold
-                'rgba(212, 160, 23, 0.8)',    // Dark gold
-                'rgba(194, 143, 15, 0.8)',    // Brown gold
-                'rgba(175, 129, 13, 0.8)',    // Dark brown gold
-                'rgba(156, 115, 11, 0.8)',    // Darker brown gold
-                'rgba(137, 101, 9, 0.8)',     // Even darker
-                'rgba(118, 87, 7, 0.8)',      // Very dark
-                'rgba(99, 73, 5, 0.8)',       // Almost black gold
-                'rgba(80, 59, 3, 0.8)',       // Darkest
-                'rgba(61, 45, 1, 0.8)',       // Super dark
-                'rgba(42, 31, 0, 0.8)',       // Ultra dark
-                'rgba(23, 17, 0, 0.8)'        // Black gold
-            ];
-
-            // Create the pie chart with animation configuration
-            const pieCtx = document.getElementById('skillsPieChart').getContext('2d');
-            let skillsPieChart = new Chart(pieCtx, {
-                type: 'pie',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: [],
-                        borderColor: 'rgba(255, 255, 255, 0.2)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: '#333',
-                                font: {
-                                    size: 12
-                                },
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.label}: ${context.raw}%`;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart',
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-
-            // Function to update pie chart with animation
-            function updatePieChart(category, animate = true) {
-                const data = skillData[category];
-                const labels = data.map(item => item.skill);
-                const percentages = data.map(item => item.percentage);
-                const backgroundColors = colorPalette.slice(0, data.length);
-                
-                skillsPieChart.data.labels = labels;
-                skillsPieChart.data.datasets[0].data = percentages;
-                skillsPieChart.data.datasets[0].backgroundColor = backgroundColors;
-                
-                // Adjust legend position based on number of items
-                skillsPieChart.options.plugins.legend.position = data.length > 8 ? 'bottom' : 'right';
-                
-                if (animate) {
-                    skillsPieChart.options.animation.duration = 2000;
-                    skillsPieChart.update();
-                } else {
-                    skillsPieChart.options.animation.duration = 0;
-                    skillsPieChart.update();
-                    skillsPieChart.options.animation.duration = 2000;
-                }
-            }
-
-            // Initial pie chart load
-            updatePieChart('dataAnalysis', false);
-
-            // Function to generate random gold colors
-            function getRandomGoldColor(opacity = 1) {
-                const golds = [
-                    `rgba(245, 208, 98, ${opacity})`,
-                    `rgba(232, 197, 71, ${opacity})`,
-                    `rgba(212, 160, 23, ${opacity})`,
-                    `rgba(194, 143, 15, ${opacity})`,
-                    `rgba(175, 129, 13, ${opacity})`
-                ];
-                return golds[Math.floor(Math.random() * golds.length)];
-            }
-
-            // Global dashboard chart variable
-            let dashboardChart = null;
-
-            // Function to create or recreate dashboard chart
-            function createDashboardChart(chartType, labels, datasets) {
-                const ctx = document.getElementById('dashboardChart').getContext('2d');
-                
-                // Destroy existing chart if it exists
-                if (dashboardChart) {
-                    dashboardChart.destroy();
-                }
-                
-                // Common chart options
-                const commonOptions = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: '#333',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    if (chartType === 'scatter' || chartType === 'bubble') {
-                                        return `${context.dataset.label}: Level ${context.parsed.y}%, Projects: ${context.parsed.x}`;
-                                    }
-                                    return `${context.dataset.label}: ${context.parsed.y}%`;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 1000,
-                        easing: 'easeOutQuart'
-                    }
-                };
-                
-                // Create new chart based on type
-                if (chartType === 'bar') {
-                    dashboardChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: datasets
-                        },
-                        options: {
-                            ...commonOptions,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value + '%';
-                                        }
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Proficiency Level (%)'
-                                    }
-                                },
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Skill'
-                                    },
-                                    ticks: {
-                                        autoSkip: false,
-                                        maxRotation: 45,
-                                        minRotation: 0
-                                    }
-                                }
-                            }
-                        }
-                    });
-                } else if (chartType === 'line') {
-                    dashboardChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: dashboardData.timeline,
-                            datasets: datasets
-                        },
-                        options: {
-                            ...commonOptions,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value + '%';
-                                        }
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Proficiency Level (%)'
-                                    }
-                                },
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Year'
-                                    }
-                                }
-                            }
-                        }
-                    });
-                } else if (chartType === 'scatter') {
-                    dashboardChart = new Chart(ctx, {
-                        type: 'scatter',
-                        data: {
-                            datasets: datasets
-                        },
-                        options: {
-                            ...commonOptions,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value + '%';
-                                        }
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Proficiency Level (%)'
-                                    }
-                                },
-                                x: {
-                                    type: 'linear',
-                                    position: 'bottom',
-                                    title: {
-                                        display: true,
-                                        text: 'Number of Projects'
-                                    },
-                                    ticks: {
-                                        stepSize: 1
-                                    }
-                                }
-                            }
-                        }
-                    });
-                } else if (chartType === 'bubble') {
-                    dashboardChart = new Chart(ctx, {
-                        type: 'bubble',
-                        data: {
-                            datasets: datasets
-                        },
-                        options: {
-                            ...commonOptions,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value + '%';
-                                        }
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Proficiency Level (%)'
-                                    }
-                                },
-                                x: {
-                                    type: 'linear',
-                                    position: 'bottom',
-                                    title: {
-                                        display: true,
-                                        text: 'Number of Projects'
-                                    },
-                                    ticks: {
-                                        stepSize: 1
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            // Function to update dashboard based on selections
-            function updateDashboard(category, chartType) {
-                // If category is not provided, get it from the dashboard dropdown
-                if (!category) {
-                    category = document.getElementById('dashboardSkillCategory').value;
-                }
-                
-                // If chartType is not provided, get it from the dashboard dropdown
-                if (!chartType) {
-                    chartType = document.getElementById('chartType').value;
-                }
-                
-                let filteredData = dashboardData.skills[category] || [];
-                
-                // Limit to top skills for better visualization
-                // For "all" category, show 10 skills, for others show 5
-                const limit = category === 'all' ? 10 : 5;
-                filteredData = filteredData.slice(0, limit);
-                
-                let labels = [];
-                let datasets = [];
-                
-                // Prepare data based on chart type
-                switch(chartType) {
-                    case 'line':
-                        labels = dashboardData.timeline;
-                        datasets = filteredData.map(item => ({
-                            label: item.skill,
-                            data: item.growth,
-                            borderColor: getRandomGoldColor(),
-                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.3,
-                            fill: false
-                        }));
-                        break;
-                        
-                    case 'bar':
-                        labels = filteredData.map(item => item.skill);
-                        datasets = [{
-                            label: 'Skill Level',
-                            data: filteredData.map(item => item.level),
-                            backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
-                            borderColor: 'rgba(255, 255, 255, 0.2)',
-                            borderWidth: 1,
-                            borderRadius: 4
-                        }];
-                        break;
-                        
-                    case 'scatter':
-                        datasets = [{
-                            label: 'Skill vs Usage',
-                            data: filteredData.map(item => ({
-                                x: item.projects,
-                                y: item.level
-                            })),
-                            backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
-                            borderColor: 'rgba(255, 255, 255, 0.2)',
-                            borderWidth: 1,
-                            pointRadius: 8
-                        }];
-                        break;
-                        
-                    case 'bubble':
-                        datasets = filteredData.map(item => ({
-                            label: item.skill,
-                            data: [{
-                                x: item.projects,
-                                y: item.level,
-                                r: item.level / 3
-                            }],
-                            backgroundColor: getRandomGoldColor(0.7),
-                            borderColor: 'rgba(255, 255, 255, 0.3)',
-                            borderWidth: 1
-                        }));
-                        break;
-                }
-                
-                // Create or recreate the chart
-                createDashboardChart(chartType, labels, datasets);
-            }
-
-            // Event listener for pie chart category change
-            document.getElementById('skillCategory').addEventListener('change', function() {
-                const selectedCategory = this.value;
-                const currentChartType = document.getElementById('chartType').value;
-                
-                // Update the pie chart
-                updatePieChart(selectedCategory);
-                
-                // Map pie chart categories to dashboard categories
-                const categoryMap = {
-                    'dataAnalysis': 'dataAnalysis',
-                    'cicd': 'devops',
-                    'devTools': 'devops',
-                    'cloud': 'cloud',
-                    'mobile': 'mobile',
-                    'cybersecurity': 'cybersecurity',
-                    'soft': 'all',  // Soft skills maps to "All Categories"
-                    'software': 'software',
-                    'dataEngineering': 'dataEngineering'
-                };
-                
-                const dashboardCategory = categoryMap[selectedCategory] || 'dataAnalysis';
-                
-                // Update the dashboard dropdown to show the mapped category
-                document.getElementById('dashboardSkillCategory').value = dashboardCategory;
-                
-                // Update the dashboard chart
-                updateDashboard(dashboardCategory, currentChartType);
-            });
-
-            // Event listeners for dashboard
-            document.getElementById('chartType').addEventListener('change', function() {
-                const currentCategory = document.getElementById('dashboardSkillCategory').value;
-                const selectedChartType = this.value;
-                updateDashboard(currentCategory, selectedChartType);
-            });
-            
-            document.getElementById('dashboardSkillCategory').addEventListener('change', function() {
-                const selectedCategory = this.value;
-                const currentChartType = document.getElementById('chartType').value;
-                updateDashboard(selectedCategory, currentChartType);
-            });
-            
-            // Dashboard Animate button
-            document.getElementById('animateBtn').addEventListener('click', function() {
-                if (dashboardChart) {
-                    const currentData = dashboardChart.data;
-                    dashboardChart.data = { labels: [], datasets: [] };
-                    dashboardChart.update();
+                    {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                    {skill: "Apache Hadoop", level: 80, projects: 4, growth: [50, 60, 70, 75, 78, 80]},
+                    {skill: "Apache Airflow", level: 82, projects: 5, growth: [55, 65, 72, 78, 80, 82]},
+                    {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
+                    {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
+                ],
+                // Create "all" category by combining top skills from each category
+                all: [
+                    // Top from dataAnalysis
+                    {skill: "Python (Pandas, NumPy)", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
+                    {skill: "SQL (PostgreSQL, MySQL)", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
                     
-                    setTimeout(() => {
-                        dashboardChart.data = currentData;
-                        dashboardChart.update();
-                    }, 50);
+                    // Top from software
+                    {skill: "JavaScript/TypeScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
+                    {skill: "React.js", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
+                    
+                    // Top from cloud
+                    {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
+                    {skill: "Microsoft Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]},
+                    
+                    // Top from devops
+                    {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
+                    {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
+                    
+                    // Top from cybersecurity
+                    {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                    {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
+                    
+                    // Top from dataEngineering
+                    {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                    {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
+                ]
+            },
+            timeline: ["2020", "2021", "2022", "2023", "2024", "2025"],
+            completionRates: [75, 80, 85, 88, 90, 92]
+        };
+
+        // Color palette for the pie chart
+        const colorPalette = [
+            'rgba(245, 208, 98, 0.8)',   // Gold
+            'rgba(232, 197, 71, 0.8)',   // Darker gold
+            'rgba(212, 160, 23, 0.8)',    // Dark gold
+            'rgba(194, 143, 15, 0.8)',    // Brown gold
+            'rgba(175, 129, 13, 0.8)',    // Dark brown gold
+            'rgba(156, 115, 11, 0.8)',    // Darker brown gold
+            'rgba(137, 101, 9, 0.8)',     // Even darker
+            'rgba(118, 87, 7, 0.8)',      // Very dark
+            'rgba(99, 73, 5, 0.8)',       // Almost black gold
+            'rgba(80, 59, 3, 0.8)',       // Darkest
+            'rgba(61, 45, 1, 0.8)',       // Super dark
+            'rgba(42, 31, 0, 0.8)',       // Ultra dark
+            'rgba(23, 17, 0, 0.8)'        // Black gold
+        ];
+
+        // Create the pie chart with animation configuration
+        const pieCtx = document.getElementById('skillsPieChart').getContext('2d');
+        let skillsPieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#333',
+                            font: {
+                                size: 12
+                            },
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart',
+                    animateScale: true,
+                    animateRotate: true
                 }
-            });
+            }
+        });
 
-            // Initialize both charts with default view
-            updateDashboard('dataAnalysis', 'line');
+        // Function to update pie chart with animation - UPDATED FOR "ALL CATEGORIES"
+        function updatePieChart(category, animate = true) {
+            console.log("Updating pie chart with category:", category);
+            
+            let data;
+            
+            if (category === 'all') {
+                console.log("Processing 'All Categories'");
+                // Combine all skills from all categories
+                data = [];
+                for (const cat in skillData) {
+                    if (skillData.hasOwnProperty(cat)) {
+                        console.log("Adding skills from category:", cat);
+                        data = data.concat(skillData[cat]);
+                    }
+                }
+                console.log("Total skills before sorting:", data.length);
+                
+                // Sort by percentage (highest first) and limit to top 15
+                data = data.sort((a, b) => b.percentage - a.percentage).slice(0, 15);
+                console.log("Top 15 skills selected for 'All Categories'");
+            } else {
+                console.log("Processing specific category:", category);
+                data = skillData[category];
+                console.log("Category has", data.length, "skills");
+            }
+            
+            const labels = data.map(item => item.skill);
+            const percentages = data.map(item => item.percentage);
+            const backgroundColors = colorPalette.slice(0, data.length);
+            
+            console.log("Chart labels:", labels);
+            console.log("Chart percentages:", percentages);
+            
+            skillsPieChart.data.labels = labels;
+            skillsPieChart.data.datasets[0].data = percentages;
+            skillsPieChart.data.datasets[0].backgroundColor = backgroundColors;
+            
+            // Adjust legend position based on number of items
+            skillsPieChart.options.plugins.legend.position = data.length > 8 ? 'bottom' : 'right';
+            
+            if (animate) {
+                skillsPieChart.options.animation.duration = 2000;
+                skillsPieChart.update();
+            } else {
+                skillsPieChart.options.animation.duration = 0;
+                skillsPieChart.update();
+                skillsPieChart.options.animation.duration = 2000;
+            }
+            
+            console.log("Pie chart updated successfully!");
+        }
 
-            // Animate charts when they come into view
-            const chartObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const currentCategory = document.getElementById('skillCategory').value;
-                        updatePieChart(currentCategory);
-                        updateDashboard('dataAnalysis', 'line');
-                        chartObserver.unobserve(entry.target);
+        // Function to generate random gold colors
+        function getRandomGoldColor(opacity = 1) {
+            const golds = [
+                `rgba(245, 208, 98, ${opacity})`,
+                `rgba(232, 197, 71, ${opacity})`,
+                `rgba(212, 160, 23, ${opacity})`,
+                `rgba(194, 143, 15, ${opacity})`,
+                `rgba(175, 129, 13, ${opacity})`
+            ];
+            return golds[Math.floor(Math.random() * golds.length)];
+        }
+
+        // Global dashboard chart variable
+        let dashboardChart = null;
+
+        // Function to create or recreate dashboard chart
+        function createDashboardChart(chartType, labels, datasets) {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (dashboardChart) {
+                dashboardChart.destroy();
+            }
+            
+            // Common chart options
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#333',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (chartType === 'scatter' || chartType === 'bubble') {
+                                    return `${context.dataset.label}: Level ${context.parsed.y}%, Projects: ${context.parsed.x}`;
+                                }
+                                return `${context.dataset.label}: ${context.parsed.y}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                }
+            };
+            
+            // Create new chart based on type
+            if (chartType === 'bar') {
+                dashboardChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Proficiency Level (%)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Skill'
+                                },
+                                ticks: {
+                                    autoSkip: false,
+                                    maxRotation: 45,
+                                    minRotation: 0
+                                }
+                            }
+                        }
                     }
                 });
-            }, {threshold: 0.1});
-            
-            chartObserver.observe(document.querySelector('.chart-container'));
+            } else if (chartType === 'line') {
+                dashboardChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dashboardData.timeline,
+                        datasets: datasets
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Proficiency Level (%)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Year'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else if (chartType === 'scatter') {
+                dashboardChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: datasets
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Proficiency Level (%)'
+                                }
+                            },
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'Number of Projects'
+                                },
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            } else if (chartType === 'bubble') {
+                dashboardChart = new Chart(ctx, {
+                    type: 'bubble',
+                    data: {
+                        datasets: datasets
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Proficiency Level (%)'
+                                }
+                            },
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'Number of Projects'
+                                },
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
 
-            // Mobile menu toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+        // Function to update dashboard based on selections
+        function updateDashboard(category, chartType) {
+            console.log("Updating dashboard with category:", category, "chartType:", chartType);
             
+            // If category is not provided, get it from the dashboard dropdown
+            if (!category) {
+                category = document.getElementById('dashboardSkillCategory').value;
+            }
+            
+            // If chartType is not provided, get it from the dashboard dropdown
+            if (!chartType) {
+                chartType = document.getElementById('chartType').value;
+            }
+            
+            let filteredData = dashboardData.skills[category] || [];
+            
+            // Limit to top skills for better visualization
+            // For "all" category, show 10 skills, for others show 5
+            const limit = category === 'all' ? 10 : 5;
+            filteredData = filteredData.slice(0, limit);
+            
+            let labels = [];
+            let datasets = [];
+            
+            // Prepare data based on chart type
+            switch(chartType) {
+                case 'line':
+                    labels = dashboardData.timeline;
+                    datasets = filteredData.map(item => ({
+                        label: item.skill,
+                        data: item.growth,
+                        borderColor: getRandomGoldColor(),
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: false
+                    }));
+                    break;
+                    
+                case 'bar':
+                    labels = filteredData.map(item => item.skill);
+                    datasets = [{
+                        label: 'Skill Level',
+                        data: filteredData.map(item => item.level),
+                        backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }];
+                    break;
+                    
+                case 'scatter':
+                    datasets = [{
+                        label: 'Skill vs Usage',
+                        data: filteredData.map(item => ({
+                            x: item.projects,
+                            y: item.level
+                        })),
+                        backgroundColor: filteredData.map(() => getRandomGoldColor(0.8)),
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        pointRadius: 8
+                    }];
+                    break;
+                    
+                case 'bubble':
+                    datasets = filteredData.map(item => ({
+                        label: item.skill,
+                        data: [{
+                            x: item.projects,
+                            y: item.level,
+                            r: item.level / 3
+                        }],
+                        backgroundColor: getRandomGoldColor(0.7),
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        borderWidth: 1
+                    }));
+                    break;
+            }
+            
+            // Create or recreate the chart
+            createDashboardChart(chartType, labels, datasets);
+            console.log("Dashboard updated successfully!");
+        }
+
+        // Event listener for pie chart category change - UPDATED FOR "ALL CATEGORIES"
+        document.getElementById('skillCategory').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            console.log("Pie chart dropdown changed to:", selectedCategory);
+            
+            const currentChartType = document.getElementById('chartType').value;
+            
+            // Update the pie chart
+            updatePieChart(selectedCategory);
+            
+            // Map pie chart categories to dashboard categories
+            const categoryMap = {
+                'all': 'all',
+                'dataAnalysis': 'dataAnalysis',
+                'cicd': 'devops',
+                'devTools': 'devops',
+                'cloud': 'cloud',
+                'mobile': 'mobile',
+                'cybersecurity': 'cybersecurity',
+                'soft': 'all',
+                'software': 'software',
+                'dataEngineering': 'dataEngineering'
+            };
+            
+            const dashboardCategory = categoryMap[selectedCategory] || 'dataAnalysis';
+            console.log("Mapped to dashboard category:", dashboardCategory);
+            
+            // Update the dashboard dropdown to show the mapped category
+            document.getElementById('dashboardSkillCategory').value = dashboardCategory;
+            
+            // Update the dashboard chart
+            updateDashboard(dashboardCategory, currentChartType);
+        });
+
+        // Event listeners for dashboard
+        document.getElementById('chartType').addEventListener('change', function() {
+            const currentCategory = document.getElementById('dashboardSkillCategory').value;
+            const selectedChartType = this.value;
+            console.log("Chart type changed to:", selectedChartType);
+            updateDashboard(currentCategory, selectedChartType);
+        });
+        
+        document.getElementById('dashboardSkillCategory').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const currentChartType = document.getElementById('chartType').value;
+            console.log("Dashboard category changed to:", selectedCategory);
+            updateDashboard(selectedCategory, currentChartType);
+        });
+        
+        // Dashboard Animate button
+        document.getElementById('animateBtn').addEventListener('click', function() {
+            console.log("Animate button clicked");
+            if (dashboardChart) {
+                const currentData = dashboardChart.data;
+                dashboardChart.data = { labels: [], datasets: [] };
+                dashboardChart.update();
+                
+                setTimeout(() => {
+                    dashboardChart.data = currentData;
+                    dashboardChart.update();
+                }, 50);
+            }
+        });
+
+        // Pie chart Animate button
+        document.getElementById('animateChart').addEventListener('click', function() {
+            console.log("Pie chart animate button clicked");
+            const currentCategory = document.getElementById('skillCategory').value;
+            updatePieChart(currentCategory, true);
+        });
+
+        // Check if dropdown has "All Categories" option
+        function checkDropdown() {
+            const select = document.getElementById('skillCategory');
+            console.log("Checking dropdown options:");
+            console.log("Number of options:", select.options.length);
+            for (let i = 0; i < select.options.length; i++) {
+                console.log(`Option ${i}: value="${select.options[i].value}", text="${select.options[i].text}"`);
+            }
+            console.log("Selected value:", select.value);
+            
+            // Set "All Categories" as selected by default
+            select.value = 'all';
+            console.log("Set dropdown to 'all'");
+        }
+
+        // Initialize charts
+        console.log("Initializing charts...");
+        checkDropdown();
+        updatePieChart('all', false);
+        updateDashboard('all', 'line');
+        console.log("Charts initialized!");
+
+        // Animate charts when they come into view
+        const chartObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    console.log("Charts are in view, animating...");
+                    const currentCategory = document.getElementById('skillCategory').value;
+                    updatePieChart(currentCategory);
+                    updateDashboard('all', 'line');
+                    chartObserver.unobserve(entry.target);
+                }
+            });
+        }, {threshold: 0.1});
+        
+        chartObserver.observe(document.querySelector('.chart-container'));
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
             });
+        }
+        
+        // Dark mode toggle
+        const toggle = document.getElementById('toggle');
+        if (toggle) {
+            const html = document.documentElement;
             
-            // Dark mode toggle
-            const toggle = document.getElementById('toggle');
-            if (toggle) {
-                const html = document.documentElement;
-                
-                if (localStorage.getItem('darkMode') === 'true' || 
-                    (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                toggle.checked = true;
+            }
+            
+            toggle.addEventListener('change', () => {
+                if (toggle.checked) {
                     html.classList.add('dark');
-                    toggle.checked = true;
+                    localStorage.setItem('darkMode', 'true');
+                } else {
+                    html.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
                 }
                 
-                toggle.addEventListener('change', () => {
-                    if (toggle.checked) {
-                        html.classList.add('dark');
-                        localStorage.setItem('darkMode', 'true');
-                    } else {
-                        html.classList.remove('dark');
-                        localStorage.setItem('darkMode', 'false');
-                    }
-                    
-                    // Update chart colors for dark mode
-                    const isDark = toggle.checked;
-                    skillsPieChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                    
-                    if (dashboardChart) {
-                        dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                        dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                        dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                        dashboardChart.update();
-                    }
-                    
-                    skillsPieChart.update();
-                });
-            }
+                // Update chart colors for dark mode
+                const isDark = toggle.checked;
+                skillsPieChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
+                
+                if (dashboardChart) {
+                    dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
+                    dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                    dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                    dashboardChart.update();
+                }
+                
+                skillsPieChart.update();
+            });
+        }
 
-            // Download Resume
-            document.getElementById('downloadResume').addEventListener('click', (e) => {
+        // Download Resume
+        const downloadResumeBtn = document.getElementById('downloadResume');
+        if (downloadResumeBtn) {
+            downloadResumeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const resumeURL = 'https://drive.google.com/file/d/1cAaCI_682E5nGEQJ09ZPM3DqqFP2UlRW/view?usp=sharing';
                 
@@ -1871,9 +1941,12 @@
                 link.download = 'Resume.pdf';
                 link.click();
             });
+        }
 
-            // Download CV
-            document.getElementById('downloadCV').addEventListener('click', (e) => {
+        // Download CV
+        const downloadCVBtn = document.getElementById('downloadCV');
+        if (downloadCVBtn) {
+            downloadCVBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const cvURL = 'https://drive.google.com/file/d/1B7w0bUkFY4vYY91TIR4P4ZQWm9zNRoRn/view?usp=sharing';
                 
@@ -1882,33 +1955,36 @@
                 link.download = 'CV.pdf';
                 link.click();
             });
+        }
 
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
                     
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                        
-                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
                     }
-                });
+                }
             });
+        });
 
-            // Badge Carousel Functionality
-            const badgeCarousel = document.getElementById('badgeCarousel');
-            const prevBadgeBtn = document.getElementById('prevBadge');
-            const nextBadgeBtn = document.getElementById('nextBadge');
+        // Badge Carousel Functionality
+        const badgeCarousel = document.getElementById('badgeCarousel');
+        const prevBadgeBtn = document.getElementById('prevBadge');
+        const nextBadgeBtn = document.getElementById('nextBadge');
+        
+        if (badgeCarousel && prevBadgeBtn && nextBadgeBtn) {
             const badges = document.querySelectorAll('#badgeCarousel > div');
             let badgeCurrentIndex = 0;
             
@@ -1944,11 +2020,14 @@
             
             window.addEventListener('resize', updateBadgeCarousel);
             updateBadgeCarousel();
+        }
 
-            // Project Carousel Functionality
-            const projectCarousel = document.getElementById('projectCarousel');
-            const prevProjectBtn = document.getElementById('prevProject');
-            const nextProjectBtn = document.getElementById('nextProject');
+        // Project Carousel Functionality
+        const projectCarousel = document.getElementById('projectCarousel');
+        const prevProjectBtn = document.getElementById('prevProject');
+        const nextProjectBtn = document.getElementById('nextProject');
+        
+        if (projectCarousel && prevProjectBtn && nextProjectBtn) {
             const projects = document.querySelectorAll('#projectCarousel > div');
             let projectCurrentIndex = 0;
             
@@ -1984,13 +2063,16 @@
             
             window.addEventListener('resize', updateProjectCarousel);
             updateProjectCarousel();
+        }
 
-            // ========== SEARCH FILTER FUNCTIONALITY ==========
-            
-            // Certifications Search
-            const certificationsSearch = document.getElementById('certificationsSearch');
+        // ========== SEARCH FILTER FUNCTIONALITY ==========
+        
+        // Certifications Search
+        const certificationsSearch = document.getElementById('certificationsSearch');
+        const certificationsResultsInfo = document.getElementById('certificationsResultsInfo');
+        
+        if (certificationsSearch && certificationsResultsInfo) {
             const certificationsItems = document.querySelectorAll('.certification-item');
-            const certificationsResultsInfo = document.getElementById('certificationsResultsInfo');
             
             certificationsSearch.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase().trim();
@@ -2018,15 +2100,15 @@
                 } else {
                     certificationsResultsInfo.textContent = `Found ${visibleCount} certification${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
                 }
-                
-                badgeCurrentIndex = 0;
-                updateBadgeCarousel();
             });
+        }
 
-            // Projects Search
-            const projectsSearch = document.getElementById('projectsSearch');
+        // Projects Search
+        const projectsSearch = document.getElementById('projectsSearch');
+        const projectsResultsInfo = document.getElementById('projectsResultsInfo');
+        
+        if (projectsSearch && projectsResultsInfo) {
             const projectItems = document.querySelectorAll('.project-item');
-            const projectsResultsInfo = document.getElementById('projectsResultsInfo');
             
             projectsSearch.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase().trim();
@@ -2058,11 +2140,11 @@
                 } else {
                     projectsResultsInfo.textContent = `Found ${visibleCount} project${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
                 }
-                
-                projectCurrentIndex = 0;
-                updateProjectCarousel();
             });
-        });
-    </script>
+        }
+        
+        console.log("All JavaScript initialized successfully!");
+    });
+</script>
 </body>
 </html>
