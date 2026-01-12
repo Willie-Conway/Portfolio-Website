@@ -1331,13 +1331,41 @@
                         {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
                         {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
                         {skill: "SIEM Tools", level: 80, projects: 4, growth: [55, 64, 72, 77, 79, 80]},
-                        {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]}
+                        {skill: "Incident Response", level: 82, projects: 5, growth: [60, 68, 75, 79, 81, 82]},
+                        {skill: "Encryption Technologies", level: 85, projects: 4, growth: [65, 72, 78, 82, 84, 85]}
                     ],
                     dataEngineering: [
                         {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
                         {skill: "Apache Hadoop", level: 80, projects: 4, growth: [50, 60, 70, 75, 78, 80]},
                         {skill: "Apache Airflow", level: 82, projects: 5, growth: [55, 65, 72, 78, 80, 82]},
-                        {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]}
+                        {skill: "Apache Kafka", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
+                        {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
+                    ],
+                    // Create "all" category by combining top skills from each category
+                    all: [
+                        // Top from dataAnalysis
+                        {skill: "Python (Pandas, NumPy)", level: 95, projects: 12, growth: [60, 70, 82, 88, 92, 95]},
+                        {skill: "SQL (PostgreSQL, MySQL)", level: 90, projects: 15, growth: [65, 72, 80, 85, 88, 90]},
+                        
+                        // Top from software
+                        {skill: "JavaScript/TypeScript", level: 92, projects: 18, growth: [70, 78, 85, 88, 90, 92]},
+                        {skill: "React.js", level: 90, projects: 10, growth: [60, 70, 80, 85, 88, 90]},
+                        
+                        // Top from cloud
+                        {skill: "Google Cloud", level: 95, projects: 7, growth: [70, 80, 88, 90, 93, 95]},
+                        {skill: "Microsoft Azure", level: 88, projects: 6, growth: [65, 72, 78, 82, 85, 88]},
+                        
+                        // Top from devops
+                        {skill: "Docker", level: 90, projects: 11, growth: [65, 75, 82, 86, 88, 90]},
+                        {skill: "Kubernetes", level: 87, projects: 8, growth: [60, 70, 78, 82, 85, 87]},
+                        
+                        // Top from cybersecurity
+                        {skill: "Network Security", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                        {skill: "Cloud Security", level: 83, projects: 5, growth: [58, 67, 75, 80, 82, 83]},
+                        
+                        // Top from dataEngineering
+                        {skill: "Apache Spark", level: 85, projects: 6, growth: [60, 68, 75, 80, 83, 85]},
+                        {skill: "SQLite", level: 90, projects: 8, growth: [65, 75, 85, 88, 89, 90]}
                     ]
                 },
                 timeline: ["2020", "2021", "2022", "2023", "2024", "2025"],
@@ -1434,24 +1462,6 @@
             // Initial pie chart load
             updatePieChart('dataAnalysis', false);
 
-            // Pie chart dropdown change event
-            document.getElementById('skillCategory').addEventListener('change', function() {
-                updatePieChart(this.value);
-            });
-
-            // Pie chart Animate button
-            document.getElementById('animateChart').addEventListener('click', function() {
-                const currentCategory = document.getElementById('skillCategory').value;
-                const tempData = [...skillsPieChart.data.datasets[0].data];
-                skillsPieChart.data.datasets[0].data = [];
-                skillsPieChart.update();
-                
-                setTimeout(() => {
-                    skillsPieChart.data.datasets[0].data = tempData;
-                    skillsPieChart.update();
-                }, 50);
-            });
-
             // Function to generate random gold colors
             function getRandomGoldColor(opacity = 1) {
                 const golds = [
@@ -1535,6 +1545,11 @@
                                     title: {
                                         display: true,
                                         text: 'Skill'
+                                    },
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 45,
+                                        minRotation: 0
                                     }
                                 }
                             }
@@ -1648,23 +1663,23 @@
             }
 
             // Function to update dashboard based on selections
-            function updateDashboard() {
-                const chartType = document.getElementById('chartType').value;
-                const category = document.getElementById('dashboardSkillCategory').value;
-                
-                let filteredData = [];
-                
-                // Filter data based on category
-                if (category === 'all') {
-                    for (const cat in dashboardData.skills) {
-                        filteredData = filteredData.concat(dashboardData.skills[cat]);
-                    }
-                } else {
-                    filteredData = dashboardData.skills[category] || [];
+            function updateDashboard(category, chartType) {
+                // If category is not provided, get it from the dashboard dropdown
+                if (!category) {
+                    category = document.getElementById('dashboardSkillCategory').value;
                 }
                 
-                // Limit to top 5 skills for better visualization
-                filteredData = filteredData.slice(0, 5);
+                // If chartType is not provided, get it from the dashboard dropdown
+                if (!chartType) {
+                    chartType = document.getElementById('chartType').value;
+                }
+                
+                let filteredData = dashboardData.skills[category] || [];
+                
+                // Limit to top skills for better visualization
+                // For "all" category, show 10 skills, for others show 5
+                const limit = category === 'all' ? 10 : 5;
+                filteredData = filteredData.slice(0, limit);
                 
                 let labels = [];
                 let datasets = [];
@@ -1729,9 +1744,48 @@
                 createDashboardChart(chartType, labels, datasets);
             }
 
+            // Event listener for pie chart category change
+            document.getElementById('skillCategory').addEventListener('change', function() {
+                const selectedCategory = this.value;
+                const currentChartType = document.getElementById('chartType').value;
+                
+                // Update the pie chart
+                updatePieChart(selectedCategory);
+                
+                // Map pie chart categories to dashboard categories
+                const categoryMap = {
+                    'dataAnalysis': 'dataAnalysis',
+                    'cicd': 'devops',
+                    'devTools': 'devops',
+                    'cloud': 'cloud',
+                    'mobile': 'mobile',
+                    'cybersecurity': 'cybersecurity',
+                    'soft': 'all',  // Soft skills maps to "All Categories"
+                    'software': 'software',
+                    'dataEngineering': 'dataEngineering'
+                };
+                
+                const dashboardCategory = categoryMap[selectedCategory] || 'dataAnalysis';
+                
+                // Update the dashboard dropdown to show the mapped category
+                document.getElementById('dashboardSkillCategory').value = dashboardCategory;
+                
+                // Update the dashboard chart
+                updateDashboard(dashboardCategory, currentChartType);
+            });
+
             // Event listeners for dashboard
-            document.getElementById('chartType').addEventListener('change', updateDashboard);
-            document.getElementById('dashboardSkillCategory').addEventListener('change', updateDashboard);
+            document.getElementById('chartType').addEventListener('change', function() {
+                const currentCategory = document.getElementById('dashboardSkillCategory').value;
+                const selectedChartType = this.value;
+                updateDashboard(currentCategory, selectedChartType);
+            });
+            
+            document.getElementById('dashboardSkillCategory').addEventListener('change', function() {
+                const selectedCategory = this.value;
+                const currentChartType = document.getElementById('chartType').value;
+                updateDashboard(selectedCategory, currentChartType);
+            });
             
             // Dashboard Animate button
             document.getElementById('animateBtn').addEventListener('click', function() {
@@ -1747,8 +1801,8 @@
                 }
             });
 
-            // Initialize with default view
-            updateDashboard();
+            // Initialize both charts with default view
+            updateDashboard('dataAnalysis', 'line');
 
             // Animate charts when they come into view
             const chartObserver = new IntersectionObserver((entries) => {
@@ -1756,7 +1810,7 @@
                     if (entry.isIntersecting) {
                         const currentCategory = document.getElementById('skillCategory').value;
                         updatePieChart(currentCategory);
-                        updateDashboard();
+                        updateDashboard('dataAnalysis', 'line');
                         chartObserver.unobserve(entry.target);
                     }
                 });
