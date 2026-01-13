@@ -1392,7 +1392,11 @@
             'rgba(23, 17, 0, 0.8)'        // Black gold
         ];
 
-        // Create the pie chart with animation configuration
+        // Check initial theme for pie chart
+        const isDarkInitial = document.documentElement.classList.contains('dark');
+        const textColorInitial = isDarkInitial ? '#e2e8f0' : '#333';
+
+        // Create the pie chart with animation configuration - UPDATED FOR THEME SUPPORT
         const pieCtx = document.getElementById('skillsPieChart').getContext('2d');
         let skillsPieChart = new Chart(pieCtx, {
             type: 'pie',
@@ -1412,7 +1416,7 @@
                     legend: {
                         position: 'right',
                         labels: {
-                            color: '#333',
+                            color: textColorInitial,
                             font: {
                                 size: 12
                             },
@@ -1422,6 +1426,9 @@
                         }
                     },
                     tooltip: {
+                        backgroundColor: isDarkInitial ? '#2d3748' : '#ffffff',
+                        titleColor: textColorInitial,
+                        bodyColor: textColorInitial,
                         callbacks: {
                             label: function(context) {
                                 return `${context.label}: ${context.raw}%`;
@@ -1506,16 +1513,21 @@
         // Global dashboard chart variable
         let dashboardChart = null;
 
-        // Function to create or recreate dashboard chart
+        // Function to create or recreate dashboard chart - UPDATED FOR THEME SUPPORT
         function createDashboardChart(chartType, labels, datasets) {
             const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            // Check if dark mode is active
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#e2e8f0' : '#333';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
             
             // Destroy existing chart if it exists
             if (dashboardChart) {
                 dashboardChart.destroy();
             }
             
-            // Common chart options
+            // Common chart options with theme support
             const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -1523,13 +1535,16 @@
                     legend: {
                         position: 'top',
                         labels: {
-                            color: '#333',
+                            color: textColor,
                             font: {
                                 size: 12
                             }
                         }
                     },
                     tooltip: {
+                        backgroundColor: isDark ? '#2d3748' : '#ffffff',
+                        titleColor: textColor,
+                        bodyColor: textColor,
                         callbacks: {
                             label: function(context) {
                                 if (chartType === 'scatter' || chartType === 'bubble') {
@@ -1560,25 +1575,35 @@
                             y: {
                                 beginAtZero: true,
                                 max: 100,
+                                grid: {
+                                    color: gridColor
+                                },
                                 ticks: {
+                                    color: textColor,
                                     callback: function(value) {
                                         return value + '%';
                                     }
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Proficiency Level (%)'
+                                    text: 'Proficiency Level (%)',
+                                    color: textColor
                                 }
                             },
                             x: {
-                                title: {
-                                    display: true,
-                                    text: 'Skill'
+                                grid: {
+                                    color: gridColor
                                 },
                                 ticks: {
+                                    color: textColor,
                                     autoSkip: false,
                                     maxRotation: 45,
                                     minRotation: 0
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Skill',
+                                    color: textColor
                                 }
                             }
                         }
@@ -1597,20 +1622,32 @@
                             y: {
                                 beginAtZero: true,
                                 max: 100,
+                                grid: {
+                                    color: gridColor
+                                },
                                 ticks: {
+                                    color: textColor,
                                     callback: function(value) {
                                         return value + '%';
                                     }
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Proficiency Level (%)'
+                                    text: 'Proficiency Level (%)',
+                                    color: textColor
                                 }
                             },
                             x: {
+                                grid: {
+                                    color: gridColor
+                                },
+                                ticks: {
+                                    color: textColor
+                                },
                                 title: {
                                     display: true,
-                                    text: 'Year'
+                                    text: 'Year',
+                                    color: textColor
                                 }
                             }
                         }
@@ -1628,25 +1665,35 @@
                             y: {
                                 beginAtZero: true,
                                 max: 100,
+                                grid: {
+                                    color: gridColor
+                                },
                                 ticks: {
+                                    color: textColor,
                                     callback: function(value) {
                                         return value + '%';
                                     }
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Proficiency Level (%)'
+                                    text: 'Proficiency Level (%)',
+                                    color: textColor
                                 }
                             },
                             x: {
                                 type: 'linear',
                                 position: 'bottom',
-                                title: {
-                                    display: true,
-                                    text: 'Number of Projects'
+                                grid: {
+                                    color: gridColor
                                 },
                                 ticks: {
+                                    color: textColor,
                                     stepSize: 1
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Number of Projects',
+                                    color: textColor
                                 }
                             }
                         }
@@ -1664,25 +1711,35 @@
                             y: {
                                 beginAtZero: true,
                                 max: 100,
+                                grid: {
+                                    color: gridColor
+                                },
                                 ticks: {
+                                    color: textColor,
                                     callback: function(value) {
                                         return value + '%';
                                     }
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Proficiency Level (%)'
+                                    text: 'Proficiency Level (%)',
+                                    color: textColor
                                 }
                             },
                             x: {
                                 type: 'linear',
                                 position: 'bottom',
-                                title: {
-                                    display: true,
-                                    text: 'Number of Projects'
+                                grid: {
+                                    color: gridColor
                                 },
                                 ticks: {
+                                    color: textColor,
                                     stepSize: 1
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Number of Projects',
+                                    color: textColor
                                 }
                             }
                         }
@@ -1825,26 +1882,57 @@
             updateDashboard(selectedCategory, currentChartType);
         });
         
-        // Dashboard Animate button
+        // Dashboard Animate button - FIXED
         document.getElementById('animateBtn').addEventListener('click', function() {
-            console.log("Animate button clicked");
+            console.log("Dashboard animate button clicked");
+            
             if (dashboardChart) {
-                const currentData = dashboardChart.data;
-                dashboardChart.data = { labels: [], datasets: [] };
+                // Store current data
+                const currentData = {
+                    labels: dashboardChart.data.labels ? [...dashboardChart.data.labels] : [],
+                    datasets: dashboardChart.data.datasets.map(dataset => ({
+                        ...dataset,
+                        data: [...dataset.data]
+                    }))
+                };
+                
+                // Clear chart
+                dashboardChart.data.labels = [];
+                dashboardChart.data.datasets = [];
                 dashboardChart.update();
                 
+                // Restore and animate
                 setTimeout(() => {
-                    dashboardChart.data = currentData;
+                    dashboardChart.data.labels = currentData.labels;
+                    dashboardChart.data.datasets = currentData.datasets;
                     dashboardChart.update();
-                }, 50);
+                }, 300);
             }
         });
 
-        // Pie chart Animate button
+        // Pie chart Animate button - FIXED
         document.getElementById('animateChart').addEventListener('click', function() {
             console.log("Pie chart animate button clicked");
             const currentCategory = document.getElementById('skillCategory').value;
-            updatePieChart(currentCategory, true);
+            
+            // Store current chart data
+            const currentLabels = [...skillsPieChart.data.labels];
+            const currentData = [...skillsPieChart.data.datasets[0].data];
+            const currentColors = [...skillsPieChart.data.datasets[0].backgroundColor];
+            
+            // Clear the chart for animation effect
+            skillsPieChart.data.labels = [];
+            skillsPieChart.data.datasets[0].data = [];
+            skillsPieChart.data.datasets[0].backgroundColor = [];
+            skillsPieChart.update();
+            
+            // Restore data and animate
+            setTimeout(() => {
+                skillsPieChart.data.labels = currentLabels;
+                skillsPieChart.data.datasets[0].data = currentData;
+                skillsPieChart.data.datasets[0].backgroundColor = currentColors;
+                skillsPieChart.update();
+            }, 300);
         });
 
         // Check if dropdown has "All Categories" option
@@ -1884,29 +1972,82 @@
         
         chartObserver.observe(document.querySelector('.chart-container'));
 
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-        
-        // Dark mode toggle
+        // Dark mode toggle - UPDATED FOR CHART THEME SUPPORT
         const toggle = document.getElementById('toggle');
         if (toggle) {
             const html = document.documentElement;
             
+            // Initialize theme
             if (localStorage.getItem('darkMode') === 'true' || 
                 (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 html.classList.add('dark');
                 toggle.checked = true;
             }
             
+            // Function to update chart colors based on theme
+            function updateChartColors(isDark) {
+                const textColor = isDark ? '#e2e8f0' : '#333';
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                // Update pie chart
+                if (skillsPieChart) {
+                    skillsPieChart.options.plugins.legend.labels.color = textColor;
+                    skillsPieChart.options.plugins.tooltip.backgroundColor = isDark ? '#2d3748' : '#ffffff';
+                    skillsPieChart.options.plugins.tooltip.titleColor = textColor;
+                    skillsPieChart.options.plugins.tooltip.bodyColor = textColor;
+                    skillsPieChart.update();
+                }
+                
+                // Update dashboard chart
+                if (dashboardChart) {
+                    // Update legend
+                    dashboardChart.options.plugins.legend.labels.color = textColor;
+                    
+                    // Update tooltip
+                    dashboardChart.options.plugins.tooltip.backgroundColor = isDark ? '#2d3748' : '#ffffff';
+                    dashboardChart.options.plugins.tooltip.titleColor = textColor;
+                    dashboardChart.options.plugins.tooltip.bodyColor = textColor;
+                    
+                    // Update scales based on chart type
+                    if (dashboardChart.options.scales) {
+                        // For axes that exist
+                        if (dashboardChart.options.scales.x) {
+                            dashboardChart.options.scales.x.grid.color = gridColor;
+                            dashboardChart.options.scales.x.ticks.color = textColor;
+                            if (dashboardChart.options.scales.x.title) {
+                                dashboardChart.options.scales.x.title.color = textColor;
+                            }
+                        }
+                        
+                        if (dashboardChart.options.scales.y) {
+                            dashboardChart.options.scales.y.grid.color = gridColor;
+                            dashboardChart.options.scales.y.ticks.color = textColor;
+                            if (dashboardChart.options.scales.y.title) {
+                                dashboardChart.options.scales.y.title.color = textColor;
+                            }
+                        }
+                        
+                        // For radial axes (if any)
+                        if (dashboardChart.options.scales.r) {
+                            dashboardChart.options.scales.r.grid.color = gridColor;
+                            dashboardChart.options.scales.r.ticks.color = textColor;
+                            if (dashboardChart.options.scales.r.title) {
+                                dashboardChart.options.scales.r.title.color = textColor;
+                            }
+                        }
+                    }
+                    
+                    dashboardChart.update();
+                }
+            }
+            
+            // Apply initial chart colors
+            updateChartColors(toggle.checked);
+            
             toggle.addEventListener('change', () => {
-                if (toggle.checked) {
+                const isDark = toggle.checked;
+                
+                if (isDark) {
                     html.classList.add('dark');
                     localStorage.setItem('darkMode', 'true');
                 } else {
@@ -1914,18 +2055,8 @@
                     localStorage.setItem('darkMode', 'false');
                 }
                 
-                // Update chart colors for dark mode
-                const isDark = toggle.checked;
-                skillsPieChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                
-                if (dashboardChart) {
-                    dashboardChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#333';
-                    dashboardChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    dashboardChart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    dashboardChart.update();
-                }
-                
-                skillsPieChart.update();
+                // Update chart colors for new theme
+                updateChartColors(isDark);
             });
         }
 
