@@ -249,7 +249,7 @@ open index.html
 - **Referrer Policy**: Strict origin-when-cross-origin
 - **Frame Protection**: X-Frame-Options DENY ready
 
-## 🤝 Contributing
+## 🫱🏿‍🫲🏿 Contributing
 
 While this is a personal portfolio, suggestions are welcome:
 
@@ -269,7 +269,7 @@ While this is a personal portfolio, suggestions are welcome:
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 👏 Acknowledgments
+## 👏🏿 Acknowledgments
 
 - **Tailwind CSS** team for the amazing utility-first framework
 - **Chart.js** for powerful, interactive charting library
