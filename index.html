@@ -99,11 +99,45 @@
         .project-item.hidden {
             display: none !important;
         }
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
+        /* Update chart container styles */
+.chart-container {
+    position: relative;
+    height: 300px; /* Reduced from 500px for side-by-side layout */
+    width: 100%;
+}
+
+/* For the dual charts layout on mobile */
+@media (max-width: 1024px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+/* Ensure charts are responsive within their containers */
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Grid layout adjustments */
+.grid-cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Gap between charts */
+.gap-8 {
+    gap: 2rem;
+}
         .skill-bar {
             transition: width 1.5s ease-in-out;
         }
@@ -259,114 +293,128 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-20">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">My <span class="gold-text">Skills</span></h2>
-                <div class="w-20 h-1 gold-gradient mx-auto"></div>
-            </div>
+<section id="skills" class="py-20">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">My <span class="gold-text">Skills</span></h2>
+            <div class="w-20 h-1 gold-gradient mx-auto"></div>
+        </div>
 
-            <!-- Skills Distribution Chart -->
-            <div class="mt-20">
+        <!-- Dual Charts Container -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+            
+            <!-- Left Chart: Skills Distribution -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <h3 class="text-2xl font-semibold mb-6 flex items-center">
                     <i class="fas fa-chart-pie gold-text mr-3"></i>
                     Skills Distribution
                 </h3>
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                        <div class="w-full md:w-auto mb-4 md:mb-0">
-                            <label for="skillCategory" class="block text-sm font-medium mb-2">Select Skill Category:</label>
-                            <select id="skillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                <option value="all">All Categories</option>
-                                <option value="dataAnalysis">Data Analysis & BI</option>
-                                <option value="cicd">CI/CD & Automation</option>
-                                <option value="devTools">Dev & Tools</option>
-                                <option value="cloud">Cloud Platforms</option>
-                                <option value="mobile">Mobile Development</option>
-                                <option value="cybersecurity">Cybersecurity</option>
-                                <option value="soft">Soft Skills</option>
-                                <option value="software">Software Development</option>
-                                <option value="dataEngineering">Data Engineering</option>
-                            </select>
-                        </div>
-                        <button id="animateChart" class="px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
-                            <i class="fas fa-play mr-2"></i> Animate Chart
-                        </button>
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <div class="w-full md:w-auto mb-4 md:mb-0">
+                        <label for="skillCategory" class="block text-sm font-medium mb-2">Select Skill Category:</label>
+                        <select id="skillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">All Categories</option>
+                            <option value="dataAnalysis">Data Analysis & BI</option>
+                            <option value="cicd">CI/CD & Automation</option>
+                            <option value="devTools">Dev & Tools</option>
+                            <option value="cloud">Cloud Platforms</option>
+                            <option value="mobile">Mobile Development</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="soft">Soft Skills</option>
+                            <option value="software">Software Development</option>
+                            <option value="dataEngineering">Data Engineering</option>
+                        </select>
                     </div>
-                    <div class="chart-container" style="height: 500px;">
-                        <canvas id="skillsPieChart"></canvas>
-                    </div>
+                    <button id="animateChart" class="px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
+                        <i class="fas fa-play mr-2"></i> Animate Chart
+                    </button>
+                </div>
+                <div class="chart-container" style="height: 400px;">
+                    <canvas id="skillsPieChart"></canvas>
                 </div>
             </div>
 
-            <!-- Interactive Dashboard -->
-            <div class="mt-20">
+            <!-- Right Chart: Interactive Dashboard -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <h3 class="text-2xl font-semibold mb-6 flex items-center">
-                    <i class="fas fa-chart-pie gold-text mr-3"></i>
-                    Skills & Projects Dashboard
+                    <i class="fas fa-chart-bar gold-text mr-3"></i>
+                    Skills Dashboard
                 </h3>
                 
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                    <!-- Dashboard Controls -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div>
-                            <label for="chartType" class="block text-sm font-medium mb-2">Chart Type:</label>
-                            <select id="chartType" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                <option value="line">Line Chart (Skills Growth)</option>
-                                <option value="bar">Bar Chart (Skill Comparison)</option>
-                                <option value="scatter">Scatter Plot (Skill vs Usage)</option>
-                                <option value="bubble">Bubble Chart (Skill Mastery)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="dashboardSkillCategory" class="block text-sm font-medium mb-2">Skill Category:</label>
-                            <select id="dashboardSkillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                <option value="all">All Categories</option>
-                                <option value="dataAnalysis">Data Analysis</option>
-                                <option value="software">Software Dev</option>
-                                <option value="cloud">Cloud</option>
-                                <option value="devops">DevOps</option>
-                                <option value="mobile">Mobile Dev</option>
-                                <option value="cybersecurity">Cybersecurity</option>
-                                <option value="dataEngineering">Data Engineering</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button id="animateBtn" class="w-full px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
-                                <i class="fas fa-play mr-2"></i> Animate Dashboard
-                            </button>
-                        </div>
+                <!-- Dashboard Controls -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="chartType" class="block text-sm font-medium mb-2">Chart Type:</label>
+                        <select id="chartType" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="line">Line Chart (Skills Growth)</option>
+                            <option value="bar">Bar Chart (Skill Comparison)</option>
+                            <option value="scatter">Scatter Plot (Skill vs Usage)</option>
+                            <option value="bubble">Bubble Chart (Skill Mastery)</option>
+                        </select>
                     </div>
-                    
-                    <!-- Dashboard Canvas -->
-                    <div class="chart-container" style="height: 500px;">
-                        <canvas id="dashboardChart"></canvas>
+                    <div>
+                        <label for="dashboardSkillCategory" class="block text-sm font-medium mb-2">Skill Category:</label>
+                        <select id="dashboardSkillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">All Categories</option>
+                            <option value="dataAnalysis">Data Analysis</option>
+                            <option value="software">Software Dev</option>
+                            <option value="cloud">Cloud</option>
+                            <option value="devops">DevOps</option>
+                            <option value="mobile">Mobile Dev</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="dataEngineering">Data Engineering</option>
+                        </select>
                     </div>
-                    
-                    <!-- Project Completion Metrics -->
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <h4 class="font-semibold text-lg gold-text">Project Completion Rate</h4>
-                            <div class="text-3xl font-bold mt-2">92%</div>
-                            <div class="h-2 mt-2 bg-gray-200 dark:bg-gray-600 rounded-full">
-                                <div class="h-2 rounded-full gold-gradient" style="width: 92%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <h4 class="font-semibold text-lg gold-text">Avg. Project Duration</h4>
-                            <div class="text-3xl font-bold mt-2">18 <span class="text-sm">days</span></div>
-                            <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Down from 22 last quarter</div>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <h4 class="font-semibold text-lg gold-text">Skill Utilization</h4>
-                            <div class="text-3xl font-bold mt-2">87%</div>
-                            <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Of skills used in projects</div>
-                        </div>
-                    </div>
+                </div>
+                
+                <div class="flex justify-center mb-6">
+                    <button id="animateBtn" class="px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
+                        <i class="fas fa-play mr-2"></i> Animate Dashboard
+                    </button>
+                </div>
+                
+                <!-- Dashboard Canvas -->
+                <div class="chart-container" style="height: 400px;">
+                    <canvas id="dashboardChart"></canvas>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Project Completion Metrics (Below both charts) -->
+        <div class="mt-8">
+            <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                <i class="fas fa-chart-line gold-text mr-3"></i>
+                Project Metrics
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Project Completion Rate</h4>
+                    <div class="text-3xl font-bold mb-2">92%</div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 92%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Over 70+ projects completed</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Avg. Project Duration</h4>
+                    <div class="text-3xl font-bold mb-2">18 <span class="text-sm">days</span></div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 75%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Down from 22 days last quarter</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Skill Utilization</h4>
+                    <div class="text-3xl font-bold mb-2">87%</div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 87%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Of skills used in active projects</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <!-- Certifications Section -->
     <section id="certifications" class="py-20 bg-gray-50 dark:bg-gray-800">
@@ -3280,7 +3328,5 @@ if (projectsSearch && projectsResultsInfo && projectCarousel) {
 console.log("All JavaScript initialized successfully!");
 });
 </script>
-</body>
-</html>
 </body>
 </html>
