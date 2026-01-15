@@ -70,9 +70,10 @@
             border-radius: 0.5rem;
             border: 2px solid #e2e8f0;
             width: 100%;
-            max-width: 400px;
+            max-width: 600px; /* Increased width */
             transition: all 0.3s ease;
             background: white;
+            font-size: 1rem;
         }
         .dark .search-input {
             background: #2d3748;
@@ -91,6 +92,12 @@
         }
         .dark .search-results-info {
             color: #a0aec0;
+        }
+        
+        /* Hide items when filtered */
+        .certification-item.hidden,
+        .project-item.hidden {
+            display: none !important;
         }
         .chart-container {
             position: relative;
@@ -373,14 +380,14 @@
             </div>
 
             <!-- Search Filter for Certifications -->
-            <div class="search-container text-center">
-                <div class="relative inline-block">
+           <div class="search-container text-center">
+                <div class="relative inline-block w-full max-w-2xl">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     <input 
                         type="text" 
                         id="certificationsSearch" 
-                        class="search-input pl-10 pr-4" 
-                        placeholder="Search certifications by keyword (e.g., IBM, Google, Cloud, Data, Security...)"
+                        class="search-input pl-10 pr-4 w-full" 
+                        placeholder="Search certifications by keyword (e.g., IBM, Google, Cloud, Data, Security, AI, Machine Learning...)"
                     >
                 </div>
                 <div id="certificationsResultsInfo" class="search-results-info"></div>
@@ -1618,10 +1625,10 @@
                 </div>
                 
                 <!-- Carousel Controls -->
-                <button id="prevBadge" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all">
+                 <button id="prevBadge" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <button id="nextBadge" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all">
+                <button id="nextBadge" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -1649,13 +1656,13 @@
             </div>
 
             <!-- Search Filter for Projects -->
-            <div class="search-container text-center">
-                <div class="relative inline-block">
+             <div class="search-container text-center">
+                <div class="relative inline-block w-full max-w-2xl">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     <input 
                         type="text" 
                         id="projectsSearch" 
-                        class="search-input pl-10 pr-4" 
+                        class="search-input pl-10 pr-4 w-full"  
                         placeholder="Search projects by keyword (e.g., Dashboard, Analytics, API, Data, Full Stack...)"
                     >
                 </div>
@@ -1772,10 +1779,10 @@
 
     
                 <!-- Carousel Controls -->
-                <button id="prevProject" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all">
+                <button id="prevProject" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <button id="nextProject" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all">
+                <button id="nextProject" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:gold-gradient hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -3053,85 +3060,227 @@
         }
 
         // ========== SEARCH FILTER FUNCTIONALITY ==========
-        
-        // Certifications Search
-        const certificationsSearch = document.getElementById('certificationsSearch');
-        const certificationsResultsInfo = document.getElementById('certificationsResultsInfo');
-        
-        if (certificationsSearch && certificationsResultsInfo) {
-            const certificationsItems = document.querySelectorAll('.certification-item');
-            
-            certificationsSearch.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                let visibleCount = 0;
-                
-                certificationsItems.forEach(item => {
-                    const keywords = item.getAttribute('data-keywords').toLowerCase();
-                    const title = item.querySelector('h3').textContent.toLowerCase();
-                    const description = item.querySelector('p').textContent.toLowerCase();
-                    
-                    const matches = keywords.includes(searchTerm) || 
-                                   title.includes(searchTerm) || 
-                                   description.includes(searchTerm);
-                    
-                    if (matches || searchTerm === '') {
-                        item.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                
-                if (searchTerm === '') {
-                    certificationsResultsInfo.textContent = `Showing all ${certificationsItems.length} certifications`;
-                } else {
-                    certificationsResultsInfo.textContent = `Found ${visibleCount} certification${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
-                }
-            });
-        }
 
-        // Projects Search
-        const projectsSearch = document.getElementById('projectsSearch');
-        const projectsResultsInfo = document.getElementById('projectsResultsInfo');
+// Certifications Search with Carousel Integration
+const certificationsSearch = document.getElementById('certificationsSearch');
+const certificationsResultsInfo = document.getElementById('certificationsResultsInfo');
+// badgeCarousel, prevBadgeBtn, nextBadgeBtn already declared above
+
+if (certificationsSearch && certificationsResultsInfo && badgeCarousel) {
+    const certificationsItems = document.querySelectorAll('.certification-item');
+    let badgeCurrentIndex = 0;
+    let visibleCertifications = [];
+    
+    function updateCertificationsFilter() {
+        const searchTerm = certificationsSearch.value.toLowerCase().trim();
+        visibleCertifications = [];
+        let visibleCount = 0;
         
-        if (projectsSearch && projectsResultsInfo) {
-            const projectItems = document.querySelectorAll('.project-item');
+        certificationsItems.forEach((item, index) => {
+            const keywords = item.getAttribute('data-keywords').toLowerCase();
+            const title = item.querySelector('h3').textContent.toLowerCase();
+            const description = item.querySelector('p').textContent.toLowerCase();
             
-            projectsSearch.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                let visibleCount = 0;
-                
-                projectItems.forEach(item => {
-                    const keywords = item.getAttribute('data-keywords').toLowerCase();
-                    const title = item.querySelector('h3').textContent.toLowerCase();
-                    const description = item.querySelector('p').textContent.toLowerCase();
-                    const tags = Array.from(item.querySelectorAll('.px-2.py-1.text-xs.rounded-full'))
-                                     .map(tag => tag.textContent.toLowerCase())
-                                     .join(' ');
-                    
-                    const matches = keywords.includes(searchTerm) || 
-                                   title.includes(searchTerm) || 
-                                   description.includes(searchTerm) ||
-                                   tags.includes(searchTerm);
-                    
-                    if (matches || searchTerm === '') {
-                        item.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                
-                if (searchTerm === '') {
-                    projectsResultsInfo.textContent = `Showing all ${projectItems.length} projects`;
-                } else {
-                    projectsResultsInfo.textContent = `Found ${visibleCount} project${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
-                }
-            });
+            const matches = keywords.includes(searchTerm) || 
+                           title.includes(searchTerm) || 
+                           description.includes(searchTerm);
+            
+            if (matches || searchTerm === '') {
+                item.classList.remove('hidden');
+                visibleCertifications.push(index);
+                visibleCount++;
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        
+        if (searchTerm === '') {
+            certificationsResultsInfo.textContent = `Showing all ${certificationsItems.length} certifications`;
+        } else {
+            certificationsResultsInfo.textContent = `Found ${visibleCount} certification${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
         }
         
-        console.log("All JavaScript initialized successfully!");
+        // Reset carousel position
+        badgeCurrentIndex = 0;
+        updateBadgeCarousel();
+    }
+    
+    function updateBadgeCarousel() {
+        if (visibleCertifications.length === 0) {
+            // Hide carousel controls if no items visible
+            prevBadgeBtn.style.display = 'none';
+            nextBadgeBtn.style.display = 'none';
+            return;
+        }
+        
+        prevBadgeBtn.style.display = 'flex';
+        nextBadgeBtn.style.display = 'flex';
+        
+        let visibleBadges;
+        if (window.innerWidth >= 1024) {
+            visibleBadges = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleBadges = 2;
+        } else {
+            visibleBadges = 1;
+        }
+        
+        const maxIndex = Math.max(0, visibleCertifications.length - visibleBadges);
+        badgeCurrentIndex = Math.min(Math.max(0, badgeCurrentIndex), maxIndex);
+        
+        // Calculate translateX based on visible items
+        const translateX = -(badgeCurrentIndex * (100 / Math.min(visibleBadges, visibleCertifications.length)));
+        badgeCarousel.style.transform = `translateX(${translateX}%)`;
+        
+        // Update button states
+        prevBadgeBtn.disabled = badgeCurrentIndex === 0;
+        nextBadgeBtn.disabled = badgeCurrentIndex >= maxIndex;
+    }
+    
+    // Event Listeners for Certifications
+    certificationsSearch.addEventListener('input', updateCertificationsFilter);
+    
+    prevBadgeBtn.addEventListener('click', () => {
+        if (visibleCertifications.length === 0) return;
+        badgeCurrentIndex = Math.max(0, badgeCurrentIndex - 1);
+        updateBadgeCarousel();
     });
+    
+    nextBadgeBtn.addEventListener('click', () => {
+        if (visibleCertifications.length === 0) return;
+        let visibleBadges;
+        if (window.innerWidth >= 1024) {
+            visibleBadges = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleBadges = 2;
+        } else {
+            visibleBadges = 1;
+        }
+        const maxIndex = Math.max(0, visibleCertifications.length - visibleBadges);
+        badgeCurrentIndex = Math.min(badgeCurrentIndex + 1, maxIndex);
+        updateBadgeCarousel();
+    });
+    
+    window.addEventListener('resize', updateBadgeCarousel);
+    
+    // Initialize
+    updateCertificationsFilter();
+}
+
+// Projects Search with Carousel Integration
+const projectsSearch = document.getElementById('projectsSearch');
+const projectsResultsInfo = document.getElementById('projectsResultsInfo');
+// projectCarousel, prevProjectBtn, nextProjectBtn already declared above
+
+if (projectsSearch && projectsResultsInfo && projectCarousel) {
+    const projectItems = document.querySelectorAll('.project-item');
+    let projectCurrentIndex = 0;
+    let visibleProjects = [];
+    
+    function updateProjectsFilter() {
+        const searchTerm = projectsSearch.value.toLowerCase().trim();
+        visibleProjects = [];
+        let visibleCount = 0;
+        
+        projectItems.forEach((item, index) => {
+            const keywords = item.getAttribute('data-keywords').toLowerCase();
+            const title = item.querySelector('h3').textContent.toLowerCase();
+            const description = item.querySelector('p').textContent.toLowerCase();
+            const tags = Array.from(item.querySelectorAll('.px-2.py-1.text-xs.rounded-full'))
+                             .map(tag => tag.textContent.toLowerCase())
+                             .join(' ');
+            
+            const matches = keywords.includes(searchTerm) || 
+                           title.includes(searchTerm) || 
+                           description.includes(searchTerm) ||
+                           tags.includes(searchTerm);
+            
+            if (matches || searchTerm === '') {
+                item.classList.remove('hidden');
+                visibleProjects.push(index);
+                visibleCount++;
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        
+        if (searchTerm === '') {
+            projectsResultsInfo.textContent = `Showing all ${projectItems.length} projects`;
+        } else {
+            projectsResultsInfo.textContent = `Found ${visibleCount} project${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+        }
+        
+        // Reset carousel position
+        projectCurrentIndex = 0;
+        updateProjectCarousel();
+    }
+    
+    function updateProjectCarousel() {
+        if (visibleProjects.length === 0) {
+            // Hide carousel controls if no items visible
+            prevProjectBtn.style.display = 'none';
+            nextProjectBtn.style.display = 'none';
+            return;
+        }
+        
+        prevProjectBtn.style.display = 'flex';
+        nextProjectBtn.style.display = 'flex';
+        
+        let visibleProj;
+        if (window.innerWidth >= 1024) {
+            visibleProj = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleProj = 2;
+        } else {
+            visibleProj = 1;
+        }
+        
+        const maxIndex = Math.max(0, visibleProjects.length - visibleProj);
+        projectCurrentIndex = Math.min(Math.max(0, projectCurrentIndex), maxIndex);
+        
+        // Calculate translateX based on visible items
+        const translateX = -(projectCurrentIndex * (100 / Math.min(visibleProj, visibleProjects.length)));
+        projectCarousel.style.transform = `translateX(${translateX}%)`;
+        
+        // Update button states
+        prevProjectBtn.disabled = projectCurrentIndex === 0;
+        nextProjectBtn.disabled = projectCurrentIndex >= maxIndex;
+    }
+    
+    // Event Listeners for Projects
+    projectsSearch.addEventListener('input', updateProjectsFilter);
+    
+    prevProjectBtn.addEventListener('click', () => {
+        if (visibleProjects.length === 0) return;
+        projectCurrentIndex = Math.max(0, projectCurrentIndex - 1);
+        updateProjectCarousel();
+    });
+    
+    nextProjectBtn.addEventListener('click', () => {
+        if (visibleProjects.length === 0) return;
+        let visibleProj;
+        if (window.innerWidth >= 1024) {
+            visibleProj = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleProj = 2;
+        } else {
+            visibleProj = 1;
+        }
+        const maxIndex = Math.max(0, visibleProjects.length - visibleProj);
+        projectCurrentIndex = Math.min(projectCurrentIndex + 1, maxIndex);
+        updateProjectCarousel();
+    });
+    
+    window.addEventListener('resize', updateProjectCarousel);
+    
+    // Initialize
+    updateProjectsFilter();
+}
+
+console.log("All JavaScript initialized successfully!");
+});
 </script>
+</body>
+</html>
 </body>
 </html>
