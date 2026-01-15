@@ -6,7 +6,6 @@
    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Certifications.png" width="300" />
     <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Projects.png" width="300" />
     <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Resume.png" width="300" />
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Contact%20Me.png" width="300" />
     <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Get%20In%20Touch.png" width="300" />
 </div>
 
