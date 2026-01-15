@@ -25,6 +25,11 @@
 [![Live Portfolio](https://img.shields.io/badge/🚀_Live_Portfolio_Website-F97316?style=for-the-badge&logo=vercel&logoColor=white)](https://willie-conway.github.io/Portfolio-Website/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white)](https://pages.github.com/)
 
+
+https://github.com/user-attachments/assets/d1ec2c5e-4b0a-411f-a26e-27ef32dca614
+
+
+
 ## 📊 Portfolio Highlights
 
 ### **Interactive Skills Dashboard**
