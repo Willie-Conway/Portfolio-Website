@@ -1,11 +1,14 @@
 # 📚 Willie Conway's Portfolio Website
 
-<p float="left">
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Portfolio.png" width="300" />
-    <img src="https://github.com/Willie-Conway/Portfolio-Website/blob/a8df07ad4cfa3c17a8ff64fd38fc18b319fc3d8f/assets/Portfolio_1.png" width="300" />
-    <!-- <img src="https://github.com/Willie-Conway/Portfolio-Website/blob/4d0c88844653e2807db03b04dc297bcd0481dbf5/assets/Portfolio_2.png" width="300" />
-    <img src="https://github.com/Willie-Conway/Portfolio-Website/blob/4d0c88844653e2807db03b04dc297bcd0481dbf5/assets/Portfolio_3.png" width="300" /> -->
-</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/About%20Me.png" width="300" />
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Skills.png" width="300" />
+   <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Certifications.png" width="300" />
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Projects.png" width="300" />
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Resume.png" width="300" />
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Contact%20Me.png" width="300" />
+    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Get%20In%20Touch.png" width="300" />
+</div>
 
 
 
