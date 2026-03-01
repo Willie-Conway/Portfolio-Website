@@ -1,14 +1,6 @@
 # 📚 Willie Conway's Portfolio Website
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/About%20Me.png" width="300" />
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Skills.png" width="300" />
-   <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Certifications.png" width="300" />
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Projects.png" width="300" />
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/My%20Resume.png" width="300" />
-    <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Get%20In%20Touch.png" width="300" />
-</div>
-
+![alt text](assets/Hacking.PNG)
 
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
