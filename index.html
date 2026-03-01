@@ -291,6 +291,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
 </head>
 <body>
 
+<<<<<<< HEAD
 <!-- Navigation -->
 <nav id="nav">
   <div class="container">
@@ -307,6 +308,204 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
       </div>
       <a href="https://drive.google.com/file/d/1xC99YB0WGOO4X0E5koKHvUz3Ja6Dv5py/view" target="_blank" class="nav-cta">Resume</a>
       <button class="hamburger" onclick="toggleMobile()"><i class="fas fa-bars fa-lg"></i></button>
+=======
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6 py-20">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6">Hi, I'm <span class="gold-text">Willie Conway</span></h1>
+                    <h2 class="text-3xl md:text-4xl font-semibold mb-6">Data Analyst | Software Engineer</h2>
+                    <p class="text-lg mb-8 text-gray-600 dark:text-gray-400">Transforming data into actionable insights and building robust software solutions to solve complex problems.</p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="px-6 py-3 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">Get In Touch</a>
+                        <a href="#projects" class="px-6 py-3 rounded-md border-2 border-gray-300 dark:border-gray-600 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">View Projects</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-600 shadow-lg">
+                        <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/IMG_7238.png" alt="Willie Conway" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-30"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">About <span class="gold-text">Me</span></h2>
+                <div class="w-20 h-1 gold-gradient mx-auto"></div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center">
+                    <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-600 shadow-lg">
+                        <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/IMG_7238.png" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="md:w-2/3 md:pl-12">
+                    <h3 class="text-2xl font-semibold mb-4">Who am I ?</h3>
+                    <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
+                        I'm Willie Conway, a veteran turned Data Analyst and Software Engineer with over 5 years of experience in transforming raw data into meaningful insights and developing scalable software solutions. My journey in tech began with a curiosity about how data can tell stories and how software can solve real-world problems.
+                    </p>
+                    <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
+                        I specialize in Python, SQL, and JavaScript, with expertise in data visualization, machine learning, and full-stack development. My approach combines analytical thinking with creative problem-solving to deliver impactful results.
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt gold-text mr-2"></i>
+                            <span>Beaufort, SC</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope gold-text mr-2"></i>
+                            <span>hire.willie.conway@gmail.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone gold-text mr-2"></i>
+                            <span>(843) 592-1746</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-graduation-cap gold-text mr-2"></i>
+                            <span>BSc Computer Science and Information Science</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-briefcase gold-text mr-2"></i>
+                            <span>5+ Years Experience</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-code gold-text mr-2"></i>
+                            <span>Data Analyst | Software Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+<section id="skills" class="py-20">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">My <span class="gold-text">Skills</span></h2>
+            <div class="w-20 h-1 gold-gradient mx-auto"></div>
+        </div>
+
+        <!-- Dual Charts Container -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+            
+            <!-- Left Chart: Skills Distribution -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-chart-pie gold-text mr-3"></i>
+                    Skills Distribution
+                </h3>
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <div class="w-full md:w-auto mb-4 md:mb-0">
+                        <label for="skillCategory" class="block text-sm font-medium mb-2">Select Skill Category:</label>
+                        <select id="skillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">All Categories</option>
+                            <option value="dataAnalysis">Data Analysis & BI</option>
+                            <option value="cicd">CI/CD & Automation</option>
+                            <option value="devTools">Dev & Tools</option>
+                            <option value="cloud">Cloud Platforms</option>
+                            <option value="mobile">Mobile Development</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="soft">Soft Skills</option>
+                            <option value="software">Software Development</option>
+                            <option value="dataEngineering">Data Engineering</option>
+                        </select>
+                    </div>
+                    <button id="animateChart" class="px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
+                        <i class="fas fa-play mr-2"></i> Animate Chart
+                    </button>
+                </div>
+                <div class="chart-container" style="height: 400px;">
+                    <canvas id="skillsPieChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Right Chart: Interactive Dashboard -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-chart-bar gold-text mr-3"></i>
+                    Skills Dashboard
+                </h3>
+                
+                <!-- Dashboard Controls -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="chartType" class="block text-sm font-medium mb-2">Chart Type:</label>
+                        <select id="chartType" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="line">Line Chart (Skills Growth)</option>
+                            <option value="bar">Bar Chart (Skill Comparison)</option>
+                            <option value="scatter">Scatter Plot (Skill vs Usage)</option>
+                            <option value="bubble">Bubble Chart (Skill Mastery)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dashboardSkillCategory" class="block text-sm font-medium mb-2">Skill Category:</label>
+                        <select id="dashboardSkillCategory" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="all">All Categories</option>
+                            <option value="dataAnalysis">Data Analysis</option>
+                            <option value="software">Software Dev</option>
+                            <option value="cloud">Cloud</option>
+                            <option value="devops">DevOps</option>
+                            <option value="mobile">Mobile Dev</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="dataEngineering">Data Engineering</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center mb-6">
+                    <button id="animateBtn" class="px-4 py-2 rounded-md gold-gradient text-white font-medium hover:shadow-lg transition-all">
+                        <i class="fas fa-play mr-2"></i> Animate Dashboard
+                    </button>
+                </div>
+                
+                <!-- Dashboard Canvas -->
+                <div class="chart-container" style="height: 400px;">
+                    <canvas id="dashboardChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Completion Metrics (Below both charts) -->
+        <div class="mt-8">
+            <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                <i class="fas fa-chart-line gold-text mr-3"></i>
+                Project Metrics
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Project Completion Rate</h4>
+                    <div class="text-3xl font-bold mb-2">92%</div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 92%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Over 70+ projects completed</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Avg. Project Duration</h4>
+                    <div class="text-3xl font-bold mb-2">18 <span class="text-sm">days</span></div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 75%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Down from 22 days last quarter</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h4 class="font-semibold text-lg gold-text mb-2">Skill Utilization</h4>
+                    <div class="text-3xl font-bold mb-2">87%</div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <div class="h-2 rounded-full gold-gradient" style="width: 87%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Of skills used in active projects</p>
+                </div>
+            </div>
+        </div>
+>>>>>>> 8d3eb5deb31a321e9e9e43bb8d148b527d5f8e4e
     </div>
   </div>
 </nav>
