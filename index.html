@@ -6,7 +6,8 @@
 <title>Willie Conway — Data Analyst & Software Engineer</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js moved to end of body — keeping it in <head> blocks parsing and
+     can cause DOMContentLoaded to throw before renderProjects/renderCerts run -->
 <style>
 :root {
   --gold: #C9A84C;
@@ -138,10 +139,7 @@ select:focus{border-color:var(--gold);}
 .search-bar input:focus{border-color:var(--gold);}
 .search-bar input::placeholder{color:var(--text-dimmer);}
 .search-info{text-align:center;font-size:0.7rem;color:var(--text-dimmer);letter-spacing:0.06em;margin-bottom:40px;min-height:20px;}
-.carousel-wrap{position:relative;}
-.carousel-overflow{overflow:hidden;}
-.carousel-track{display:flex;transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
-.cert-item{min-width:100%;padding:0 6px;}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .cert-card{background:var(--dark3);border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;transition:border-color 0.3s,transform 0.3s;}
 .cert-card:hover{border-color:var(--border);transform:translateY(-4px);}
 .cert-img-wrap{padding:28px;display:flex;justify-content:center;align-items:center;background:var(--dark4);min-height:140px;}
@@ -151,16 +149,9 @@ select:focus{border-color:var(--gold);}
 .cert-body p{font-size:0.7rem;color:var(--text-dim);margin-bottom:14px;line-height:1.6;}
 .cert-link{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:gap 0.2s;}
 .cert-link:hover{gap:10px;}
-.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--dark2);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;z-index:2;font-size:0.85rem;}
-.carousel-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);}
-.carousel-btn:disabled{opacity:0.25;cursor:not-allowed;}
-.carousel-btn.prev-btn{left:-22px;}
-.carousel-btn.next-btn{right:-22px;}
-
-/* Cert 3-column grid */
-.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-@media(max-width:900px){.certs-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.certs-grid{grid-template-columns:1fr;}}
+.cert-dots{display:flex;justify-content:center;gap:8px;margin-top:24px;}
+.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--border-dim);cursor:pointer;transition:all 0.2s;}
+.cert-dot.active{background:var(--gold);width:20px;border-radius:3px;}
 
 /* ── Projects ── */
 #projects{background:var(--dark);}
@@ -180,7 +171,6 @@ select:focus{border-color:var(--gold);}
 .proj-links{display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border-dim);}
 .proj-link{font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color 0.2s;}
 .proj-link:hover{color:var(--gold);}
-.proj-hidden{display:none;}
 
 /* ── Resume ── */
 #resume{background:var(--dark2);}
@@ -242,10 +232,8 @@ footer{border-top:1px solid var(--border-dim);padding:36px 0;}
 .footer-links a:hover{color:var(--gold);}
 
 /* ── Animations ── */
-.fade-in{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.fade-in.visible{opacity:1;transform:none;}
-
-/* ── View All ── */
+.sr{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.sr.vis{opacity:1;transform:none;}
 .view-all-wrap{text-align:center;margin-top:52px;}
 
 /* ── Responsive ── */
@@ -261,6 +249,9 @@ footer{border-top:1px solid var(--border-dim);padding:36px 0;}
   .contact-grid{grid-template-columns:1fr;}
   .projects-grid{grid-template-columns:repeat(2,1fr);}
 }
+@media(max-width:900px){
+  .certs-grid{grid-template-columns:repeat(2,1fr);}
+}
 @media(max-width:768px){
   .container{padding:0 20px;}
   section{padding:80px 0;}
@@ -274,19 +265,12 @@ footer{border-top:1px solid var(--border-dim);padding:36px 0;}
   .hero-stats{grid-template-columns:1fr 1fr;}
   .resume-sidebar{grid-template-columns:1fr;text-align:center;}
   .resume-photo{margin:0 auto;}
+  .certs-grid{grid-template-columns:1fr;}
 }
 
-/* Scroll reveal */
-.sr{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
-.sr.vis{opacity:1;transform:none;}
-
-/* Noise overlay for texture */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:1000;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-
-/* Pagination dots for certs */
-.cert-dots{display:flex;justify-content:center;gap:8px;margin-top:24px;}
-.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--border-dim);cursor:pointer;transition:all 0.2s;}
-.cert-dot.active{background:var(--gold);width:20px;border-radius:3px;}
+/* Noise overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;z-index:1000;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 </style>
 </head>
 <body>
@@ -327,13 +311,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
   <div class="container">
     <div class="hero-grid">
       <div>
-        <div class="hero-eyebrow">
-          <span class="label">Available for work</span>
-        </div>
-        <h1 class="hero-title display">
-          Willie<br>
-          <strong>Conway</strong>
-        </h1>
+        <div class="hero-eyebrow"><span class="label">Available for work</span></div>
+        <h1 class="hero-title display">Willie<br><strong>Conway</strong></h1>
         <p class="hero-sub">Veteran turned Data Analyst & Software Engineer. Transforming raw data into actionable insights and building robust software solutions to solve complex problems.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-primary">Get In Touch</a>
@@ -346,22 +325,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
           <div class="hero-photo-accent"></div>
         </div>
         <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="num">70+</div>
-            <div class="stat-label">Projects</div>
-          </div>
-          <div class="hero-stat">
-            <div class="num">5+</div>
-            <div class="stat-label">Yrs Exp</div>
-          </div>
-          <div class="hero-stat">
-            <div class="num">52</div>
-            <div class="stat-label">Certs</div>
-          </div>
-          <div class="hero-stat">
-            <div class="num">92%</div>
-            <div class="stat-label">Rate</div>
-          </div>
+          <div class="hero-stat"><div class="num">70+</div><div class="stat-label">Projects</div></div>
+          <div class="hero-stat"><div class="num">5+</div><div class="stat-label">Yrs Exp</div></div>
+          <div class="hero-stat"><div class="num">52</div><div class="stat-label">Certs</div></div>
+          <div class="hero-stat"><div class="num">92%</div><div class="stat-label">Rate</div></div>
         </div>
       </div>
     </div>
@@ -383,9 +350,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
     <div class="about-grid sr">
       <div class="about-photo">
         <img src="https://raw.githubusercontent.com/Willie-Conway/Portfolio-Website/refs/heads/main/assets/Profile%20Pic%202.png" alt="Willie Conway">
-        <div class="about-photo-label">
-          <span class="label">Beaufort, SC</span>
-        </div>
+        <div class="about-photo-label"><span class="label">Beaufort, SC</span></div>
       </div>
       <div class="about-content">
         <p class="lead">Veteran turned Data Analyst and Software Engineer with over 5 years of experience transforming raw data into meaningful insights and developing scalable software solutions.</p>
@@ -412,9 +377,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
       <h2 class="section-title display">My <em>Skills</em></h2>
       <div class="section-divider"></div>
     </div>
-
     <div class="skills-layout sr">
-      <!-- Chart 1: Pie/Distribution -->
       <div class="chart-card">
         <h3>Skills Distribution</h3>
         <p class="chart-desc">Proficiency across all categories</p>
@@ -435,7 +398,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
         </div>
         <div class="chart-wrap"><canvas id="skillsPieChart"></canvas></div>
       </div>
-      <!-- Chart 2: Dashboard -->
       <div class="chart-card">
         <h3>Skills Dashboard</h3>
         <p class="chart-desc">Growth trajectory & comparative analysis</p>
@@ -461,8 +423,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
         <div class="chart-wrap"><canvas id="dashboardChart"></canvas></div>
       </div>
     </div>
-
-    <!-- Metrics -->
     <div class="metrics-row sr">
       <div class="metric-card">
         <div class="label">Completion Rate</div>
@@ -494,19 +454,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
       <h2 class="section-title display">My <em>Certs</em></h2>
       <div class="section-divider"></div>
     </div>
-
     <div class="search-bar sr">
       <i class="fas fa-search"></i>
       <input type="text" id="certSearch" placeholder="Search by keyword: IBM, Google, Cloud, AI, Security…">
     </div>
-    <div class="search-info" id="certInfo">Loading certifications…</div>
-
-    <!-- Certs Grid (shown after search, paginated) -->
-    <div class="certs-grid sr" id="certsGrid">
-      <!-- Populated by JS -->
-    </div>
+    <div class="search-info" id="certInfo"></div>
+    <div class="certs-grid sr" id="certsGrid"></div>
     <div class="cert-dots" id="certDots"></div>
-
     <div class="view-all-wrap sr">
       <a href="https://www.credly.com/users/willieconway" target="_blank" class="btn-outline">
         <i class="fas fa-external-link-alt" style="margin-right:8px;"></i>View All on Credly
@@ -523,17 +477,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
       <h2 class="section-title display">My <em>Projects</em></h2>
       <div class="section-divider"></div>
     </div>
-
     <div class="search-bar sr" style="margin-bottom:12px;">
       <i class="fas fa-search"></i>
       <input type="text" id="projSearch" placeholder="Search: Dashboard, Analytics, React, Python, API…">
     </div>
     <div class="search-info" id="projInfo"></div>
-
-    <div class="projects-grid sr" id="projGrid">
-      <!-- Populated by JS -->
-    </div>
-
+    <div class="projects-grid sr" id="projGrid"></div>
     <div class="view-all-wrap sr">
       <a href="https://github.com/Willie-Conway?tab=repositories" target="_blank" class="btn-outline">
         <i class="fab fa-github" style="margin-right:8px;"></i>View All on GitHub
@@ -558,69 +507,47 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
         <div>
           <div class="resume-name">Willie Conway</div>
           <div class="resume-role">Data Analyst · Software Engineer</div>
-          <a href="https://drive.google.com/file/d/1xC99YB0WGOO4X0E5koKHvUz3Ja6Dv5py/view" target="_blank" class="resume-dl-btn primary">
-            <i class="fas fa-download"></i> Download Resume
-          </a>
-          <a href="https://drive.google.com/file/d/1B7w0bUkFY4vYY91TIR4P4ZQWm9zNRoRn/view" target="_blank" class="resume-dl-btn outline">
-            <i class="fas fa-download"></i> Download CV
-          </a>
+          <a href="https://drive.google.com/file/d/1xC99YB0WGOO4X0E5koKHvUz3Ja6Dv5py/view" target="_blank" class="resume-dl-btn primary"><i class="fas fa-download"></i> Download Resume</a>
+          <a href="https://drive.google.com/file/d/1B7w0bUkFY4vYY91TIR4P4ZQWm9zNRoRn/view" target="_blank" class="resume-dl-btn outline"><i class="fas fa-download"></i> Download CV</a>
         </div>
       </div>
       <div class="timeline sr">
         <div class="timeline-section">
-          <div class="timeline-section-title">
-            <i class="fas fa-briefcase"></i>
-            <h3>Experience</h3>
-          </div>
+          <div class="timeline-section-title"><i class="fas fa-briefcase"></i><h3>Experience</h3></div>
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">Freelance Data Analyst | Software Engineer</div>
-                  <div class="timeline-company">Self-Employed, Remote</div>
-                </div>
+                <div><div class="timeline-title">Freelance Data Analyst | Software Engineer</div><div class="timeline-company">Self-Employed, Remote</div></div>
                 <div class="timeline-date">2021 – Present</div>
               </div>
-              <p class="timeline-desc">Developed 70+ full-stack and data-driven applications using Python, React, SQL, and TensorFlow. Built predictive models and automation tools that improved workflows and data insights across client projects. Applied Git version control, CI/CD practices, and cloud platforms to streamline deployment.</p>
+              <p class="timeline-desc">Developed 70+ full-stack and data-driven applications using Python, React, SQL, and TensorFlow. Built predictive models and automation tools that improved workflows and data insights across client projects.</p>
             </div>
           </div>
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">Store Worker</div>
-                  <div class="timeline-company">Defense Commissary Agency, Beaufort, SC</div>
-                </div>
+                <div><div class="timeline-title">Store Worker</div><div class="timeline-company">Defense Commissary Agency, Beaufort, SC</div></div>
                 <div class="timeline-date">2012 – Present</div>
               </div>
-              <p class="timeline-desc">Analyzed sales and inventory data to increase stock accuracy by 30%. Built Excel-based forecasting tools to support inventory planning. Proposed store layout changes based on customer flow data, improving checkout speed by 50% and contributing to a 40% seasonal sales boost.</p>
+              <p class="timeline-desc">Analyzed sales and inventory data to increase stock accuracy by 30%. Built Excel-based forecasting tools to support inventory planning and contributed to a 40% seasonal sales boost.</p>
             </div>
           </div>
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">Criminal Justice IT Specialist (Intern)</div>
-                  <div class="timeline-company">Beaufort County Detention Center, Beaufort, SC</div>
-                </div>
+                <div><div class="timeline-title">Criminal Justice IT Specialist (Intern)</div><div class="timeline-company">Beaufort County Detention Center, Beaufort, SC</div></div>
                 <div class="timeline-date">2018</div>
               </div>
-              <p class="timeline-desc">Assisted in modernizing internal digital systems and reducing downtime by 20%. Conducted security audits and delivered user training on updated system interfaces.</p>
+              <p class="timeline-desc">Assisted in modernizing internal digital systems, reducing downtime by 20%. Conducted security audits and delivered user training.</p>
             </div>
           </div>
         </div>
         <div class="timeline-section">
-          <div class="timeline-section-title">
-            <i class="fas fa-graduation-cap"></i>
-            <h3>Education</h3>
-          </div>
+          <div class="timeline-section-title"><i class="fas fa-graduation-cap"></i><h3>Education</h3></div>
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">BSc Computer Science & Information Science</div>
-                  <div class="timeline-company">Park University</div>
-                </div>
+                <div><div class="timeline-title">BSc Computer Science & Information Science</div><div class="timeline-company">Park University</div></div>
                 <div class="timeline-date">2015 - 2020</div>
               </div>
             </div>
@@ -628,10 +555,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">BSc Criminal Justice Administration</div>
-                  <div class="timeline-company">Park University</div>
-                </div>
+                <div><div class="timeline-title">BSc Criminal Justice Administration</div><div class="timeline-company">Park University</div></div>
                 <div class="timeline-date">2013 - 2018</div>
               </div>
             </div>
@@ -639,10 +563,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
           <div class="timeline-item">
             <div class="timeline-inner">
               <div class="timeline-header">
-                <div>
-                  <div class="timeline-title">52 Professional Certifications</div>
-                  <div class="timeline-company">IBM, Google, Meta, Microsoft & More</div>
-                </div>
+                <div><div class="timeline-title">52 Professional Certifications</div><div class="timeline-company">IBM, Google, Meta, Microsoft & More</div></div>
                 <div class="timeline-date">2020 – Present</div>
               </div>
             </div>
@@ -714,604 +635,145 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:0.025;
     <div class="footer-inner">
       <div class="footer-copy">© 2025 Willie Conway. All rights reserved.</div>
       <div class="footer-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a>
+        <a href="#projects">Projects</a><a href="#contact">Contact</a>
       </div>
     </div>
   </div>
 </footer>
 
+<!-- Chart.js loaded HERE (end of body) so it never blocks DOM rendering -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-// ── Nav scroll effect ──
+// ══════════════════════════════════════════════════════
+// NAV + MOBILE
+// ══════════════════════════════════════════════════════
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
 });
-
-// ── Mobile menu ──
 function toggleMobile(){
   document.getElementById('mobileNav').classList.toggle('open');
 }
 
-// ── Scroll reveal ──
-const sr=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');}});
+// ══════════════════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════════════════
+const srObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
 },{threshold:0.12});
-document.querySelectorAll('.sr').forEach(el=>sr.observe(el));
+document.querySelectorAll('.sr').forEach(el=>srObs.observe(el));
 
 // ── Metric bar animation ──
-const mobs=new IntersectionObserver(entries=>{
+const mObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.querySelectorAll('.metric-fill').forEach(f=>{
-        setTimeout(()=>{f.style.width=f.dataset.width;},200);
+        setTimeout(()=>{ f.style.width = f.dataset.width; },200);
       });
     }
   });
 },{threshold:0.4});
-document.querySelectorAll('.metrics-row').forEach(el=>mobs.observe(el));
+document.querySelectorAll('.metrics-row').forEach(el=>mObs.observe(el));
 
-// ── COMPREHENSIVE CERTIFICATIONS DATA FROM FIRST WEBSITE ──
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
 const CERTS = [
-  // IBM Data Analyst Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/462503e9-d76e-47ce-b82e-1d7df909ba70/Professional_Certificate_-_Data_Analyst.png',title:'IBM Data Analyst Professional Certificate',desc:'Professional certificate in data analysis and visualization',url:'https://www.credly.com/badges/3388a299-f9ac-48f2-a586-32ffe7c06b0f',kw:'IBM,Data Analyst,Data Analysis,Data Visualization,Professional Certificate'},
-  
-  // IBM Data Science Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/42ce4209-8839-431a-9046-f2ce2e72e04b/Coursera_20Data_20Science_20Professional_20Certificate.png',title:'IBM Data Science Professional Certificate',desc:'Professional certificate in data science and machine learning',url:'https://www.credly.com/badges/649dd74e-574e-49d5-ba4c-b6a3fb21e423',kw:'IBM,Data Science,Machine Learning,Professional Certificate'},
-  
-  // IBM Full Stack Software Developer Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/17add978-0cea-40e8-8832-9492fc7c260b/Coursera_20Full_20Stack_20Software_20Developer_20Prof_20Cert_20V5.png',title:'IBM Full Stack Software Developer Professional Certificate',desc:'Professional certificate in software development and full stack web development',url:'https://www.credly.com/badges/7084534d-1d53-4f57-8a7f-7bbbc50b0cca',kw:'IBM,Full Stack,Software Developer,Web Development,Professional Certificate'},
-  
-  // IBM DevOps and Software Engineering Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/d9fe3b97-3f2f-4b1d-a295-16c92ae855bc/image.png',title:'IBM DevOps and Software Engineering Professional Certificate',desc:'Professional certificate in DevOps and software engineering',url:'https://www.credly.com/badges/7f9fcc9e-b4c1-4b2a-8ff2-fb63e0bfd2dc',kw:'IBM,DevOps,Software Engineering,Professional Certificate'},
-  
-  // IBM Business Intelligence (BI) Analyst Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/63cbaa7d-9dc1-497a-84be-50dcef1d848b/Coursera_20Business_20Intelligence_20BI_20Analyst_20Professional_20Certificate.png',title:'IBM Business Intelligence (BI) Analyst Professional Certificate',desc:'Professional certificate in business intelligence and data analysis',url:'https://www.credly.com/badges/82824b20-7d2c-463e-8966-2dec1e44783e',kw:'IBM,Business Intelligence,BI Analyst,Data Analysis,Professional Certificate'},
-  
-  // IBM Data Engineering Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/31a24eb9-5fb6-4d3b-b2be-c286c3cc3489/Coursera_20Data_20Engineering_20Professional_20Cert_20V3.png',title:'IBM Data Engineering Professional Certificate',desc:'Professional certificate in data engineering and data management',url:'https://www.credly.com/badges/e8ad6e4f-8a68-4d3a-8841-2ba88d877aa9',kw:'IBM,Data Engineering,Data Management,Professional Certificate'},
-  
-  // Data Management Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/993fbdea-8514-4488-bd0e-c67cdd4c10ff/Coursera_20Data_20Management_20Professional_20Certificate.png',title:'Data Management Professional Certificate',desc:'Professional certificate in data management and data governance',url:'https://www.credly.com/badges/2c241b92-e553-4826-929d-ee85d9b8db90',kw:'Data Management,Professional Certificate'},
-  
-  // IBM Cybersecurity Analyst Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/2f194645-bbf5-4f75-a48c-aba81d29e592/Coursera_20IBM_20Cybersecurity_20Analyst_20Professional_20Certificate_20V2.png',title:'IBM Cybersecurity Analyst Professional Certificate',desc:'Professional certificate in cybersecurity and information security analysis',url:'https://www.credly.com/badges/d0becaff-9e45-4122-b3fa-8ea5bfdb89c7',kw:'IBM,Cybersecurity,Security Analyst,Information Security,Professional Certificate'},
-  
-  // Meta Data Analyst Professional Certificate
   {img:'https://images.credly.com/size/340x340/images/4dd82f2c-e7eb-4b64-bb24-f4351f596220/image.png',title:'Meta Data Analyst Professional Certificate',desc:'Professional certificate in data analysis and data visualization',url:'https://www.credly.com/badges/7e7aeff8-5af2-4123-abb3-0e743a733451',kw:'Meta,Data Analyst,Data Analysis,Data Visualization,Professional Certificate'},
-  
-  // Meta Generalist Software Engineer Certificate
   {img:'https://images.credly.com/size/340x340/images/b9f5054b-0e86-426a-8e8c-5e304f256ea8/image.png',title:'Meta Generalist Software Engineer Certificate',desc:'Professional certificate in software engineering and full stack development',url:'https://www.credly.com/badges/9cc328b1-1194-4b63-8c90-ea80ab8d5030',kw:'Meta,Software Engineer,Generalist,Full Stack,Professional Certificate'},
-  
-  // Meta Full-Stack Engineer Certificate
-  {img:'https://images.credly.com/size/340x340/images/997d4586-e7b2-4174-9c76-5c7304953e2c/image.png',title:'Meta Full-Stack Engineer Certificate',desc:'Professional certificate in front-end development and back-end development',url:'https://www.credly.com/badges/c55e447b-55a4-42ab-acd0-bf5588577c80',kw:'Meta,Full Stack,Engineer,Front-end,Back-end,Professional Certificate'},
-  
-  // Google Cloud Data Analytics Certificate
+  {img:'https://images.credly.com/size/340x340/images/997d4586-e7b2-4174-9c76-5c7304953e2c/image.png',title:'Meta Full-Stack Engineer Certificate',desc:'Professional certificate in front-end and back-end development',url:'https://www.credly.com/badges/c55e447b-55a4-42ab-acd0-bf5588577c80',kw:'Meta,Full Stack,Engineer,Front-end,Back-end,Professional Certificate'},
   {img:'https://images.credly.com/size/340x340/images/f53c1eb6-d93d-4b9e-ae34-922046f6b15c/image.png',title:'Google Cloud Data Analytics Certificate',desc:'Professional certificate in data analytics and cloud computing',url:'https://www.credly.com/badges/71be0f87-60fe-4989-a7d1-cf4bc9fc175f',kw:'Google,Cloud,Data Analytics,Cloud Computing,Professional Certificate'},
-  
-  // Google Cloud Cybersecurity Certificate
   {img:'https://images.credly.com/size/340x340/images/505080ad-3731-4b1d-98df-347655a45750/image.png',title:'Google Cloud Cybersecurity Certificate',desc:'Professional certificate in cybersecurity and cloud security',url:'https://www.credly.com/badges/960c8d12-990f-437c-ae30-457ef2f3d97a',kw:'Google,Cloud,Cybersecurity,Security,Cloud Security,Professional Certificate'},
-  
-  // Google Cloud Computing Foundations Certificate
-  {img:'https://images.credly.com/size/340x340/images/4dda8ae4-99ee-476c-bca3-6f0adbab42fe/image.png',title:'Google Cloud Computing Foundations Certificate',desc:'Professional certificate in cloud computing and Google Cloud Platform (GCP) fundamentals',url:'https://www.credly.com/badges/9018b0aa-6168-4c5d-a2e1-d3464236c563',kw:'Google,Cloud,Computing,Foundations,GCP,Professional Certificate'},
-  
-  // Microsoft Azure Security Engineer Associate
-  {img:'https://images.credly.com/size/340x340/images/65ba3380-37b4-4e51-bc15-472700ad06b8/blob',title:'Microsoft Azure Security Engineer Associate (AZ-500)',desc:'Professional certificate in cloud security and Microsoft Azure platform administration',url:'https://www.credly.com/badges/fadc832f-63e6-4e0d-9db7-8c81021e064e',kw:'Microsoft,Azure,Security,Engineer,Cloud Security,Professional Certificate'},
-  
-  // Microsoft Power BI Data Analyst
+  {img:'https://images.credly.com/size/340x340/images/4dda8ae4-99ee-476c-bca3-6f0adbab42fe/image.png',title:'Google Cloud Computing Foundations Certificate',desc:'Professional certificate in cloud computing and GCP fundamentals',url:'https://www.credly.com/badges/9018b0aa-6168-4c5d-a2e1-d3464236c563',kw:'Google,Cloud,Computing,Foundations,GCP,Professional Certificate'},
+  {img:'https://images.credly.com/size/340x340/images/65ba3380-37b4-4e51-bc15-472700ad06b8/blob',title:'Microsoft Azure Security Engineer Associate (AZ-500)',desc:'Professional certificate in cloud security and Microsoft Azure administration',url:'https://www.credly.com/badges/fadc832f-63e6-4e0d-9db7-8c81021e064e',kw:'Microsoft,Azure,Security,Engineer,Cloud Security,Professional Certificate'},
   {img:'https://images.credly.com/size/340x340/images/a8bb8375-f317-45e1-98b0-a81fb633d995/blob',title:'Microsoft Power BI Data Analyst Professional Certificate',desc:'Professional certificate in data analysis and data visualization',url:'https://www.credly.com/badges/8d0b61dc-0a26-412b-a5f2-c29b4502a984',kw:'Microsoft,Power BI,Data Analyst,Data Visualization,Professional Certificate'},
-  
-  // Microsoft Cybersecurity Analyst
   {img:'https://images.credly.com/size/340x340/images/5fe51375-a8b4-4f7e-91e3-f80452a1383d/blob',title:'Microsoft Cybersecurity Analyst Professional Certificate',desc:'Professional certificate in cybersecurity and network defense',url:'https://www.credly.com/badges/639cc7d4-d372-4aa8-8385-5a54beb06315',kw:'Microsoft,Cybersecurity,Security Analyst,Network Defense,Professional Certificate'},
-  
-  // Data Architecture Professional Certificate
   {img:'https://images.credly.com/size/680x680/images/467ec134-fc13-4f4d-ba1a-f4b8d97b9a86/Coursera_20Data_20Architecture.png',title:'Data Architecture Professional Certificate',desc:'Professional certificate in data architecture and database design',url:'https://www.credly.com/badges/d013512e-eaa2-4fc3-9cce-dfa56eab4154',kw:'Data Architecture,Database Design,Data Modeling,Professional Certificate'},
-  
-  // IBM AI Engineering Professional Certificate
   {img:'https://images.credly.com/size/680x680/images/fa4ad241-cbb4-4330-9327-32b9696919fe/Coursera_20AI_20Engineering_20Professional_20Certificate.png',title:'IBM AI Engineering Professional Certificate',desc:'Professional certificate in artificial intelligence and machine learning engineering',url:'https://www.credly.com/badges/f87e6fb1-91bd-4f93-bcd2-d9c8da8ab6fc',kw:'IBM,AI,Artificial Intelligence,Machine Learning,Professional Certificate'},
-  
-  // IBM AI Product Manager
   {img:'https://images.credly.com/size/680x680/images/78f21240-2d05-47aa-86f1-3b0658233f6f/Coursera_20IBM_20AI_20Product_20Manager_20Professional_20Certificate.png',title:'IBM AI Product Manager Professional Certificate',desc:'Professional certificate in AI product management and strategy',url:'https://www.credly.com/badges/01b8be0f-d95a-480e-8edc-b4f3b714b597',kw:'IBM,AI,Product Manager,Artificial Intelligence,Professional Certificate'},
-  
-  // IBM Applied DevOps Engineering
   {img:'https://images.credly.com/size/680x680/images/c0011b4e-a5cd-4263-b62e-06a2a80ae173/Coursera_20IBM_20Applied_20DevOps_20Engineering_20Prof_20Cert.png',title:'IBM Applied DevOps Engineering Professional Certificate',desc:'Professional certificate in DevOps engineering and continuous integration',url:'https://www.credly.com/badges/c399a378-7723-46aa-93b3-9eef4ee6c9d9',kw:'IBM,DevOps,Engineering,CI/CD,Professional Certificate'},
-  
-  // IBM Back-End Development
   {img:'https://images.credly.com/size/680x680/images/5aa05f53-1a60-4913-bf7e-e356f34bdb7e/image.png',title:'IBM Back-End Development Professional Certificate',desc:'Professional certificate in back-end development and server-side programming',url:'https://www.credly.com/badges/9b5a7513-04ab-4915-a88b-00e46cec3101',kw:'IBM,Back-End,Development,Server-side,Professional Certificate'},
-  
-  // IBM Back-end JavaScript Developer
   {img:'https://images.credly.com/size/680x680/images/d237e3c3-4288-49ee-b084-a68c13eca713/image.png',title:'IBM Back-end JavaScript Developer Professional Certificate',desc:'Professional certificate in JavaScript back-end development and Node.js',url:'https://www.credly.com/badges/36a21fe5-4e4c-4565-a11b-e653f11c14b6',kw:'IBM,JavaScript,Back-End,Node.js,Professional Certificate'},
-  
-  // IBM Data Analytics with Excel and R
-  {img:'https://images.credly.com/size/680x680/images/eb8de36c-7062-409c-bb4d-76743cb106c0/image.png',title:'IBM Data Analytics with Excel and R Professional Certificate',desc:'Professional certificate in data analytics using Excel and R programming',url:'https://www.credly.com/badges/a8d5a7d3-d167-40d2-9728-0750dedb9b4f',kw:'IBM,Data Analytics,Excel,R,Statistical Analysis,Professional Certificate'},
-  
-  // IBM Data Warehouse Engineer
+  {img:'https://images.credly.com/size/680x680/images/eb8de36c-7062-409c-bb4d-76743cb106c0/image.png',title:'IBM Data Analytics with Excel and R Professional Certificate',desc:'Professional certificate in data analytics using Excel and R',url:'https://www.credly.com/badges/a8d5a7d3-d167-40d2-9728-0750dedb9b4f',kw:'IBM,Data Analytics,Excel,R,Statistical Analysis,Professional Certificate'},
   {img:'https://images.credly.com/size/680x680/images/7af512b2-3290-43b8-867b-0d4352b1927a/image.png',title:'IBM Data Warehouse Engineer Professional Certificate',desc:'Professional certificate in data warehouse engineering and ETL processes',url:'https://www.credly.com/badges/810b85e1-ea29-475b-aad7-6934e8e2e29e',kw:'IBM,Data Warehouse,ETL,Data Engineering,Professional Certificate'},
-  
-  // IBM Ethical Hacking
   {img:'https://images.credly.com/size/680x680/images/217f980f-e87a-4d64-866d-bd37aee2a1f2/IBM_20Ethical_20Hacking_20with_20Open_20Source_20Tools_20Professional_20Certificate.png',title:'IBM Ethical Hacking with Open-Source Tools Professional Certificate',desc:'Professional certificate in ethical hacking and penetration testing',url:'https://www.credly.com/badges/1672acbb-0e7f-48cf-819c-6af9d69ee4c3',kw:'IBM,Ethical Hacking,Cybersecurity,Pentesting,Professional Certificate'},
-  
-  // IBM Front-End Developer
   {img:'https://images.credly.com/size/680x680/images/e646f624-ca3d-4917-9e90-16a051497bdb/image.png',title:'IBM Front-End Developer Professional Certificate',desc:'Professional certificate in front-end web development',url:'https://www.credly.com/badges/83dc4ec7-60ad-4d5f-aa6d-a418ed953e10',kw:'IBM,Front-End,Developer,Web Development,Professional Certificate'},
-  
-  // IBM Full-Stack JavaScript Developer
   {img:'https://images.credly.com/size/680x680/images/ff8f2956-43b1-47d1-abba-1db32724b24b/image.png',title:'IBM Full-Stack JavaScript Developer Professional Certificate',desc:'Professional certificate in full-stack JavaScript development',url:'https://www.credly.com/badges/73391a0a-b7ed-4b30-9671-fe97d58c42cb',kw:'IBM,JavaScript,Full Stack,Web Development,Professional Certificate'},
-  
-  // IBM Generative AI Engineering
   {img:'https://images.credly.com/size/680x680/images/468eaf1a-197c-44e2-9bd1-2f75bb7b5feb/Coursera_20IBM_20Generative_20AI_20Engineering_20Prof_20Cert.png',title:'IBM Generative AI Engineering Professional Certificate',desc:'Professional certificate in generative AI and large language models',url:'https://www.credly.com/badges/4a2fa5ca-03c1-4520-8504-274380f4745f',kw:'IBM,Generative AI,AI Engineering,LLM,Professional Certificate'},
-  
-  // IBM iOS and Android Mobile App Developer
   {img:'https://images.credly.com/size/680x680/images/b5fd5ac3-7dfe-44b2-8fa0-2c2de0a553b0/Coursera_20IBM_20iOS_20and_20Android_20Mobile_20App_20Dev_20Prof_20Cert.png',title:'IBM iOS and Android Mobile App Developer Professional Certificate',desc:'Professional certificate in mobile app development for iOS and Android',url:'https://www.credly.com/badges/634c33c6-fa70-431e-b11c-07f5e1223893',kw:'IBM,Mobile App,Developer,iOS,Android,Professional Certificate'},
-  
-  // IBM Java Developer
   {img:'https://images.credly.com/size/680x680/images/3e3454d5-8832-41dd-b67f-3089617e9bf1/IBM_20Java_20Developer_20Professional_20Certificate.png',title:'IBM Java Developer Professional Certificate',desc:'Professional certificate in Java programming and software development',url:'https://www.credly.com/badges/93af1a4f-2390-4fc1-88c2-7660a8237c48',kw:'IBM,Java,Developer,Programming,Professional Certificate'},
-  
-  // IBM Machine Learning
   {img:'https://images.credly.com/size/680x680/images/d4f5ad79-2eea-4c8b-802d-efc2b6504879/image.png',title:'IBM Machine Learning Professional Certificate',desc:'Professional certificate in machine learning and predictive analytics',url:'https://www.credly.com/badges/faf994d1-9e51-4d06-b351-6f8c625cafa1',kw:'IBM,Machine Learning,AI,Data Science,Professional Certificate'},
-  
-  // IBM Product Manager
   {img:'https://images.credly.com/size/680x680/images/b7fdf289-033a-41c4-b009-8326592da4e5/Coursera_20IBM_20Product_20Manager_20Professional_20Certificate.png',title:'IBM Product Manager Professional Certificate',desc:'Professional certificate in product management and strategy',url:'https://www.credly.com/badges/410aba81-3908-4e05-9023-b2c48b12cd33',kw:'IBM,Product Manager,Product Strategy,Professional Certificate'},
-  
-  // IBM Product Owner
   {img:'https://images.credly.com/size/680x680/images/e8574425-fdd3-4622-b452-d2a23b0f1551/IBM_20Product_20Owner_20Professional_20Certificate.png',title:'IBM Product Owner Professional Certificate',desc:'Professional certificate in product ownership and agile methodologies',url:'https://www.credly.com/badges/8b8d31df-15ff-4d94-8fef-a8ddd53a3537',kw:'IBM,Product Owner,Agile,Scrum,Professional Certificate'},
-  
-  // IBM RAG and Agentic AI
   {img:'https://images.credly.com/size/680x680/images/b2a81c72-1b87-403e-8357-e33bc87b496b/IBM_20RAG_20and_20Agentic_20AI_20Professional_20Certificate.png',title:'IBM RAG and Agentic AI Professional Certificate',desc:'Professional certificate in RAG systems and agentic AI architectures',url:'https://www.credly.com/badges/aaec5c0b-4010-4ac1-93f3-0c6827763b9a',kw:'IBM,RAG,Agentic AI,AI Systems,Professional Certificate'},
-  
-  // IBM Systems Analyst
   {img:'https://images.credly.com/size/680x680/images/88924342-962a-4e04-9d76-940cd6102d69/IBM_20Systems_20Analyst_20Professional_20Certificate_20.png',title:'IBM Systems Analyst Professional Certificate',desc:'Professional certificate in systems analysis and business requirements',url:'https://www.credly.com/badges/a201ad53-a068-48c3-9c3d-7e540e261456',kw:'IBM,Systems Analyst,Business Analysis,IT,Professional Certificate'},
-  
-  // IBM UI/UX Designer
   {img:'https://images.credly.com/size/680x680/images/aaeca6e4-a59a-418b-ba10-63d8e71891f7/IBM_20UI_20UX_20Designer_20Professional_20Certificate.png',title:'IBM UI/UX Designer Professional Certificate',desc:'Professional certificate in user interface and user experience design',url:'https://www.credly.com/badges/994e754a-e211-4273-b63e-848bf2c16acf',kw:'IBM,UI,UX,Design,User Experience,Professional Certificate'},
-  
-  // SAS Advanced Programmer
   {img:'https://images.credly.com/size/680x680/images/08c4ae08-7376-4aad-a402-1a4b1f1a8f6b/image.png',title:'SAS Advanced Programmer Certificate',desc:'Professional certificate in advanced SAS programming and statistical analysis',url:'https://www.credly.com/badges/5e76b10b-8111-4015-8ff4-a34cbd4972aa',kw:'SAS,Advanced,Programmer,Statistical Analysis,Professional Certificate'},
-  
-  // IBM AI Developer
   {img:'https://images.credly.com/size/680x680/images/70675aed-31be-4c30-add7-b99905a34005/image.png',title:'IBM AI Developer Professional Certificate',desc:'Professional certificate in AI development and implementation',url:'https://www.credly.com/badges/7f86fd6b-0ecc-4b6b-8816-8eb48d6179d3',kw:'IBM,AI,Developer,Artificial Intelligence,Professional Certificate'},
-  
-  // IBM Business Analyst
   {img:'https://images.credly.com/size/680x680/images/77c3990a-0aa2-4337-9e10-15cefa56a343/blob',title:'IBM Business Analyst Professional Certificate',desc:'Professional certificate in business analysis and requirements gathering',url:'https://www.credly.com/badges/97addfd1-d903-43f9-a506-e2b82477049d',kw:'IBM,Business Analyst,Requirements Analysis,Professional Certificate'},
-  
-  // IBM Deep Learning with PyTorch, Keras and Tensorflow
   {img:'https://images.credly.com/size/680x680/images/973d7ca2-c74e-4f2c-8be8-80b32bbe18f3/Coursera_20IBM_20Deep_20Learning_20with_20PyTorch_20Keras_20and_20Tensorflow_20Prof_20Cert.png',title:'IBM Deep Learning with PyTorch, Keras and Tensorflow Professional Certificate',desc:'Professional certificate in deep learning frameworks and neural networks',url:'https://www.credly.com/badges/590dfcf0-d945-4a35-9ecc-416bab779a30',kw:'IBM,Deep Learning,PyTorch,Keras,Tensorflow,Professional Certificate'},
-  
-  // IBM IT Project Manager
   {img:'https://images.credly.com/size/680x680/images/bcc43579-bcba-44ed-a272-61ef537e33e7/image.png',title:'IBM IT Project Manager Professional Certificate',desc:'Professional certificate in IT project management and leadership',url:'https://www.credly.com/badges/15cb4f48-d54e-4385-a656-490fe562fe25',kw:'IBM,IT,Project Manager,Project Management,Professional Certificate'},
-  
-  // IBM IT Scrum Master
   {img:'https://images.credly.com/size/680x680/images/0df7b794-acb5-4cb4-bdce-f17217197a3d/image.png',title:'IBM IT Scrum Master Professional Certificate',desc:'Professional certificate in Scrum mastery and agile project management',url:'https://www.credly.com/badges/f6153b21-24d5-4ce0-b9a0-d4ded1db3166',kw:'IBM,IT,Scrum Master,Agile,Professional Certificate'},
-  
-  // IBM IT Support
   {img:'https://images.credly.com/size/680x680/images/9db3be28-e7e7-4162-8baa-667d59230bfd/image.png',title:'IBM IT Support Professional Certificate',desc:'Professional certificate in IT support and technical troubleshooting',url:'https://www.credly.com/badges/7439fdcb-70f1-4725-80f2-c6708649800b',kw:'IBM,IT Support,Technical Support,Professional Certificate'},
-  
-  // Microsoft UX Design
   {img:'https://images.credly.com/size/680x680/images/3980a6e2-d66f-477a-943a-5c573d3ade0c/blob',title:'Microsoft UX Design Professional Certificate',desc:'Professional certificate in user experience design and research',url:'https://www.credly.com/badges/e3b714f9-a1bd-4b34-a56d-2693ebaaac6a',kw:'Microsoft,UX,Design,User Experience,Professional Certificate'},
-  
-  // Meta Android Developer
   {img:'https://images.credly.com/size/680x680/images/c1cf3f71-31a4-4a10-a88f-f2ab02593d6c/image.png',title:'Meta Android Developer Certificate',desc:'Professional certificate in Android mobile app development',url:'https://www.credly.com/badges/f3f7bf81-04c3-4fdd-a619-54a1ac8c62ba',kw:'Meta,Android,Developer,Mobile App,Professional Certificate'},
-  
-  // Meta Back-End Developer
   {img:'https://images.credly.com/size/680x680/images/4d81763c-b917-4ab9-92be-103af95c0a21/image.png',title:'Meta Back-End Developer Certificate',desc:'Professional certificate in back-end development and server architecture',url:'https://www.credly.com/badges/03f2a505-88ca-4700-8dd7-36cd0d9f86ea',kw:'Meta,Back-End,Developer,Server-side,Professional Certificate'},
-  
-  // Meta Database Engineer
   {img:'https://images.credly.com/size/680x680/images/024324c7-4d4c-4008-8db7-01e0d4222126/image.png',title:'Meta Database Engineer Certificate',desc:'Professional certificate in database engineering and management',url:'https://www.credly.com/badges/c2c600d8-f3f7-44de-b989-c2394b9b7e3e',kw:'Meta,Database,Engineer,SQL,Professional Certificate'},
-  
-  // Meta Front-End Developer
   {img:'https://images.credly.com/size/680x680/images/e91ed0b0-842b-417f-8d2f-b07535febdda/image.png',title:'Meta Front-End Developer Certificate',desc:'Professional certificate in front-end web development',url:'https://www.credly.com/badges/3dfdda28-1ca9-4ba1-af7a-2ec865eee674',kw:'Meta,Front-End,Developer,Web Development,Professional Certificate'},
-  
-  // Meta iOS Developer
   {img:'https://images.credly.com/size/680x680/images/cc2a62dd-ab98-4ae6-a6a7-48de96672ff8/image.png',title:'Meta iOS Developer Certificate',desc:'Professional certificate in iOS mobile app development',url:'https://www.credly.com/badges/a1ad7582-aa30-4a90-a4ca-682abb850aef',kw:'Meta,iOS,Developer,Mobile App,Professional Certificate'},
-  
-  // IBM Business Intelligence (BI) Analyst Professional Certificate (V3)
-  {img:'https://images.credly.com/size/680x680/images/a7c80aaf-4bbb-420b-bbd5-4eb655b8530b/Business_20Intelligence_20BI_20Analyst_20Professional_20Certificate_20V3.png',title:'IBM Business Intelligence (BI) Analyst Professional Certificate (V3)',desc:'Professional certificate in business intelligence and data analytics',url:'https://www.credly.com/badges/3be674d5-a9d0-472f-b752-483c1065a81f',kw:'IBM,Business Intelligence,BI,Data Analysis,SQL,Tableau,Cognos,Professional Certificate'}
+  {img:'https://images.credly.com/size/680x680/images/a7c80aaf-4bbb-420b-bbd5-4eb655b8530b/Business_20Intelligence_20BI_20Analyst_20Professional_20Certificate_20V3.png',title:'IBM Business Intelligence (BI) Analyst Professional Certificate (V3)',desc:'Professional certificate in business intelligence and data analytics',url:'https://www.credly.com/badges/3be674d5-a9d0-472f-b752-483c1065a81f',kw:'IBM,Business Intelligence,BI,Data Analysis,SQL,Tableau,Cognos,Professional Certificate'},
 ];
 
-// ── COMPREHENSIVE PROJECTS DATA FROM FIRST WEBSITE ──
 const PROJECTS = [
-  // Project 1: Global Superstore Data Modeling & Dashboard
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Global-Superstore-Data-Modeling-Analysis-Project/b6407dbc539e01b84efd39112e01c3ccc3082c06/Data%20Modeling%20Project/Data%20Modeling%20Project/Screenshots/Sales%20in%20USA.png',
-    title: 'Global Superstore Data Modeling & Dashboard',
-    badge: 'Data Engineering',
-    desc: 'End-to-end data engineering project: Designed ER diagram & star schema in MySQL, then built interactive Tableau dashboard for retail sales analysis across 50+ US states.',
-    tags: ['MySQL', 'Tableau', 'Data Modeling', 'ER Diagram', 'Star Schema', 'SQL'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://public.tableau.com/app/profile/willie.conway2396/viz/GlobalSuperStore_17308735736410/USASalesandProfits' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Global-Superstore-Data-Modeling-Analysis-Project' }
-    ],
-    kw: 'Data Modeling,MySQL,Database Design,Star Schema,Tableau,Dashboard,Retail Analytics,SQL,Data Engineering,ETL,Data Warehousing'
-  },
-  
-  // Project 2: World Happiness Report Dashboard
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/World-Happiness-Report-Analysis-Capstone-Project/refs/heads/main/World-Happiness-Report-Tableau/Screenshots/Dashboard2_GDP_Effect.png',
-    title: 'World Happiness Report Dashboard',
-    badge: 'Tableau',
-    desc: 'Interactive BI dashboard analyzing global happiness patterns across 150+ countries with 4 comprehensive dashboards.',
-    tags: ['Tableau', 'Data Visualization', 'Business Intelligence', 'Dashboard Design', 'Data Storytelling', 'Global Analysis'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://public.tableau.com/app/profile/willie.conway2396/viz/WorldHappinessReport_17379615647750/Story1' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/World-Happiness-Report-Analysis-Capstone-Project' }
-    ],
-    kw: 'Tableau,Data Visualization,BI,Dashboard,Healthcare Analytics,World Happiness Report,Data Storytelling'
-  },
-  
-  // Project 3: Little Lemon Database System
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Little-Lemon-Database-Capstone-Project/refs/heads/main/Screenshots/Cuisine%20and%20Yearly%20Profit%20Insights.png',
-    title: 'Little Lemon Database System',
-    badge: 'Database',
-    desc: 'Complete restaurant management database with MySQL design, Python integration, and Tableau dashboards for sales and cuisine analytics.',
-    tags: ['MySQL', 'Database Design', 'Python', 'Tableau', 'Data Modeling', 'SQL'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://public.tableau.com/app/profile/willie.conway2396/viz/LittleLemonDatabase/CuisineandYearlyProfitInsights' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Little-Lemon-Database-Capstone-Project' }
-    ],
-    kw: 'MySQL,Database Design,Python,Tableau,Data Modeling,ER Diagrams,SQL,Restaurant Analytics'
-  },
-  
-  // Project 4: House Sales Price Prediction
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project/refs/heads/main/Screenshots/Question%205.png',
-    title: 'House Sales Price Prediction',
-    badge: 'Machine Learning',
-    desc: 'Predicting residential real estate prices in King County with 79.8% accuracy using machine learning for investment decision-making in a Real Estate Investment Trust.',
-    tags: ['Python', 'Machine Learning', 'Pandas', 'Scikit-learn', 'Regression', 'Data Analysis'],
-    links: [
-      { label: 'Notebook', icon: 'fa-external-link-alt', url: 'https://github.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project/blob/520c66bf90ba63d8cff89b1b637d7f6847415fbd/House-Sales-Price-Prediction/House_Sales_in_King_Count_USA.ipynb' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project' }
-    ],
-    kw: 'Python,Machine Learning,Pandas,Scikit-learn,Real Estate Analytics,Predictive Modeling,Regression,Data Science'
-  },
-  
-  // Project 5: Customer Analytics Dashboard
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Interactive-Customer-Analytics-Dashboard/refs/heads/main/Interactive%20Customer%20Analytics%20Dashboard/Screenshots/Page3_City_and_Sales_Insights.png',
-    title: 'Customer Analytics Dashboard',
-    badge: 'Looker Studio',
-    desc: 'Interactive multi-page Looker Studio dashboard analyzing customer loyalty program data with advanced visualizations, data blending, and interactive controls for business insights.',
-    tags: ['Looker Studio', 'Data Visualization', 'Business Intelligence', 'Customer Analytics', 'Data Blending', 'Google Maps'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://lookerstudio.google.com/s/lz8wjFuj5Nw' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Interactive-Customer-Analytics-Dashboard' }
-    ],
-    kw: 'Looker Studio,Data Visualization,Business Intelligence,Google Analytics,Interactive Dashboard,Customer Analytics,Data Blending'
-  },
-  
-  // Project 6: Customer Loyalty Analytics Dashboard
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Advanced-Customer-Loyalty-Analytics-Dashboard/refs/heads/main/Screenshots/Line_Chart_Product_Line_Performance_by_Year.png',
-    title: 'Customer Loyalty Analytics Dashboard',
-    badge: 'Looker Studio',
-    desc: 'Professional Looker Studio dashboard analyzing 5,162+ customer transactions and $228M+ revenue with real-time business intelligence for retail analytics and loyalty program optimization.',
-    tags: ['Looker Studio', 'Google Analytics', 'Business Intelligence', 'Dashboard Design', 'Customer Analytics', 'Revenue Analysis'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://lookerstudio.google.com/s/igUfnRY4S6M' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Advanced-Customer-Loyalty-Analytics-Dashboard' }
-    ],
-    kw: 'Looker Studio,Google Analytics,Business Intelligence,Dashboard Design,Customer Analytics,Sales Performance,Data Visualization,Retail Analytics'
-  },
-  
-  // Project 7: Car Dealership Analytics Dashboard
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Car-Dealership-Analytics-Dashboard-Business-Intelligence-Project/refs/heads/main/Screenshots/Sales%20Dashboard.png',
-    title: 'Car Dealership Analytics Dashboard',
-    badge: 'Looker Studio',
-    desc: 'Dual-dashboard Looker Studio solution for SwiftAuto Traders analyzing 6+ datasets across sales performance, dealer profitability, recall patterns, and customer sentiment for automotive dealership management.',
-    tags: ['Looker Studio', 'Automotive Analytics', 'Sales Dashboard', 'Business Intelligence', 'Profit Analysis', 'Customer Sentiment'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://lookerstudio.google.com/s/mMf7a_kwdAo' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Car-Dealership-Analytics-Dashboard-Business-Intelligence-Project' }
-    ],
-    kw: 'Looker Studio,Automotive Analytics,Car Dealership,Sales Dashboard,Service Analytics,Business Intelligence,Profit Analysis'
-  },
-  
-  // Project 8: IBM Data Engineering Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/31a24eb9-5fb6-4d3b-b2be-c286c3cc3489/Coursera_20Data_20Engineering_20Professional_20Cert_20V3.png',
-    title: 'IBM Data Engineering Professional Certificate',
-    badge: 'Professional Certificate',
-    desc: 'Comprehensive 13-course professional certificate covering the full data engineering stack including ETL, data warehousing, big data processing with Spark & Hadoop, real-time streaming with Kafka, and BI dashboards.',
-    tags: ['Apache Spark', 'Hadoop', 'Apache Airflow', 'Kafka', 'Python', 'SQL'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/IBM-Data-Engineering-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/e2dd0d0ce7b1f3abb8399095d1b58198' }
-    ],
-    kw: 'Data Engineering,ETL,Big Data,Apache Spark,Hadoop,Airflow,Kafka,Python,SQL,Data Warehousing'
-  },
-  
-  // Project 9: Meta Database Engineer Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/024324c7-4d4c-4008-8db7-01e0d4222126/image.png',
-    title: 'Meta Database Engineer Professional Certificate',
-    badge: 'Professional Certificate',
-    desc: '9-course professional certificate covering advanced database engineering, data modeling with star/snowflake schemas, ETL processes, Python integration, Tableau visualization, and database administration.',
-    tags: ['MySQL', 'Python', 'Tableau', 'Data Modeling', 'Data Warehousing', 'ETL'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/Meta-Database-Engineer-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/af9e0c070f4291a687f2989e7202fdac' }
-    ],
-    kw: 'Database Engineering,MySQL,Python,Tableau,Data Modeling,ER Diagrams,SQL,Database Design,Data Warehousing,ETL'
-  },
-  
-  // Project 10: IBM Data Science Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/42ce4209-8839-431a-9046-f2ce2e72e04b/Coursera_20Data_20Science_20Professional_20Certificate.png',
-    title: 'IBM Data Science Professional Certificate',
-    badge: 'Professional Certificate',
-    desc: '9-course professional certificate covering end-to-end data science workflow: Python programming, statistical analysis, machine learning, data visualization, and interactive dashboard development.',
-    tags: ['Data Science', 'Machine Learning', 'Python', 'Pandas', 'Scikit-learn', 'Jupyter'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/IBM-Data-Science-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/51883af361e4b7c42c84e0074cb43c28' }
-    ],
-    kw: 'Data Science,Machine Learning,Python,Pandas,SQL,Data Analysis,Predictive Modeling,Data Visualization,Scikit-learn'
-  },
-  
-  // Project 11: IBM Data Analyst Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/d9ab365d-7897-4973-a764-8acf6c277570/Coursera_20IBM_20Data_20Analyst_20Prof_20Cert_20V3.png',
-    title: 'IBM Data Analyst Professional Certificate',
-    badge: 'Professional Certificate',
-    desc: '8-course professional certificate covering data analysis, Python, SQL, Excel, interactive dashboards, and generative AI for comprehensive business intelligence solutions.',
-    tags: ['Data Analysis', 'Python', 'SQL', 'Excel', 'Pandas', 'IBM Cognos'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/IBM-Data-Analyst-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/98d9164b71d5976186e58dd6aad96331' }
-    ],
-    kw: 'Data Analysis,Python,SQL,Excel,Data Visualization,Dashboards,Pandas,IBM Cognos,Plotly,Dash'
-  },
-  
-  // Project 12: Meta Data Analyst Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/4dd82f2c-e7eb-4b64-bb24-f4351f596220/image.png',
-    title: 'Meta Data Analyst Professional Certificate',
-    badge: 'Professional Certificate',
-    desc: '8-course professional certificate covering data analytics, statistical analysis, Python, SQL, Tableau, and Excel for comprehensive business intelligence and data-driven decision making.',
-    tags: ['Data Analytics', 'Python', 'SQL', 'Tableau', 'Statistics', 'Excel'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/Meta-Data-Analyst-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/fe03bb5cbf409ca53051428e38b2fa23' }
-    ],
-    kw: 'Data Analytics,Python,SQL,Tableau,Statistics,Statistical Analysis,Excel,Pandas,Data Visualization'
-  },
-  
-  // Project 13: IBM Data Warehouse Engineer Portfolio
-  {
-    img: 'https://images.credly.com/size/680x680/images/7af512b2-3290-43b8-867b-0d4352b1927a/image.png',
-    title: 'IBM Data Warehouse Engineer Certificate',
-    badge: 'Professional Certificate',
-    desc: '9-course professional certificate covering data warehousing, ETL/ELT pipelines, database administration, Apache Airflow/Kafka orchestration, and BI dashboard development with Cognos/Looker.',
-    tags: ['Data Warehousing', 'Apache Airflow', 'Apache Kafka', 'PostgreSQL', 'MySQL', 'ETL'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/IBM-Data-Warehouse-Engineer-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/87b10963ff6abdf77ea77de6da1be4d6' }
-    ],
-    kw: 'Data Warehousing,Data Warehouse,ETL,ELT,Apache Airflow,Apache Kafka,PostgreSQL,MySQL,Data Pipeline'
-  },
-  
-  // Project 14: IBM Relational Database Administrator with GenAI
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/IBM-Relational-Database-Administrator-with-GenAI-Portfolio/refs/heads/main/Images/IBM%20Relational%20Database%20Administrator%20with%20GenAI.png',
-    title: 'IBM Relational Database Administrator with GenAI',
-    badge: 'Professional Certificate',
-    desc: '5-course professional certificate combining traditional database administration with generative AI for database management, optimization, ETL pipelines, and data warehousing.',
-    tags: ['Database Administration', 'MySQL', 'PostgreSQL', 'GenAI', 'Apache Airflow', 'ETL'],
-    links: [
-      { label: 'Portfolio', icon: 'fa-book', url: 'https://github.com/Willie-Conway/IBM-Relational-Database-Administrator-with-GenAI-Portfolio' },
-      { label: 'Certificate', icon: 'fa-certificate', url: 'https://coursera.org/share/7c582c4f8e1b50a249998c35d7ec2a01' }
-    ],
-    kw: 'Database Administration,Relational Database,MySQL,PostgreSQL,DBA,GenAI,Generative AI,Apache Airflow'
-  },
-  
-  // Project 15: Calculator App
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/Calculator-App/refs/heads/main/Images/localhost_3000_%20(3).png',
-    title: 'Calculator App',
-    badge: 'React Project',
-    desc: 'Interactive React calculator with light/dark mode themes, built as part of the Meta Front-End Developer program. Features all basic operations, responsive design, and dynamic theme switching.',
-    tags: ['React', 'JavaScript', 'Front-End', 'UI/UX', 'Dark Mode', 'Hooks'],
-    links: [
-      { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/Calculator-App/' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Calculator-App' }
-    ],
-    kw: 'React,JavaScript,Front-End Development,Web Development,Calculator App,UI/UX Design,Responsive Design,Dark Mode'
-  },
-  
-  // Project 16: Emerging Tech Skills Analysis
-  {
-    img: 'https://raw.githubusercontent.com/Willie-Conway/IBM-Data-Analyst-Capstone-Project/refs/heads/main/Image/Programing%20languages%20vs%20Job%20Satisfaction.png',
-    title: 'Emerging Tech Skills Analysis',
-    badge: 'Data Analysis',
-    desc: 'Comprehensive analysis of 65K+ Stack Overflow developer surveys to identify emerging technology trends, skill demands, and strategic workforce insights.',
-    tags: ['Python', 'Data Analysis', 'APIs', 'Web Scraping', 'Looker Studio', 'IBM Cognos'],
-    links: [
-      { label: 'Dashboard', icon: 'fa-external-link-alt', url: 'https://lookerstudio.google.com/reporting/2ceaccd7-1b61-4d5e-8e83-3fab0cb4e425' },
-      { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/IBM-Data-Analyst-Capstone-Project' }
-    ],
-    kw: 'Python,Data Analysis,IBM,Stack Overflow,Google Looker Studio,IBM Cognos,Data Visualization,Technology Trends'
-  },
-
-  // Project 17: KERNEL — Linux Security Simulator
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/KERNEL/refs/heads/main/Screenshots/File%20System%20Adventure.png',
-  title: 'KERNEL — Linux Security Simulator',
-  badge: 'Cybersecurity',
-  desc: 'Interactive browser-based Linux security simulator teaching IBM cybersecurity curriculum through hands-on terminal exercises: investigate compromised servers, detect malware, analyze logs, configure firewalls, and implement system hardening.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Cybersecurity', 'Linux', 'Terminal', 'Simulation'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/KERNEL/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/KERNEL' },
-  ],
-  kw: 'Linux,Security,Cybersecurity,Terminal,Simulator,IBM,Interactive,Firewall,Penetration Testing,Ethical Hacking,System Administration,Command Line,Log Analysis,Incident Response,Hardening'
-},
-
-// Project 18: VAULT — Authentication Methods Simulator
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/VAULT/refs/heads/main/Screenshots/Authentication%20Protocol%20Library.png',
-  title: 'VAULT — Authentication Methods Simulator',
-  badge: 'Network Security',
-  desc: 'Interactive browser-based authentication simulator teaching IBM IT Security curriculum. Master enterprise protocols through visual simulations: explore RADIUS, TACACS+, Kerberos, and SSO architectures, observe packet flows, and understand Active Directory integration.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Authentication', 'Network Security', 'RADIUS', 'Kerberos', 'SSO', 'Active Directory'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/VAULT/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/VAULT' },
-  ],
-  kw: 'Authentication,Security,RADIUS,TACACS,Kerberos,SSO,Active Directory,Network Security,IBM,IT Security,Education,Simulator,Interactive,AAA Protocols,Identity Management,Access Control,Group Policy,Ticket Authentication,Enterprise Security'
-},
-
-// Project 19: PATHOGEN — Malware Analysis Lab
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/PATHOGEN/refs/heads/main/Screenshots/Malware%20Specimen%20Lab.png',
-  title: 'PATHOGEN — Malware Analysis Lab',
-  badge: 'Cybersecurity',
-  desc: 'Interactive browser-based malware analysis laboratory for cybersecurity education. Explore 8 malware types through deep-dive dissection, visualize infection spread across networks, practice identification from real-world forensic logs, match defenses to threats, and test knowledge with comprehensive quizzes — all in a safe, sandboxed environment.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Malware Analysis', 'Cybersecurity', 'Threat Intelligence', 'Incident Response', 'Network Security', 'EDR'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/PATHOGEN/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/PATHOGEN' },
-  ],
-  kw: 'Malware,Cybersecurity,Virus,Worm,Trojan,Ransomware,Spyware,Adware,Rootkit,Botnet,Threat Intelligence,Incident Response,Malware Analysis,Network Security,EDR,Sandbox,Forensics,Security Education,Interactive Simulator,IBM Curriculum'
-},
-
-// Project 20: CYBERSEC Glossary — Cybersecurity Reference Database
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/CYBERSEC-Glossary/refs/heads/main/Screenshots/Define.png',
-  title: 'CYBERSEC Glossary — Cybersecurity Reference Database',
-  badge: 'Cybersecurity',
-  desc: 'Comprehensive cybersecurity glossary database featuring 60+ terms across certifications, roles, concepts, organizations, and skills. Built as a clean, searchable reference tool for cybersecurity professionals, students, and career-changers. Includes detailed definitions for all major industry certifications (CompTIA, (ISC)², GIAC, EC-Council) and essential security concepts.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Cybersecurity', 'Reference', 'Certifications', 'CompTIA', 'Security+', 'Glossary'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/CYBERSEC-Glossary/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/CYBERSEC-Glossary' },
-  ],
-  kw: 'Cybersecurity,Glossary,Certifications,CompTIA,Security Plus,CISSP,CEH,CISA,Network Plus,A Plus,ISC2,GIAC,EC Council,Security Terms,Reference,Database,Information Security,Infosec,Study Guide,Career Development'
-},
-
-// Project 21: Cybersecurity — Field Reference Glossary
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/CYBERSECURITY-FIELD-REFERENCE-Glossary/refs/heads/main/Screenshots/Attacks%20%26%20Threats.png',
-  title: 'Cybersecurity — Field Reference Glossary',
-  badge: 'Cybersecurity',
-  desc: 'Comprehensive cybersecurity field reference glossary featuring 140+ terms across 8 critical security domains. Built as a professional-grade reference tool for cybersecurity practitioners, students, and career-changers. Includes detailed definitions, cross-references, and real-world context for attacks, defenses, cryptography, authentication, networking, data privacy, browser security, and general concepts.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Cybersecurity', 'Glossary', 'Reference', 'Security+', 'CISSP', 'Threat Intelligence'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/CYBERSECURITY-FIELD-REFERENCE-Glossary/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/CYBERSECURITY-FIELD-REFERENCE-Glossary' },
-  ],
-  kw: 'Cybersecurity,Glossary,Reference,Infosec,Security Plus,CISSP,CEH,Threat Intelligence,Network Security,Cryptography,Authentication,Data Privacy,Browser Security,Incident Response,Penetration Testing,Vulnerability Management,Risk Management,Compliance,Security Terms,Professional Reference'
-},
-
-// Project 22: HACKNET v2.4.1 — Terminal Hacking Simulator
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/HACKNET/refs/heads/main/Screenshots/HACKNET%20Simulation.png',
-  title: 'HACKNET v2.4.1 — Terminal Hacking Simulator',
-  badge: 'Cybersecurity',
-  desc: 'Immersive terminal-based hacking simulator that puts you in the role of an anonymous darknet operative. Accept contracts, infiltrate corporate networks, exploit vulnerabilities, escalate privileges, and cover your tracks — all while managing trace levels, reputation, and credits. Features 4 unique contracts, 9 unlockable tools, 25+ realistic commands, and authentic terminal aesthetics.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Hacking Simulator', 'Terminal Game', 'Cybersecurity', 'CTF', 'Penetration Testing', 'Ethical Hacking'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/HACKNET/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/HACKNET' },
-  ],
-  kw: 'Hacking Simulator,Terminal Game,Cybersecurity,CTF,Penetration Testing,Ethical Hacking,Network Security,Exploit Development,Privilege Escalation,Trace Evasion,Darknet,Infosec,Linux Terminal,Command Line,Hacking Game,Security Training,Vulnerability Assessment,Incident Response,Cyberpunk,Interactive Fiction'
-},
-
-// Project 23: NEXUS — TechSolutions Security Simulator
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/NEXUS/refs/heads/main/Screenshots/MFA%20Attack%20Simulator.png',
-  title: 'NEXUS — TechSolutions Security Simulator',
-  badge: 'Cybersecurity',
-  desc: 'Interactive security simulation platform based on a real-world IT security assessment of TechSolutions Inc. Explore vulnerabilities across five critical domains: MFA attack simulation, resource access policy, physical security auditing, visitor management protocols, and MFA rollout planning. Built as an educational tool to demonstrate security assessment methodology and remediation planning.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Security Simulator', 'MFA', 'Physical Security', 'Access Control', 'Visitor Management', 'Security Assessment'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/NEXUS/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/NEXUS' },
-  ],
-  kw: 'Security Simulator,Cybersecurity,MFA,Multi-Factor Authentication,Physical Security,Access Control,Visitor Management,Security Assessment,Risk Management,Security Audit,Compliance,Security Training,Penetration Testing,Incident Response,Security Policy,Corporate Security,Security Architecture,Infosec,IT Security,Remediation Planning'
-},
-
-// Project 24: DECEIVER — Social Engineering Training Platform
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/DECEIVER/refs/heads/main/Screenshots/Attack%20Dossiers.png',
-  title: 'DECEIVER — Social Engineering Training Platform',
-  badge: 'Security Awareness',
-  desc: 'Immersive social engineering awareness training platform designed to educate employees and security professionals on the psychology and tactics behind human-targeted cyberattacks. Features 8 attack dossiers, 6 live simulations, red flag detector, psychology lab, defense playbook, and knowledge quiz — all presented in a classified dossier aesthetic.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Social Engineering', 'Security Awareness', 'Phishing', 'Vishing', 'Smishing', 'Pretexting', 'Baiting', 'Tailgating', 'Cybersecurity Training', 'Human Factor'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/DECEIVER/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/DECEIVER' },
-  ],
-  kw: 'Social Engineering,Phishing,Vishing,Smishing,Pretexting,Baiting,Tailgating,Quid Pro Quo,Watering Hole,Cybersecurity Training,Security Awareness,Human Factor,Psychological Manipulation,Cialdini,Influence,Defense Playbook,Red Flags,Incident Response,Security Culture,Infosec'
-},
-
-// Project 25: RKHUNTER LIVE — Malware Detection Training Platform
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/RKHUNTER-LIVE/refs/heads/main/Screenshots/Live%20Scanner%20Terminal.png',
-  title: 'RKHUNTER LIVE — Malware Detection Training Platform',
-  badge: 'Linux Security',
-  desc: 'Immersive, interactive training platform for learning rootkit detection and malware forensics on Linux systems. Features fully simulated rkhunter, chkrootkit, AIDE, and Lynis environments with 5 system profiles, 6 detection methods, 8 forensic analysis challenges, 6 rootkit family deep-dives, 6 hunt missions, and a 12-question knowledge quiz — all in a safe, sandboxed environment.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Linux Security', 'Rootkit Detection', 'Malware Analysis', 'Forensics', 'Incident Response', 'rkhunter', 'chkrootkit', 'AIDE', 'Lynis', 'Threat Hunting'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/RKHUNTER-LIVE/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/RKHUNTER-LIVE' },
-    
-  ],
-  kw: 'Linux Security,Rootkit Detection,Malware Analysis,Forensics,Incident Response,rkhunter,chkrootkit,AIDE,Lynis,Kernel Rootkit,Bootkit,Memory Forensics,Volatility,LiME,File Integrity Monitoring,MBR Analysis,Syscall Hooking,Process Hiding,Backdoor Detection,Threat Hunting,Digital Forensics'
-},
-
-// Project 26: SENTINEL — Insider Threat Detection & Training Platform
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/SENTINEL/refs/heads/main/Screenshots/Threat%20Dashboard.png',
-  title: 'SENTINEL — Insider Threat Detection & Training Platform',
-  badge: 'Security Analytics',
-  desc: 'Immersive insider threat detection and training platform designed for security analysts, SOC teams, and IT professionals. Features fully simulated UEBA environment with real-time monitoring, behavioral analytics, interactive threat simulations, comprehensive IOC library, and policy reference — all in a professional security operations dashboard aesthetic.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Insider Threat', 'UEBA', 'Security Analytics', 'SOC', 'Incident Response', 'Threat Detection', 'Data Exfiltration', 'Privilege Abuse', 'DLP', 'Security Training'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/SENTINEL/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/SENTINEL' },
-  ],
-  kw: 'Insider Threat,UEBA,User Behavior Analytics,Security Analytics,SOC,Incident Response,Threat Detection,Data Exfiltration,Privilege Abuse,Shadow IT,DLP,Credential Sharing,Security Awareness,Threat Hunting,Forensics,Risk Scoring,Corporate Security,Infosec,Cybersecurity Training,Behavioral Analysis'
-},
-
-// Project 27: FORTRESS — Security Control Simulation Platform
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/FORTRESS/refs/heads/main/Screenshots/Security%20Control%20Matrix.png',
-  title: 'FORTRESS — Security Control Simulation Platform',
-  badge: 'Security Architecture',
-  desc: 'Interactive security control simulation platform designed for security architects, analysts, and students to understand the full spectrum of security controls. Features comprehensive NIST SP 800-53 aligned control matrix, interactive attack simulations with toggleable defenses, scenario-based training, 50+ control encyclopedia, defense builder workshop, and knowledge quiz — all in a professional SOC aesthetic.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Security Controls', 'Defense in Depth', 'NIST SP 800-53', 'ISO 27001', 'Security Architecture', 'Risk Management', 'Incident Response', 'Control Types', 'Technical Controls', 'Administrative Controls', 'Physical Controls'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/FORTRESS/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/FORTRESS' },
-  ],
-  kw: 'Security Controls,Defense in Depth,NIST SP 800-53,ISO 27001,Security Architecture,Risk Management,Compliance,Incident Response,Control Types,Preventive Controls,Detective Controls,Corrective Controls,Deterrent Controls,Recovery Controls,Compensating Controls,Technical Controls,Administrative Controls,Physical Controls,Security Frameworks,Cybersecurity Training'
-},
-
-// Project 28: Cybersecurity History // Event Log
-{
-  img: 'https://raw.githubusercontent.com/Willie-Conway/Cybersecurity-History-Event-Log/refs/heads/main/Screenshots/RESEARCH%20ACTIVITY.png',
-  title: 'Cybersecurity History // Event Log',
-  badge: 'Cybersecurity Education',
-  desc: 'Interactive educational timeline documenting the most significant events in the history of cybersecurity — from the first computer worm in 1971 to the major supply chain attacks of the 2020s. Features an interactive timeline with expandable event cards, knowledge assessment quiz, key terminology glossary, research activities, reflection questions, and lab completion checklist.',
-  tags: ['HTML5', 'CSS3', 'JavaScript', 'Cybersecurity History', 'Timeline', 'Malware History', 'Educational', 'Interactive Timeline', 'Cyber Education', 'Infosec History'],
-  links: [
-    { label: 'Live Demo', icon: 'fa-external-link-alt', url: 'https://willie-conway.github.io/Cybersecurity-History-Event-Log/' },
-    { label: 'Code', icon: 'fa-github', url: 'https://github.com/Willie-Conway/Cybersecurity-History-Event-Log' },
-  ],
-  kw: 'Cybersecurity History,Timeline,Malware History,Computer Virus,Worm,Ransomware,Stuxnet,Morris Worm,SolarWinds,Creeper Worm,Brain Virus,Melissa Virus,ILOVEYOU,Conficker,WannaCry,Colonial Pipeline,Log4Shell,Cybersecurity Education,Infosec History,Security Events,Cyber Timeline,History of Hacking'
-}
-
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Global-Superstore-Data-Modeling-Analysis-Project/b6407dbc539e01b84efd39112e01c3ccc3082c06/Data%20Modeling%20Project/Data%20Modeling%20Project/Screenshots/Sales%20in%20USA.png',title:'Global Superstore Data Modeling & Dashboard',badge:'Data Engineering',desc:'End-to-end data engineering project: Designed ER diagram & star schema in MySQL, then built interactive Tableau dashboard for retail sales analysis across 50+ US states.',tags:['MySQL','Tableau','Data Modeling','ER Diagram','Star Schema','SQL'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://public.tableau.com/app/profile/willie.conway2396/viz/GlobalSuperStore_17308735736410/USASalesandProfits'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Global-Superstore-Data-Modeling-Analysis-Project'}],kw:'Data Modeling,MySQL,Database Design,Star Schema,Tableau,Dashboard,Retail Analytics,SQL,Data Engineering'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/World-Happiness-Report-Analysis-Capstone-Project/refs/heads/main/World-Happiness-Report-Tableau/Screenshots/Dashboard2_GDP_Effect.png',title:'World Happiness Report Dashboard',badge:'Tableau',desc:'Interactive BI dashboard analyzing global happiness patterns across 150+ countries with 4 comprehensive dashboards.',tags:['Tableau','Data Visualization','Business Intelligence','Dashboard Design','Data Storytelling','Global Analysis'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://public.tableau.com/app/profile/willie.conway2396/viz/WorldHappinessReport_17379615647750/Story1'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/World-Happiness-Report-Analysis-Capstone-Project'}],kw:'Tableau,Data Visualization,BI,Dashboard,World Happiness Report,Data Storytelling'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Little-Lemon-Database-Capstone-Project/refs/heads/main/Screenshots/Cuisine%20and%20Yearly%20Profit%20Insights.png',title:'Little Lemon Database System',badge:'Database',desc:'Complete restaurant management database with MySQL design, Python integration, and Tableau dashboards for sales and cuisine analytics.',tags:['MySQL','Database Design','Python','Tableau','Data Modeling','SQL'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://public.tableau.com/app/profile/willie.conway2396/viz/LittleLemonDatabase/CuisineandYearlyProfitInsights'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Little-Lemon-Database-Capstone-Project'}],kw:'MySQL,Database Design,Python,Tableau,Data Modeling,ER Diagrams,SQL,Restaurant Analytics'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project/refs/heads/main/Screenshots/Question%205.png',title:'House Sales Price Prediction',badge:'Machine Learning',desc:'Predicting residential real estate prices in King County with 79.8% accuracy using machine learning.',tags:['Python','Machine Learning','Pandas','Scikit-learn','Regression','Data Analysis'],links:[{label:'Notebook',icon:'fa-external-link-alt',url:'https://github.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project/blob/520c66bf90ba63d8cff89b1b637d7f6847415fbd/House-Sales-Price-Prediction/House_Sales_in_King_Count_USA.ipynb'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/House-Sales-Price-Prediction-King-County-USA-Project'}],kw:'Python,Machine Learning,Pandas,Scikit-learn,Real Estate Analytics,Predictive Modeling,Regression,Data Science'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Interactive-Customer-Analytics-Dashboard/refs/heads/main/Interactive%20Customer%20Analytics%20Dashboard/Screenshots/Page3_City_and_Sales_Insights.png',title:'Customer Analytics Dashboard',badge:'Looker Studio',desc:'Interactive multi-page Looker Studio dashboard analyzing customer loyalty program data with advanced visualizations and data blending.',tags:['Looker Studio','Data Visualization','Business Intelligence','Customer Analytics','Data Blending','Google Maps'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://lookerstudio.google.com/s/lz8wjFuj5Nw'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Interactive-Customer-Analytics-Dashboard'}],kw:'Looker Studio,Data Visualization,Business Intelligence,Google Analytics,Interactive Dashboard,Customer Analytics'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Advanced-Customer-Loyalty-Analytics-Dashboard/refs/heads/main/Screenshots/Line_Chart_Product_Line_Performance_by_Year.png',title:'Customer Loyalty Analytics Dashboard',badge:'Looker Studio',desc:'Professional Looker Studio dashboard analyzing 5,162+ customer transactions and $228M+ revenue with real-time business intelligence.',tags:['Looker Studio','Google Analytics','Business Intelligence','Dashboard Design','Customer Analytics','Revenue Analysis'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://lookerstudio.google.com/s/igUfnRY4S6M'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Advanced-Customer-Loyalty-Analytics-Dashboard'}],kw:'Looker Studio,Google Analytics,Business Intelligence,Dashboard Design,Customer Analytics,Sales Performance'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Car-Dealership-Analytics-Dashboard-Business-Intelligence-Project/refs/heads/main/Screenshots/Sales%20Dashboard.png',title:'Car Dealership Analytics Dashboard',badge:'Looker Studio',desc:'Dual-dashboard Looker Studio solution analyzing 6+ datasets across sales performance, dealer profitability, recall patterns, and customer sentiment.',tags:['Looker Studio','Automotive Analytics','Sales Dashboard','Business Intelligence','Profit Analysis','Customer Sentiment'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://lookerstudio.google.com/s/mMf7a_kwdAo'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Car-Dealership-Analytics-Dashboard-Business-Intelligence-Project'}],kw:'Looker Studio,Automotive Analytics,Car Dealership,Sales Dashboard,Service Analytics,Business Intelligence'},
+  {img:'https://images.credly.com/size/680x680/images/31a24eb9-5fb6-4d3b-b2be-c286c3cc3489/Coursera_20Data_20Engineering_20Professional_20Cert_20V3.png',title:'IBM Data Engineering Portfolio',badge:'Professional Certificate',desc:'Comprehensive 13-course professional certificate covering the full data engineering stack: ETL, data warehousing, big data with Spark & Hadoop, real-time streaming with Kafka.',tags:['Apache Spark','Hadoop','Apache Airflow','Kafka','Python','SQL'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/IBM-Data-Engineering-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/e2dd0d0ce7b1f3abb8399095d1b58198'}],kw:'Data Engineering,ETL,Big Data,Apache Spark,Hadoop,Airflow,Kafka,Python,SQL,Data Warehousing'},
+  {img:'https://images.credly.com/size/680x680/images/024324c7-4d4c-4008-8db7-01e0d4222126/image.png',title:'Meta Database Engineer Portfolio',badge:'Professional Certificate',desc:'9-course professional certificate covering advanced database engineering, data modeling with star/snowflake schemas, ETL processes, and Tableau visualization.',tags:['MySQL','Python','Tableau','Data Modeling','Data Warehousing','ETL'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/Meta-Database-Engineer-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/af9e0c070f4291a687f2989e7202fdac'}],kw:'Database Engineering,MySQL,Python,Tableau,Data Modeling,ER Diagrams,SQL,Database Design'},
+  {img:'https://images.credly.com/size/680x680/images/42ce4209-8839-431a-9046-f2ce2e72e04b/Coursera_20Data_20Science_20Professional_20Certificate.png',title:'IBM Data Science Portfolio',badge:'Professional Certificate',desc:'9-course professional certificate: Python, statistical analysis, machine learning, data visualization, and interactive dashboard development.',tags:['Data Science','Machine Learning','Python','Pandas','Scikit-learn','Jupyter'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/IBM-Data-Science-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/51883af361e4b7c42c84e0074cb43c28'}],kw:'Data Science,Machine Learning,Python,Pandas,SQL,Data Analysis,Predictive Modeling,Data Visualization,Scikit-learn'},
+  {img:'https://images.credly.com/size/680x680/images/d9ab365d-7897-4973-a764-8acf6c277570/Coursera_20IBM_20Data_20Analyst_20Prof_20Cert_20V3.png',title:'IBM Data Analyst Portfolio',badge:'Professional Certificate',desc:'8-course certificate covering data analysis, Python, SQL, Excel, interactive dashboards, and generative AI for comprehensive business intelligence.',tags:['Data Analysis','Python','SQL','Excel','Pandas','IBM Cognos'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/IBM-Data-Analyst-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/98d9164b71d5976186e58dd6aad96331'}],kw:'Data Analysis,Python,SQL,Excel,Data Visualization,Dashboards,Pandas,IBM Cognos,Plotly,Dash'},
+  {img:'https://images.credly.com/size/680x680/images/4dd82f2c-e7eb-4b64-bb24-f4351f596220/image.png',title:'Meta Data Analyst Portfolio',badge:'Professional Certificate',desc:'8-course certificate covering data analytics, statistical analysis, Python, SQL, Tableau, and Excel for comprehensive business intelligence.',tags:['Data Analytics','Python','SQL','Tableau','Statistics','Excel'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/Meta-Data-Analyst-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/fe03bb5cbf409ca53051428e38b2fa23'}],kw:'Data Analytics,Python,SQL,Tableau,Statistics,Statistical Analysis,Excel,Pandas,Data Visualization'},
+  {img:'https://images.credly.com/size/680x680/images/7af512b2-3290-43b8-867b-0d4352b1927a/image.png',title:'IBM Data Warehouse Engineer Portfolio',badge:'Professional Certificate',desc:'9-course certificate covering data warehousing, ETL/ELT pipelines, Apache Airflow/Kafka orchestration, and BI dashboards with Cognos/Looker.',tags:['Data Warehousing','Apache Airflow','Apache Kafka','PostgreSQL','MySQL','ETL'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/IBM-Data-Warehouse-Engineer-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/87b10963ff6abdf77ea77de6da1be4d6'}],kw:'Data Warehousing,Data Warehouse,ETL,ELT,Apache Airflow,Apache Kafka,PostgreSQL,MySQL,Data Pipeline'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/IBM-Relational-Database-Administrator-with-GenAI-Portfolio/refs/heads/main/Images/IBM%20Relational%20Database%20Administrator%20with%20GenAI.png',title:'IBM Relational Database Administrator with GenAI',badge:'Professional Certificate',desc:'5-course certificate combining traditional database administration with generative AI for database management, optimization, and ETL pipelines.',tags:['Database Administration','MySQL','PostgreSQL','GenAI','Apache Airflow','ETL'],links:[{label:'Portfolio',icon:'fa-book',url:'https://github.com/Willie-Conway/IBM-Relational-Database-Administrator-with-GenAI-Portfolio'},{label:'Certificate',icon:'fa-certificate',url:'https://coursera.org/share/7c582c4f8e1b50a249998c35d7ec2a01'}],kw:'Database Administration,Relational Database,MySQL,PostgreSQL,DBA,GenAI,Generative AI,Apache Airflow'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Calculator-App/refs/heads/main/Images/localhost_3000_%20(3).png',title:'Calculator App',badge:'React Project',desc:'Interactive React calculator with light/dark mode themes. Features all basic operations, responsive design, and dynamic theme switching.',tags:['React','JavaScript','Front-End','UI/UX','Dark Mode','Hooks'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/Calculator-App/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Calculator-App'}],kw:'React,JavaScript,Front-End Development,Web Development,Calculator App,UI/UX Design,Responsive Design,Dark Mode'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/IBM-Data-Analyst-Capstone-Project/refs/heads/main/Image/Programing%20languages%20vs%20Job%20Satisfaction.png',title:'Emerging Tech Skills Analysis',badge:'Data Analysis',desc:'Comprehensive analysis of 65K+ Stack Overflow developer surveys to identify emerging technology trends, skill demands, and strategic workforce insights.',tags:['Python','Data Analysis','APIs','Web Scraping','Looker Studio','IBM Cognos'],links:[{label:'Dashboard',icon:'fa-external-link-alt',url:'https://lookerstudio.google.com/reporting/2ceaccd7-1b61-4d5e-8e83-3fab0cb4e425'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/IBM-Data-Analyst-Capstone-Project'}],kw:'Python,Data Analysis,IBM,Stack Overflow,Google Looker Studio,IBM Cognos,Data Visualization,Technology Trends'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/KERNEL/refs/heads/main/Screenshots/File%20System%20Adventure.png',title:'KERNEL — Linux Security Simulator',badge:'Cybersecurity',desc:'Interactive browser-based Linux security simulator. Investigate compromised servers, detect malware, analyze logs, configure firewalls, and implement system hardening.',tags:['HTML5','CSS3','JavaScript','Cybersecurity','Linux','Terminal','Simulation'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/KERNEL/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/KERNEL'}],kw:'Linux,Security,Cybersecurity,Terminal,Simulator,IBM,Interactive,Firewall,Penetration Testing,Ethical Hacking,System Administration'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/VAULT/refs/heads/main/Screenshots/Authentication%20Protocol%20Library.png',title:'VAULT — Authentication Methods Simulator',badge:'Network Security',desc:'Interactive authentication simulator. Master enterprise protocols: RADIUS, TACACS+, Kerberos, and SSO architectures with packet flow visualization.',tags:['HTML5','CSS3','JavaScript','Authentication','Network Security','RADIUS','Kerberos','SSO','Active Directory'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/VAULT/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/VAULT'}],kw:'Authentication,Security,RADIUS,TACACS,Kerberos,SSO,Active Directory,Network Security,IBM,IT Security'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/PATHOGEN/refs/heads/main/Screenshots/Malware%20Specimen%20Lab.png',title:'PATHOGEN — Malware Analysis Lab',badge:'Cybersecurity',desc:'Interactive malware analysis laboratory. Explore 8 malware types, visualize infection spread, practice identification from forensic logs, and match defenses to threats.',tags:['HTML5','CSS3','JavaScript','Malware Analysis','Cybersecurity','Threat Intelligence','Incident Response'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/PATHOGEN/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/PATHOGEN'}],kw:'Malware,Cybersecurity,Virus,Worm,Trojan,Ransomware,Spyware,Adware,Rootkit,Botnet,Threat Intelligence,Incident Response'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/CYBERSEC-Glossary/refs/heads/main/Screenshots/Define.png',title:'CYBERSEC Glossary',badge:'Cybersecurity',desc:'Comprehensive cybersecurity glossary with 60+ terms across certifications, roles, concepts, and skills. Searchable reference for professionals and students.',tags:['HTML5','CSS3','JavaScript','Cybersecurity','Reference','Certifications','CompTIA','Security+','Glossary'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/CYBERSEC-Glossary/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/CYBERSEC-Glossary'}],kw:'Cybersecurity,Glossary,Certifications,CompTIA,Security Plus,CISSP,CEH,CISA,Network Plus,ISC2,GIAC,EC Council'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/CYBERSECURITY-FIELD-REFERENCE-Glossary/refs/heads/main/Screenshots/Attacks%20%26%20Threats.png',title:'Cybersecurity Field Reference Glossary',badge:'Cybersecurity',desc:'Field reference glossary with 140+ terms across 8 critical security domains including attacks, defenses, cryptography, and authentication.',tags:['HTML5','CSS3','JavaScript','Cybersecurity','Glossary','Reference','Security+','CISSP','Threat Intelligence'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/CYBERSECURITY-FIELD-REFERENCE-Glossary/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/CYBERSECURITY-FIELD-REFERENCE-Glossary'}],kw:'Cybersecurity,Glossary,Reference,Infosec,Security Plus,CISSP,CEH,Threat Intelligence,Network Security,Cryptography'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/HACKNET/refs/heads/main/Screenshots/HACKNET%20Simulation.png',title:'HACKNET v2.4.1 — Terminal Hacking Simulator',badge:'Cybersecurity',desc:'Immersive terminal hacking simulator. Accept contracts, infiltrate corporate networks, exploit vulnerabilities, escalate privileges. 4 contracts, 9 tools, 25+ commands.',tags:['HTML5','CSS3','JavaScript','Hacking Simulator','Terminal Game','Cybersecurity','CTF','Penetration Testing'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/HACKNET/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/HACKNET'}],kw:'Hacking Simulator,Terminal Game,Cybersecurity,CTF,Penetration Testing,Ethical Hacking,Network Security,Exploit Development'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/NEXUS/refs/heads/main/Screenshots/MFA%20Attack%20Simulator.png',title:'NEXUS — TechSolutions Security Simulator',badge:'Cybersecurity',desc:'Interactive security simulation based on a real-world IT security assessment. Explore vulnerabilities across MFA attacks, access policy, physical security, and visitor management.',tags:['HTML5','CSS3','JavaScript','Security Simulator','MFA','Physical Security','Access Control'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/NEXUS/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/NEXUS'}],kw:'Security Simulator,Cybersecurity,MFA,Multi-Factor Authentication,Physical Security,Access Control,Visitor Management,Security Assessment'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/DECEIVER/refs/heads/main/Screenshots/Attack%20Dossiers.png',title:'DECEIVER — Social Engineering Training Platform',badge:'Security Awareness',desc:'Immersive social engineering awareness training. 8 attack dossiers, 6 live simulations, red flag detector, psychology lab, defense playbook, and knowledge quiz.',tags:['HTML5','CSS3','JavaScript','Social Engineering','Security Awareness','Phishing','Vishing','Smishing'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/DECEIVER/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/DECEIVER'}],kw:'Social Engineering,Phishing,Vishing,Smishing,Pretexting,Baiting,Tailgating,Cybersecurity Training,Security Awareness'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/RKHUNTER-LIVE/refs/heads/main/Screenshots/Live%20Scanner%20Terminal.png',title:'RKHUNTER LIVE — Malware Detection Training',badge:'Linux Security',desc:'Training platform for rootkit detection and malware forensics on Linux. 5 system profiles, 6 detection methods, 8 forensic challenges, 6 rootkit family deep-dives.',tags:['HTML5','CSS3','JavaScript','Linux Security','Rootkit Detection','Malware Analysis','Forensics'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/RKHUNTER-LIVE/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/RKHUNTER-LIVE'}],kw:'Linux Security,Rootkit Detection,Malware Analysis,Forensics,Incident Response,rkhunter,chkrootkit,AIDE,Lynis'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/SENTINEL/refs/heads/main/Screenshots/Threat%20Dashboard.png',title:'SENTINEL — Insider Threat Detection Platform',badge:'Security Analytics',desc:'Insider threat detection and training platform with simulated UEBA environment, real-time monitoring, behavioral analytics, and interactive threat simulations.',tags:['HTML5','CSS3','JavaScript','Insider Threat','UEBA','Security Analytics','SOC','Incident Response'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/SENTINEL/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/SENTINEL'}],kw:'Insider Threat,UEBA,User Behavior Analytics,Security Analytics,SOC,Incident Response,Threat Detection,Data Exfiltration'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/FORTRESS/refs/heads/main/Screenshots/Security%20Control%20Matrix.png',title:'FORTRESS — Security Control Simulation Platform',badge:'Security Architecture',desc:'Interactive security control simulation platform. NIST SP 800-53 aligned control matrix, attack simulations with toggleable defenses, 50+ control encyclopedia, and defense builder.',tags:['HTML5','CSS3','JavaScript','Security Controls','Defense in Depth','NIST SP 800-53','ISO 27001'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/FORTRESS/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/FORTRESS'}],kw:'Security Controls,Defense in Depth,NIST SP 800-53,ISO 27001,Security Architecture,Risk Management,Compliance'},
+  {img:'https://raw.githubusercontent.com/Willie-Conway/Cybersecurity-History-Event-Log/refs/heads/main/Screenshots/RESEARCH%20ACTIVITY.png',title:'Cybersecurity History Event Log',badge:'Cybersecurity Education',desc:'Interactive educational timeline of cybersecurity history from 1971 to the 2020s. Expandable event cards, knowledge quiz, glossary, and research activities.',tags:['HTML5','CSS3','JavaScript','Cybersecurity History','Timeline','Educational','Interactive Timeline'],links:[{label:'Live Demo',icon:'fa-external-link-alt',url:'https://willie-conway.github.io/Cybersecurity-History-Event-Log/'},{label:'Code',icon:'fa-github',url:'https://github.com/Willie-Conway/Cybersecurity-History-Event-Log'}],kw:'Cybersecurity History,Timeline,Malware History,Computer Virus,Worm,Ransomware,Stuxnet,Morris Worm,SolarWinds'},
 ];
 
-// ── Certifications Grid with search + pagination ──
+// ══════════════════════════════════════════════════════
+// CERTIFICATIONS — render immediately (DOM is ready, script is end of body)
+// ══════════════════════════════════════════════════════
 const CERTS_PER_PAGE = 9;
 let certPage = 0;
 let filteredCerts = [...CERTS];
 
 function renderCerts(){
   const grid = document.getElementById('certsGrid');
+  if(!grid) return;
   const start = certPage * CERTS_PER_PAGE;
   const pageCerts = filteredCerts.slice(start, start + CERTS_PER_PAGE);
   grid.innerHTML = pageCerts.map(c=>`
@@ -1324,31 +786,46 @@ function renderCerts(){
       </div>
     </div>
   `).join('');
-
-  // Dots
   const totalPages = Math.ceil(filteredCerts.length / CERTS_PER_PAGE);
   const dots = document.getElementById('certDots');
-  dots.innerHTML = Array.from({length:totalPages},(_,i)=>`<div class="cert-dot${i===certPage?' active':''}" onclick="goPage(${i})"></div>`).join('');
-  
+  if(dots) dots.innerHTML = Array.from({length:totalPages},(_,i)=>
+    `<div class="cert-dot${i===certPage?' active':''}" onclick="goPage(${i})"></div>`
+  ).join('');
   const info = document.getElementById('certInfo');
   const q = document.getElementById('certSearch').value.trim();
-  info.textContent = q ? `${filteredCerts.length} result${filteredCerts.length!==1?'s':''} for "${q}"` : `Showing ${filteredCerts.length} certifications`;
+  if(info) info.textContent = q
+    ? `${filteredCerts.length} result${filteredCerts.length!==1?'s':''} for "${q}"`
+    : `Showing ${filteredCerts.length} certifications`;
 }
 
-function goPage(p){certPage=p;renderCerts();document.getElementById('certifications').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function goPage(p){
+  certPage = p;
+  renderCerts();
+  document.getElementById('certifications').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 
-document.getElementById('certSearch').addEventListener('input',function(){
-  const q = this.value.toLowerCase().trim();
+document.getElementById('certSearch').addEventListener('input', function(){
   certPage = 0;
+  const q = this.value.toLowerCase().trim();
   filteredCerts = q ? CERTS.filter(c=>(c.kw+c.title+c.desc).toLowerCase().includes(q)) : [...CERTS];
   renderCerts();
 });
 
-// ── Projects Grid with search ──
-function renderProjects(q=''){
-  const filtered = q ? PROJECTS.filter(p=>(p.kw+p.title+p.desc+p.tags.join(',')).toLowerCase().includes(q.toLowerCase())) : PROJECTS;
-  document.getElementById('projInfo').textContent = q ? `${filtered.length} project${filtered.length!==1?'s':''} matching "${q}"` : `Showing all ${PROJECTS.length} projects`;
-  document.getElementById('projGrid').innerHTML = filtered.map(p=>`
+// ══════════════════════════════════════════════════════
+// PROJECTS — render immediately
+// ══════════════════════════════════════════════════════
+function renderProjects(q){
+  q = (q||'').trim();
+  const filtered = q
+    ? PROJECTS.filter(p=>(p.kw+p.title+p.desc+p.tags.join(',')).toLowerCase().includes(q.toLowerCase()))
+    : PROJECTS;
+  const info = document.getElementById('projInfo');
+  const grid = document.getElementById('projGrid');
+  if(info) info.textContent = q
+    ? `${filtered.length} project${filtered.length!==1?'s':''} matching "${q}"`
+    : `Showing all ${PROJECTS.length} projects`;
+  if(!grid) return;
+  grid.innerHTML = filtered.map(p=>`
     <div class="proj-card">
       <div class="proj-img">
         <img src="${p.img}" alt="${p.title}" loading="lazy">
@@ -1367,12 +844,18 @@ function renderProjects(q=''){
   `).join('');
 }
 
-document.getElementById('projSearch').addEventListener('input',function(){renderProjects(this.value.trim());});
+document.getElementById('projSearch').addEventListener('input', function(){
+  renderProjects(this.value);
+});
 
-// ── Chart.js ──
-const gold='rgba(201,168,76,';
-const chartDefaults={color:'#8A8680',borderColor:'rgba(255,255,255,0.06)',backgroundColor:'rgba(17,17,19,0.7)'};
+// ── Render both immediately — no DOMContentLoaded wrapper needed
+//    (script is at end of body, DOM is fully parsed)
+renderCerts();
+renderProjects();
 
+// ══════════════════════════════════════════════════════
+// CHARTS — in their own block, isolated from render logic
+// ══════════════════════════════════════════════════════
 const skillData={
   dataAnalysis:[{skill:'Python (Pandas, NumPy)',pct:95},{skill:'SQL',pct:90},{skill:'Data Visualization',pct:88},{skill:'Machine Learning',pct:85},{skill:'Data Modeling',pct:90},{skill:'R',pct:84},{skill:'Data Warehousing & ETL',pct:90}],
   cicd:[{skill:'Tekton',pct:95},{skill:'Travis CI',pct:90},{skill:'Terraform',pct:88},{skill:'GitHub Actions',pct:85},{skill:'Chef & Puppet',pct:90}],
@@ -1384,81 +867,79 @@ const skillData={
   software:[{skill:'JavaScript/TypeScript',pct:92},{skill:'React.js',pct:90},{skill:'Node.js',pct:88},{skill:'Django',pct:85},{skill:'REST APIs',pct:90},{skill:'HTML/CSS',pct:90}],
   dataEngineering:[{skill:'Apache Spark',pct:85},{skill:'MySQL',pct:92},{skill:'PostgreSQL',pct:91},{skill:'MongoDB',pct:88},{skill:'ETL/ELT Pipelines',pct:88},{skill:'Data Lake Architecture',pct:80}],
 };
-const allSkills=[
-  {skill:'Data Analysis',pct:90},
-  {skill:'Software Dev',pct:88},
-  {skill:'Cloud',pct:88},
-  {skill:'DevOps',pct:87},
-  {skill:'Mobile',pct:88},
-  {skill:'Cybersecurity',pct:83},
-  {skill:'Data Engineering',pct:87},
-  {skill:'Soft Skills',pct:89}
-];
-
-const dashboardData={
-  skills:{
-    dataAnalysis:[{skill:'Python',level:95,projects:12,growth:[60,70,82,88,92,95]},{skill:'SQL',level:90,projects:15,growth:[65,72,80,85,88,90]},{skill:'Visualization',level:88,projects:8,growth:[50,60,72,80,85,88]},{skill:'ML',level:85,projects:6,growth:[50,60,70,78,82,85]},{skill:'Data Modeling',level:90,projects:9,growth:[60,70,80,85,88,90]}],
-    software:[{skill:'JavaScript',level:92,projects:18,growth:[70,78,85,88,90,92]},{skill:'React.js',level:90,projects:10,growth:[60,70,80,85,88,90]},{skill:'Node.js',level:88,projects:9,growth:[50,60,72,80,85,88]},{skill:'Express.js',level:90,projects:8,growth:[60,70,80,85,88,90]},{skill:'Django',level:85,projects:7,growth:[55,65,75,80,83,85]}],
-    cloud:[{skill:'Google Cloud',level:95,projects:7,growth:[70,80,88,90,93,95]},{skill:'AWS',level:85,projects:5,growth:[60,68,75,80,82,85]},{skill:'Azure',level:88,projects:6,growth:[65,72,78,82,85,88]},{skill:'IBM Cloud',level:85,projects:4,growth:[60,70,78,82,84,85]}],
-    devops:[{skill:'Docker',level:90,projects:11,growth:[65,75,82,86,88,90]},{skill:'Kubernetes',level:87,projects:8,growth:[60,70,78,82,85,87]},{skill:'CI/CD',level:85,projects:9,growth:[55,65,75,80,83,85]},{skill:'Terraform',level:88,projects:7,growth:[60,70,78,82,85,88]}],
-    mobile:[{skill:'Flutter',level:90,projects:5,growth:[60,70,80,85,88,90]},{skill:'Kotlin',level:88,projects:4,growth:[55,65,75,80,85,88]},{skill:'Swift',level:85,projects:3,growth:[50,60,70,78,82,85]}],
-    cybersecurity:[{skill:'Net Security',level:85,projects:4,growth:[60,68,75,80,83,85]},{skill:'Cloud Security',level:83,projects:3,growth:[55,65,73,78,81,83]},{skill:'Pen Testing',level:87,projects:5,growth:[60,70,78,83,85,87]}],
-    dataEngineering:[{skill:'Spark',level:85,projects:6,growth:[55,65,75,80,83,85]},{skill:'MySQL',level:92,projects:12,growth:[70,78,85,88,90,92]},{skill:'PostgreSQL',level:91,projects:11,growth:[68,76,83,87,89,91]}],
-  }
-};
-
-const CHART_COLORS=['rgba(201,168,76,0.85)','rgba(232,204,122,0.75)','rgba(154,116,50,0.7)','rgba(201,168,76,0.5)','rgba(232,204,122,0.45)','rgba(154,116,50,0.4)','rgba(201,168,76,0.35)'];
-
-let pieChart,dashChart;
+const allSkills=[{skill:'Data Analysis',pct:90},{skill:'Software Dev',pct:88},{skill:'Cloud',pct:88},{skill:'DevOps',pct:87},{skill:'Mobile',pct:88},{skill:'Cybersecurity',pct:83},{skill:'Data Engineering',pct:87},{skill:'Soft Skills',pct:89}];
+const dashboardData={skills:{
+  dataAnalysis:[{skill:'Python',level:95,projects:12,growth:[60,70,82,88,92,95]},{skill:'SQL',level:90,projects:15,growth:[65,72,80,85,88,90]},{skill:'Visualization',level:88,projects:8,growth:[50,60,72,80,85,88]},{skill:'ML',level:85,projects:6,growth:[50,60,70,78,82,85]},{skill:'Data Modeling',level:90,projects:9,growth:[60,70,80,85,88,90]}],
+  software:[{skill:'JavaScript',level:92,projects:18,growth:[70,78,85,88,90,92]},{skill:'React.js',level:90,projects:10,growth:[60,70,80,85,88,90]},{skill:'Node.js',level:88,projects:9,growth:[50,60,72,80,85,88]},{skill:'Express.js',level:90,projects:8,growth:[60,70,80,85,88,90]},{skill:'Django',level:85,projects:7,growth:[55,65,75,80,83,85]}],
+  cloud:[{skill:'Google Cloud',level:95,projects:7,growth:[70,80,88,90,93,95]},{skill:'AWS',level:85,projects:5,growth:[60,68,75,80,82,85]},{skill:'Azure',level:88,projects:6,growth:[65,72,78,82,85,88]},{skill:'IBM Cloud',level:85,projects:4,growth:[60,70,78,82,84,85]}],
+  devops:[{skill:'Docker',level:90,projects:11,growth:[65,75,82,86,88,90]},{skill:'Kubernetes',level:87,projects:8,growth:[60,70,78,82,85,87]},{skill:'CI/CD',level:85,projects:9,growth:[55,65,75,80,83,85]},{skill:'Terraform',level:88,projects:7,growth:[60,70,78,82,85,88]}],
+  mobile:[{skill:'Flutter',level:90,projects:5,growth:[60,70,80,85,88,90]},{skill:'Kotlin',level:88,projects:4,growth:[55,65,75,80,85,88]},{skill:'Swift',level:85,projects:3,growth:[50,60,70,78,82,85]}],
+  cybersecurity:[{skill:'Net Security',level:85,projects:4,growth:[60,68,75,80,83,85]},{skill:'Cloud Security',level:83,projects:3,growth:[55,65,73,78,81,83]},{skill:'Pen Testing',level:87,projects:5,growth:[60,70,78,83,85,87]}],
+  dataEngineering:[{skill:'Spark',level:85,projects:6,growth:[55,65,75,80,83,85]},{skill:'MySQL',level:92,projects:12,growth:[70,78,85,88,90,92]},{skill:'PostgreSQL',level:91,projects:11,growth:[68,76,83,87,89,91]}],
+}};
 
 function getGoldPalette(n){
   const base=[[201,168,76],[232,204,122],[154,116,50],[120,90,30],[245,220,140]];
-  return Array.from({length:n},(_, i)=>{const c=base[i%base.length];return `rgba(${c[0]},${c[1]},${c[2]},${0.85-i*0.05})`;});
+  return Array.from({length:n},(_,i)=>{const c=base[i%base.length];return `rgba(${c[0]},${c[1]},${c[2]},${0.85-i*0.05})`;});
 }
+
+let pieChart, dashChart;
 
 function buildPieChart(category){
-  const data=category==='all'?allSkills:(skillData[category]||allSkills);
-  const labels=data.map(d=>d.skill), vals=data.map(d=>d.pct);
-  const colors=getGoldPalette(labels.length);
-  if(pieChart)pieChart.destroy();
-  pieChart=new Chart(document.getElementById('skillsPieChart'),{
-    type:'doughnut',
-    data:{labels,datasets:[{data:vals,backgroundColor:colors,borderColor:'rgba(17,17,19,0.6)',borderWidth:2,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:10,padding:14}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}%`}}},cutout:'62%'}
-  });
+  try {
+    const data = category==='all' ? allSkills : (skillData[category]||allSkills);
+    const labels = data.map(d=>d.skill), vals = data.map(d=>d.pct);
+    if(pieChart) pieChart.destroy();
+    pieChart = new Chart(document.getElementById('skillsPieChart'),{
+      type:'doughnut',
+      data:{labels,datasets:[{data:vals,backgroundColor:getGoldPalette(labels.length),borderColor:'rgba(17,17,19,0.6)',borderWidth:2,hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:10,padding:14}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}%`}}},cutout:'62%'}
+    });
+  } catch(e){ console.warn('Pie chart error:', e); }
 }
 
-function buildDashChart(type,category){
-  const catData=category==='all'?[...dashboardData.skills.dataAnalysis,...dashboardData.skills.software].slice(0,6):(dashboardData.skills[category]||dashboardData.skills.dataAnalysis);
-  if(dashChart)dashChart.destroy();
-  const labels=['2019','2020','2021','2022','2023','2024'];
-  let cfg;
-  if(type==='line'){
-    cfg={type:'line',data:{labels,datasets:catData.slice(0,5).map((s,i)=>({label:s.skill,data:s.growth,borderColor:getGoldPalette(5)[i],backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.4}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:10}}},scales:{x:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:40,max:100}}}};
-  }else if(type==='bar'){
-    cfg={type:'bar',data:{labels:catData.map(s=>s.skill),datasets:[{label:'Proficiency %',data:catData.map(s=>s.level),backgroundColor:getGoldPalette(catData.length),borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:9}},grid:{display:false}},y:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100}}}};
-  }else if(type==='scatter'){
-    cfg={type:'scatter',data:{datasets:catData.map((s,i)=>({label:s.skill,data:[{x:s.level,y:s.projects}],backgroundColor:getGoldPalette(catData.length)[i],pointRadius:8}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:8}}},scales:{x:{title:{display:true,text:'Proficiency %',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100},y:{title:{display:true,text:'Projects',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'}}}}};
-  }else{
-    cfg={type:'bubble',data:{datasets:catData.map((s,i)=>({label:s.skill,data:[{x:s.level,y:s.projects,r:s.level/12}],backgroundColor:getGoldPalette(catData.length)[i]}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:8}}},scales:{x:{title:{display:true,text:'Proficiency %',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845'},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100},y:{title:{display:true,text:'Projects',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845'},grid:{color:'rgba(255,255,255,0.04)'}}}}};
+function buildDashChart(type, category){
+  try {
+    const catData = category==='all'
+      ? [...dashboardData.skills.dataAnalysis,...dashboardData.skills.software].slice(0,6)
+      : (dashboardData.skills[category]||dashboardData.skills.dataAnalysis);
+    if(dashChart) dashChart.destroy();
+    const labels = ['2019','2020','2021','2022','2023','2024'];
+    let cfg;
+    if(type==='line'){
+      cfg={type:'line',data:{labels,datasets:catData.slice(0,5).map((s,i)=>({label:s.skill,data:s.growth,borderColor:getGoldPalette(5)[i],backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.4}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:10}}},scales:{x:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:40,max:100}}}};
+    }else if(type==='bar'){
+      cfg={type:'bar',data:{labels:catData.map(s=>s.skill),datasets:[{label:'Proficiency %',data:catData.map(s=>s.level),backgroundColor:getGoldPalette(catData.length),borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:9}},grid:{display:false}},y:{ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100}}}};
+    }else if(type==='scatter'){
+      cfg={type:'scatter',data:{datasets:catData.map((s,i)=>({label:s.skill,data:[{x:s.level,y:s.projects}],backgroundColor:getGoldPalette(catData.length)[i],pointRadius:8}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:8}}},scales:{x:{title:{display:true,text:'Proficiency %',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100},y:{title:{display:true,text:'Projects',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845',font:{family:'DM Mono',size:10}},grid:{color:'rgba(255,255,255,0.04)'}}}}};
+    }else{
+      cfg={type:'bubble',data:{datasets:catData.map((s,i)=>({label:s.skill,data:[{x:s.level,y:s.projects,r:s.level/12}],backgroundColor:getGoldPalette(catData.length)[i]}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8A8680',font:{family:'DM Mono',size:10},boxWidth:8}}},scales:{x:{title:{display:true,text:'Proficiency %',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845'},grid:{color:'rgba(255,255,255,0.04)'},min:50,max:100},y:{title:{display:true,text:'Projects',color:'#4A4845',font:{family:'DM Mono',size:10}},ticks:{color:'#4A4845'},grid:{color:'rgba(255,255,255,0.04)'}}}}};
+    }
+    dashChart = new Chart(document.getElementById('dashboardChart'), cfg);
+  } catch(e){ console.warn('Dashboard chart error:', e); }
+}
+
+// Charts need Chart.js to be loaded — use a small check/retry
+function initCharts(){
+  if(typeof Chart === 'undefined'){
+    // Chart.js not ready yet — wait and retry (handles slow CDN)
+    setTimeout(initCharts, 100);
+    return;
   }
-  dashChart=new Chart(document.getElementById('dashboardChart'),cfg);
-}
-
-Chart.defaults.color='#8A8680';
-
-document.addEventListener('DOMContentLoaded',()=>{
+  Chart.defaults.color = '#8A8680';
   buildPieChart('all');
   buildDashChart('line','dataAnalysis');
-  renderCerts();
-  renderProjects();
 
-  document.getElementById('skillCategory').addEventListener('change',function(){buildPieChart(this.value);});
-  document.getElementById('animateChart').addEventListener('click',()=>{buildPieChart(document.getElementById('skillCategory').value);});
-  document.getElementById('chartType').addEventListener('change',function(){buildDashChart(this.value,document.getElementById('dashboardSkillCategory').value);});
-  document.getElementById('dashboardSkillCategory').addEventListener('change',function(){buildDashChart(document.getElementById('chartType').value,this.value);});
-  document.getElementById('animateBtn').addEventListener('click',()=>{buildDashChart(document.getElementById('chartType').value,document.getElementById('dashboardSkillCategory').value);});
-});
+  // Wire up chart controls
+  document.getElementById('skillCategory').addEventListener('change', function(){ buildPieChart(this.value); });
+  document.getElementById('animateChart').addEventListener('click', ()=>{ buildPieChart(document.getElementById('skillCategory').value); });
+  document.getElementById('chartType').addEventListener('change', function(){ buildDashChart(this.value, document.getElementById('dashboardSkillCategory').value); });
+  document.getElementById('dashboardSkillCategory').addEventListener('change', function(){ buildDashChart(document.getElementById('chartType').value, this.value); });
+  document.getElementById('animateBtn').addEventListener('click', ()=>{ buildDashChart(document.getElementById('chartType').value, document.getElementById('dashboardSkillCategory').value); });
+}
+
+// Start chart init — completely decoupled from renderProjects/renderCerts
+initCharts();
 </script>
 </body>
 </html>
