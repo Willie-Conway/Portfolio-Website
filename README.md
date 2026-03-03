@@ -1,6 +1,6 @@
 # 📚 Willie Conway's Portfolio Website
 
-![alt text](assets/Developing.PNG)
+![alt text](assets/Developing.png)
 
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
