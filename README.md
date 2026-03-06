@@ -12,7 +12,7 @@
 
 ## 🎯 Live Portfolio
 
-[![Live Portfolio](https://img.shields.io/badge/🚀_Live_Portfolio_Website-F97316?style=for-the-badge&logo=vercel&logoColor=white)](https://willie-conway.github.io/Portfolio-Website/)
+[![Live Portfolio](https://img.shields.io/badge/🚀_Live_Portfolio_Website-F97316?style=for-the-badge&logo=vercel&logoColor=white)](https://willie-conway.github.io/Portfolio.io/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white)](https://pages.github.com/)
 
 ![alt text](assets/portfolio_project.png)
@@ -46,7 +46,7 @@
 │
 ├── 📂 assets/
 │   ├── Portfolio.png                    # Portfolio screenshot
-│   ├── Portfolio_Website.png           # Additional screenshot
+│   ├── Portfolio.io.png           # Additional screenshot
 │   ├── IMG_7238.png                    # Profile image
 │   └── Resume.pdf                      # Downloadable resume
 │
@@ -201,10 +201,10 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/Willie-Conway/Portfolio-Website.git
+git clone https://github.com/Willie-Conway/Portfolio.io.git
 
 # Navigate to project directory
-cd Portfolio-Website
+cd Portfolio.io
 
 # Open in browser (no build step needed)
 open index.html
@@ -217,7 +217,7 @@ open index.html
 2. Go to Repository Settings → Pages
 3. Select branch: `main`
 4. Select folder: `/ (root)`
-5. Save and visit `https://willie-conway.github.io/Portfolio-Website/`
+5. Save and visit `https://willie-conway.github.io/Portfolio.io/`
 
 ### **No Build Process Required**
 
@@ -307,7 +307,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ### **Portfolio Links**
 
-- 🌐 **Live Portfolio**: [https://willie-conway.github.io/Portfolio-Website/](https://willie-conway.github.io/Portfolio-Website/)
+- 🌐 **Live Portfolio**: [https://willie-conway.github.io/Portfolio-Website/](https://willie-conway.github.io/Portfolio.io/)
 - 📊 **Tableau Public**: [https://public.tableau.com/app/profile/willie.conway2396](https://public.tableau.com/app/profile/willie.conway2396)
 - 🏆 **Credly Profile**: [https://www.credly.com/users/willieconway](https://www.credly.com/users/willieconway)
 
